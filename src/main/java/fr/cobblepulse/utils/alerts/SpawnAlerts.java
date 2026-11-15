@@ -182,8 +182,8 @@ public final class SpawnAlerts {
             cats = new ArrayList<>(List.of(cat));
         }
         record(e, cats, onlyMe ? p : null);
-        Msg.send(p, "alerts.test_done", "pokemon", sp.getTranslatedName().getString(), "category", label(cats),
-                "target", onlyMe ? Msg.format("alerts.test_target_me") : Msg.format("alerts.test_target_all"));
+        Msg.send(p, Msg.withComponent("alerts.test_done", "pokemon", sp.getTranslatedName(), "category", label(cats),
+                "target", onlyMe ? Msg.format("alerts.test_target_me") : Msg.format("alerts.test_target_all")));
         return e;
     }
 

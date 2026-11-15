@@ -407,6 +407,7 @@ public final class Bosses {
         String tierId = fight != null ? fight.tier() : tag.getString("tier");
         String bossKey = fight != null && !fight.key().isEmpty() ? fight.key() : tag.getString("key");
         String species = lost.getSpecies().getTranslatedName().getString();
+        net.minecraft.network.chat.Component speciesName = lost.getSpecies().getTranslatedName();
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         List<ServerPlayer> players = new ArrayList<>();
         for (BattleActor a : winners) {
@@ -425,14 +426,20 @@ public final class Bosses {
             return;
         }
         CobbleUtils.LOG.info("[CobblePulse-Utils] Boss {} ({}) vaincu par {}", species, tierId, players.stream().map(x -> x.getGameProfile().getName()).toList());
-        for (ServerPlayer p : players) reward(p, t, tierId, bossKey, species);
+        for (ServerPlayer p : players) reward(p, t, tierId, bossKey, speciesName);
         if (t.announce && !players.isEmpty()) {
-            Msg.broadcast(Msg.get("boss.defeated_broadcast", "player", players.get(0).getGameProfile().getName(), "tier", t.color + t.name, "pokemon", species));
+            Msg.broadcast(Msg.withComponent("boss.defeated_broadcast", "pokemon", speciesName, "player", players.get(0).getGameProfile().getName(),
+                    "tier", t.color + t.name));
         }
     }
 
     /** Butin du palier + objet de forme (1re victoire 100 %, ensuite 10 %). */
     public static void reward(ServerPlayer p, BossConfig.Tier t, String tierId, String bossKey, String species) {
+        reward(p, t, tierId, bossKey, net.minecraft.network.chat.Component.literal(species));
+    }
+
+    /** Le nom de l'espece est un composant : traduit par le client du joueur (Magicarpe et non Magikarp). */
+    public static void reward(ServerPlayer p, BossConfig.Tier t, String tierId, String bossKey, net.minecraft.network.chat.Component species) {
         List<String> got = new ArrayList<>();
         for (Reward r : t.loot) {
             String s = Rewards.roll(p, r);
@@ -459,7 +466,7 @@ public final class Bosses {
                 }
             }
             Players.saveNow(p);
-            Msg.send(p, "boss.victory", "tier", t.color + t.name, "pokemon", species, "rewards", got.isEmpty() ? "-" : String.join("&7, ", got));
+            Msg.send(p, Msg.withComponent("boss.victory", "pokemon", species, "tier", t.color + t.name, "rewards", got.isEmpty() ? "-" : String.join("&7, ", got)));
         }));
     }
 

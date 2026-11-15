@@ -351,6 +351,8 @@ final class ClientSelfTest {
             String loot = MESSAGES.stream().filter(x -> x.contains("vaincu")).findFirst().orElse("");
             check("combat_boss_reel_termine", ended, battleTurns + " tour(s)");
             check("combat_boss_reel_butin", loot.contains("Butin") && !loot.endsWith(": -"), loot.isEmpty() ? String.valueOf(MESSAGES) : loot);
+            // nom de l'espece traduit par le client (et non le nom anglais du serveur)
+            check("boss_nom_traduit", loot.contains("Magicarpe") && !loot.contains("Magikarp"), loot);
             if (mc.screen != null) mc.setScreen(null);
             shot(mc, "live_58_butin_boss");
         });

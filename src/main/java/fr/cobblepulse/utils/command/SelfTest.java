@@ -652,6 +652,7 @@ public final class SelfTest {
         b.getInventory().clearContent();
         long sellerBefore = Economy.balance(a.getUUID());
         long buyerBefore = Economy.balance(b.getUUID());
+        long otherBefore = Economy.balance(c.getUUID());
         AtomicInteger done = new AtomicInteger();
         AtomicInteger okCount = new AtomicInteger();
         // achat simultane par B et C : une seule vente possible
@@ -663,7 +664,10 @@ public final class SelfTest {
                         boolean bGot = count(b, Items.DIAMOND) == 3;
                         boolean cGot = count(c, Items.DIAMOND) == 3;
                         check("gts_achat_unique_concurrence", okCount.get() == 1 && (bGot ^ cGot), "reussis " + okCount.get() + ", B " + bGot + ", C " + cGot);
-                        if (bGot) check("gts_cobbledollars_debite", Economy.balance(b.getUUID()) == buyerBefore - 1000, Economy.balance(b.getUUID()));
+                        // l'acheteur gagnant (B ou C, selon la course) est debite du prix exact
+                        ServerPlayer winner = bGot ? b : c;
+                        long before = bGot ? buyerBefore : otherBefore;
+                        if (bGot || cGot) check("gts_cobbledollars_debite", Economy.balance(winner.getUUID()) == before - 1000, Economy.balance(winner.getUUID()));
                         long expected = 1000 - 1000 * Cfg.gts.defaultTax / 100;
                         check("gts_vendeur_paye_taxe", Economy.balance(a.getUUID()) == sellerBefore + expected,
                                 (Economy.balance(a.getUUID()) - sellerBefore) + " / " + expected);

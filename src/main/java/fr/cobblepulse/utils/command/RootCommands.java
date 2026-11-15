@@ -199,8 +199,8 @@ public final class RootCommands {
         }
         var t = Cfg.boss.tiers.get(tier);
         String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + e.getPokemon().getForm().getName() + ")";
-        Msg.send(src, "boss.spawned", "tier", t.color + t.name, "pokemon", e.getPokemon().getSpecies().getTranslatedName().getString() + formName,
-                "level", e.getPokemon().getLevel());
+        src.sendSystemMessage(Msg.withComponent("boss.spawned", "pokemon", e.getPokemon().getSpecies().getTranslatedName().copy()
+                .append(fr.cobblepulse.utils.core.TextUtil.legacy(formName)), "tier", t.color + t.name, "level", e.getPokemon().getLevel()));
         if (!f.equals("auto") && !f.equals("base") && formName.isEmpty()) Msg.send(src, "boss.form_unavailable", "form", f);
         if (fight) {
             String err = Bosses.startBattle(p, e);

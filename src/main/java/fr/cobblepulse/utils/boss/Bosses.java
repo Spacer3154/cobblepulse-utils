@@ -74,6 +74,13 @@ public final class Bosses {
     private static Field levelField;
     private static Field aiField;
 
+    /** Combat contre un Boss, memorise au debut : a la victoire, l'entite du Boss K.O. n'est souvent plus accessible. */
+    private record Fight(String tier, String key, String species, UUID entity, ServerLevel level, long started) {}
+
+    private static final Map<UUID, Fight> FIGHTS = new java.util.concurrent.ConcurrentHashMap<>();
+    /** Auto-test : victoires contre un Boss traitees. */
+    public static volatile int victoriesHandled;
+
     private Bosses() {}
 
     static Db.Source db() {
@@ -245,9 +252,16 @@ public final class Bosses {
 
     private static final java.util.regex.Pattern SPECIAL = java.util.regex.Pattern.compile("(?i)^(mega([ _-]?[xyz])?|primal|origin)$");
 
+    /** Forme speciale imposee par un test (mega, primal, origin). */
+    private static String forcedKind;
+
     static FormData specialForm(Species s) {
         List<FormData> found = new ArrayList<>();
-        for (FormData f : s.getForms()) if (f.getName() != null && SPECIAL.matcher(f.getName().trim()).matches()) found.add(f);
+        for (FormData f : s.getForms()) {
+            if (f.getName() == null || !SPECIAL.matcher(f.getName().trim()).matches()) continue;
+            if (forcedKind != null && !specialKind(f.getName()).equals(forcedKind)) continue;
+            found.add(f);
+        }
         return found.isEmpty() ? null : found.get(RND.nextInt(found.size()));
     }
 
@@ -315,12 +329,23 @@ public final class Bosses {
         return null;
     }
 
+    /** Pokemon Boss d'un acteur sauvage (par ses donnees, l'entite pouvant deja avoir disparu). */
+    private static Pokemon bossPokemon(BattleActor a) {
+        if (!(a instanceof PokemonBattleActor pa) || pa.getPokemon() == null) return null;
+        for (Pokemon pk : new Pokemon[]{pa.getPokemon().getOriginalPokemon(), pa.getPokemon().getEffectedPokemon()}) {
+            if (pk != null && pk.getPersistentData().contains(TAG)) return pk;
+        }
+        return null;
+    }
+
     private static void onBattleStart(PokemonBattle battle, com.cobblemon.mod.common.api.events.battles.BattleStartedEvent.Pre event) {
         PokemonEntity boss = bossOf(battle);
         if (boss == null) return;
         String tierId = tierOf(boss);
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         if (t == null) return;
+        FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
+                boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
         long cd = t.engageCooldownSeconds * 1000;
         List<ServerPlayer> players = new ArrayList<>();
         for (BattleActor a : battle.getActors()) {
@@ -366,26 +391,40 @@ public final class Bosses {
     }
 
     private static void onVictory(PokemonBattle battle, List<BattleActor> winners, List<BattleActor> losers) {
-        PokemonEntity boss = null;
+        Fight fight = FIGHTS.remove(battle.getBattleId());
+        // le Boss a-t-il perdu ? (identifie par les donnees du Pokemon : son entite K.O. n'est plus forcement liee)
+        Pokemon lost = null;
+        PokemonEntity entity = null;
         for (BattleActor a : losers) {
-            if (a instanceof PokemonBattleActor pa && pa.getEntity() != null && isBoss(pa.getEntity())) boss = pa.getEntity();
+            Pokemon pk = bossPokemon(a);
+            if (pk != null) {
+                lost = pk;
+                entity = ((PokemonBattleActor) a).getEntity();
+            }
         }
-        if (boss == null) return;
-        String tierId = tierOf(boss);
+        if (lost == null) return;
+        CompoundTag tag = lost.getPersistentData().getCompound(TAG);
+        String tierId = fight != null ? fight.tier() : tag.getString("tier");
+        String bossKey = fight != null && !fight.key().isEmpty() ? fight.key() : tag.getString("key");
+        String species = lost.getSpecies().getTranslatedName().getString();
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
-        CompoundTag tag = boss.getPokemon().getPersistentData().getCompound(TAG);
-        String bossKey = tag.getString("key");
         List<ServerPlayer> players = new ArrayList<>();
         for (BattleActor a : winners) {
             if (a instanceof PlayerBattleActor) for (UUID u : a.getPlayerUUIDs()) {
                 ServerPlayer p = Players.online(u);
-                if (p != null) players.add(p);
+                if (p != null && !players.contains(p)) players.add(p);
             }
         }
-        String species = boss.getPokemon().getSpecies().getTranslatedName().getString();
-        PokemonEntity finalBoss = boss;
-        Scheduler.later(20, () -> despawn(finalBoss, true));
-        if (t == null) return;
+        if (entity == null && fight != null && fight.level() != null && fight.level().getEntity(fight.entity()) instanceof PokemonEntity pe) entity = pe;
+        PokemonEntity finalBoss = entity;
+        if (finalBoss != null) Scheduler.later(20, () -> despawn(finalBoss, true));
+        if (fight != null) ACTIVE.remove(fight.entity());
+        victoriesHandled++;
+        if (t == null) {
+            CobbleUtils.LOG.warn("[CobblePulse-Utils] Boss vaincu mais palier inconnu : {}", tierId);
+            return;
+        }
+        CobbleUtils.LOG.info("[CobblePulse-Utils] Boss {} ({}) vaincu par {}", species, tierId, players.stream().map(x -> x.getGameProfile().getName()).toList());
         for (ServerPlayer p : players) reward(p, t, tierId, bossKey, species);
         if (t.announce && !players.isEmpty()) {
             Msg.broadcast(Msg.get("boss.defeated_broadcast", "player", players.get(0).getGameProfile().getName(), "tier", t.color + t.name, "pokemon", species));
@@ -437,6 +476,7 @@ public final class Bosses {
 
     /** Toutes les 20 s : retrait des Boss expires (hors combat). */
     public static void tick() {
+        FIGHTS.values().removeIf(f -> System.currentTimeMillis() - f.started() > 3_600_000L);
         long life = Cfg.boss.lifetimeMinutes * 60_000L;
         for (Map.Entry<UUID, ServerLevel> en : new ArrayList<>(ACTIVE.entrySet())) {
             Entity x = en.getValue().getEntity(en.getKey());
@@ -465,21 +505,61 @@ public final class Bosses {
 
     /** /cp boss spawn <palier> [espece] : fait apparaitre un Boss a la position du staff. */
     public static PokemonEntity spawnAt(ServerPlayer p, String tierId, String speciesName) {
-        Species s = speciesName == null || speciesName.isBlank() ? null : SpeciesLookup.resolve(speciesName);
+        return spawnAt(p, tierId, speciesName, "auto", 3);
+    }
+
+    /**
+     * Boss de test devant le staff.
+     * @param form auto (tirage normal), base, mega, primal ou origin
+     */
+    public static PokemonEntity spawnAt(ServerPlayer p, String tierId, String speciesName, String form, double distance) {
+        String f = form == null ? "auto" : form.toLowerCase(Locale.ROOT);
+        Species s = speciesName == null || speciesName.isBlank() || speciesName.equals("*") ? null : SpeciesLookup.resolve(speciesName);
         if (s == null) {
             List<Species> pool = new ArrayList<>(com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getImplemented());
-            pool.removeIf(x -> x.getLabels().contains("legendary") || x.getLabels().contains("mythical"));
+            if (f.equals("auto") || f.equals("base")) pool.removeIf(x -> x.getLabels().contains("legendary") || x.getLabels().contains("mythical"));
+            // forme demandee : especes qui la possedent (Mega, Primo, Originelle)
+            else pool.removeIf(x -> x.getForms().stream().noneMatch(fd -> specialKind(fd.getName()).equals(f)));
+            if (pool.isEmpty()) return null;
             s = pool.get(RND.nextInt(pool.size()));
         }
         PokemonProperties pp = PokemonProperties.Companion.parse("level=50");
         pp.setSpecies(s.getResourceIdentifier().toString());
         Pokemon pk = pp.create();
-        Vec3 pos = p.position().add(p.getLookAngle().multiply(3, 0, 3));
+        Vec3 look = p.getLookAngle();
+        Vec3 pos = p.position().add(new Vec3(look.x, 0, look.z).normalize().scale(distance));
         PokemonEntity e = new PokemonEntity(p.serverLevel(), pk, com.cobblemon.mod.common.CobblemonEntities.POKEMON);
         e.moveTo(pos.x, p.getY(), pos.z, p.getYRot() + 180, 0);
-        promote(e, tierId);
+        double old = Cfg.boss.specialFormChance;
+        if (!f.equals("auto")) Cfg.boss.specialFormChance = f.equals("base") ? 0 : 100;
+        try {
+            if (!f.equals("auto") && !f.equals("base")) forcedKind = f;
+            promote(e, tierId);
+        } finally {
+            Cfg.boss.specialFormChance = old;
+            forcedKind = null;
+        }
         p.serverLevel().addFreshEntity(e);
         return e;
+    }
+
+    /** Combat de test : le staff affronte immediatement le Boss avec son equipe. */
+    public static String startBattle(ServerPlayer p, PokemonEntity boss) {
+        var party = fr.cobblepulse.utils.pokemon.PokemonText.party(p);
+        Pokemon lead = null;
+        for (Pokemon pk : party) if (pk != null && !pk.isFainted()) {
+            lead = pk;
+            break;
+        }
+        if (lead == null) return "boss.test_no_pokemon";
+        try {
+            var res = com.cobblemon.mod.common.battles.BattleBuilder.INSTANCE.pve(p, boss, lead.getUuid(),
+                    com.cobblemon.mod.common.battles.BattleFormat.Companion.getGEN_9_SINGLES(), false, false);
+            return res instanceof com.cobblemon.mod.common.battles.SuccessfulBattleStart ? null : "boss.test_battle_failed";
+        } catch (Throwable t) {
+            CobbleUtils.LOG.warn("[CobblePulse-Utils] Combat de test : {}", t.toString());
+            return "boss.test_battle_failed";
+        }
     }
 
     public static boolean megaShowdown() {

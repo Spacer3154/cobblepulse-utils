@@ -327,6 +327,10 @@ public final class PlaytimeRewards {
                 save();
                 editor(pl);
             });
+            gui.button(48, ItemBuilder.of(Items.PLAYER_HEAD).name(Msg.format("playtime.editor_reset_player")).lore(Msg.format("playtime.editor_reset_player_lore")).build(),
+                    pl -> ChatInput.ask(pl, "playtime.ask_reset_player", txt -> confirmReset(pl, txt.trim()), () -> editor(pl)));
+            gui.button(52, ItemBuilder.of(Items.TNT).name(Msg.format("playtime.editor_reset_all")).lore(Msg.format("playtime.editor_reset_all_lore")).build(),
+                    pl -> confirmReset(pl, null));
             gui.button(50, ItemBuilder.of(Items.ARMOR_STAND).name(Msg.format("playtime.editor_afk", "minutes", cfg().afkMinutes))
                     .lore(Msg.format("playtime.editor_afk_lore")).build(), pl -> ChatInput.ask(pl, "playtime.ask_afk", txt -> {
                 Long v = ChatInput.parseAmount(txt);
@@ -436,20 +440,87 @@ public final class PlaytimeRewards {
                             return 1;
                         }))))
                 .then(literal("reinitialiser").requires(Perms.adminReq("playtime"))
-                        .then(argument("joueur", StringArgumentType.word()).suggests(ONLINE).executes(ctx -> {
-                            ServerPlayer t = Players.online(StringArgumentType.getString(ctx, "joueur"));
-                            if (t == null) {
-                                Msg.send(ctx.getSource(), "general.player_not_found", "player", StringArgumentType.getString(ctx, "joueur"));
-                                return 0;
-                            }
-                            PlayerData pd = PlayerStore.get(t);
-                            pd.playtimeClaimed.clear();
-                            pd.playtimeNotified.clear();
-                            pd.repeatSeconds = 0;
-                            PlayerStore.dirty(t.getUUID());
-                            Msg.send(ctx.getSource(), "playtime.reset", "player", t.getGameProfile().getName());
-                            return 1;
-                        }))));
+                        .then(argument("joueur", StringArgumentType.word()).suggests(ONLINE_ALL)
+                                .executes(ctx -> resetCommand(ctx.getSource(), StringArgumentType.getString(ctx, "joueur"), false))
+                                .then(literal("paliers").executes(ctx -> resetCommand(ctx.getSource(), StringArgumentType.getString(ctx, "joueur"), false)))
+                                .then(literal("tout").executes(ctx -> resetCommand(ctx.getSource(), StringArgumentType.getString(ctx, "joueur"), true))))));
+    }
+
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> ONLINE_ALL = (ctx, b) -> {
+        List<String> out = new ArrayList<>(List.of(ctx.getSource().getServer().getPlayerNames()));
+        out.add("tous");
+        return net.minecraft.commands.SharedSuggestionProvider.suggest(out, b);
+    };
+
+    /** Remise a zero : paliers reclames (+ temps de jeu actif si {@code time}). */
+    static void resetData(PlayerData d, boolean time) {
+        d.playtimeClaimed.clear();
+        d.playtimeNotified.clear();
+        d.repeatSeconds = 0;
+        if (time) {
+            d.activeSeconds = 0;
+            // ne pas reprendre le temps de la statistique du jeu apres une remise a zero
+            d.activeSeeded = true;
+        }
+    }
+
+    private static int resetCommand(CommandSourceStack src, String who, boolean time) {
+        if (who.equalsIgnoreCase("tous") || who.equalsIgnoreCase("all") || who.equals("*")) {
+            resetAll(time, n -> Msg.send(src, "playtime.reset_all", "count", n, "what", Msg.format(time ? "playtime.reset_what_all" : "playtime.reset_what_tiers")));
+            return 1;
+        }
+        return resetPlayer(src, who, time) ? 1 : 0;
+    }
+
+    /** Un joueur, en ligne ou non (par son nom). */
+    public static boolean resetPlayer(CommandSourceStack src, String name, boolean time) {
+        ServerPlayer online = Players.online(name);
+        UUID u = online != null ? online.getUUID() : PlayerStore.findByName(name);
+        if (u == null) {
+            Msg.send(src, "general.player_not_found", "player", name);
+            return false;
+        }
+        PlayerStore.update(u, d -> resetData(d, time));
+        Msg.send(src, "playtime.reset", "player", online != null ? online.getGameProfile().getName() : name,
+                "what", Msg.format(time ? "playtime.reset_what_all" : "playtime.reset_what_tiers"));
+        return true;
+    }
+
+    /** Tous les joueurs connus du serveur (en ligne et hors ligne). */
+    public static void resetAll(boolean time, java.util.function.IntConsumer done) {
+        PlayerStore.updateAll(d -> resetData(d, time)).whenComplete((n, t) -> fr.cobblepulse.utils.core.Scheduler.next(() -> {
+            if (t != null) fr.cobblepulse.utils.CobbleUtils.LOG.error("[CobblePulse-Utils] Remise a zero du temps de jeu : {}", t.toString());
+            done.accept(n == null ? 0 : n);
+        }));
+    }
+
+    /** Ecran de confirmation (paliers seuls / paliers + temps de jeu). */
+    static void confirmReset(ServerPlayer p, String who) {
+        boolean all = who == null;
+        Gui g = new Gui(3, Msg.format("playtime.reset_title", "who", all ? Msg.format("playtime.reset_everyone") : who));
+        g.fill(Gui.pane());
+        g.button(11, ItemBuilder.of(Items.HOPPER).name(Msg.format("playtime.reset_tiers")).lore(Msg.format("playtime.reset_tiers_lore")).build(), pl -> {
+            if (all) resetAll(false, n -> {
+                Msg.send(pl, "playtime.reset_all", "count", n, "what", Msg.format("playtime.reset_what_tiers"));
+                editor(pl);
+            });
+            else {
+                resetPlayer(pl.createCommandSourceStack(), who, false);
+                editor(pl);
+            }
+        });
+        g.button(15, ItemBuilder.of(Items.LAVA_BUCKET).name(Msg.format("playtime.reset_full")).lore(Msg.format("playtime.reset_full_lore")).build(), pl -> {
+            if (all) resetAll(true, n -> {
+                Msg.send(pl, "playtime.reset_all", "count", n, "what", Msg.format("playtime.reset_what_all"));
+                editor(pl);
+            });
+            else {
+                resetPlayer(pl.createCommandSourceStack(), who, true);
+                editor(pl);
+            }
+        });
+        g.button(22, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.cancel")).build(), PlaytimeRewards::editor);
+        g.open(p);
     }
 
     /** Texte d'appoint pour /playtime : prochain palier. */

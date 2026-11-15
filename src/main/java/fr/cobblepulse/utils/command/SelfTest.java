@@ -1171,13 +1171,132 @@ public final class SelfTest {
                                         MonSpecParser.format(MonSpecParser.parse(spec)));
                                 Screens.capture(us, false);
                                 safe("mega", SelfTest::megaPhase);
-                                finish();
+                                safe("tests_staff", SelfTest::staffTestsPhase);
                             }));
                         });
                     }));
                 }));
             });
         }));
+    }
+
+    // ------------------------------------------------------------------ outils de test du staff, remise a zero, vrai combat de Boss
+
+    private static void staffTestsPhase() {
+        MinecraftServer s = a.getServer();
+        ServerLevel ow = s.overworld();
+        var sp = ow.getSharedSpawnPos();
+        int gy = ow.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, sp.getX(), sp.getZ());
+        staff.teleportTo(ow, sp.getX() + 0.5, gy, sp.getZ() + 0.5, 0, 0);
+        // alerte de test : vrai Pokemon legendaire + annonce, envoyee au staff seulement
+        PokemonEntity leg = SpawnAlerts.test(staff, "legendary", null, true);
+        var hl = SpawnAlerts.history("legendary");
+        boolean legOk = leg != null && leg.getPokemon().getSpecies().getLabels().contains("legendary") && !hl.isEmpty()
+                && hl.get(0).entityUuid.equals(leg.getUUID().toString()) && !SpawnAlerts.lastBroadcast.isEmpty();
+        check("alerte_test_legendaire", legOk, leg == null ? "-" : leg.getPokemon().getSpecies().getName() + " | " + TextUtil.strip(SpawnAlerts.lastBroadcast));
+        PokemonEntity sh = SpawnAlerts.test(staff, "shiny", "pikachu", false);
+        check("alerte_test_chromatique", sh != null && sh.getPokemon().getShiny() && sh.getPokemon().getSpecies().getName().equalsIgnoreCase("pikachu")
+                && SpawnAlerts.history("shiny").get(0).entityUuid.equals(sh.getUUID().toString()), null);
+        check("alerte_test_commande", cmd(s, staff.createCommandSourceStack(), "cp alertes test ultra_beast moi")
+                && SpawnAlerts.history("ultra_beast").size() > 0, SpawnAlerts.history("ultra_beast").size());
+        if (leg != null) leg.discard();
+        if (sh != null) sh.discard();
+        // Boss de test : palier, espece, forme Mega imposee, un de chaque palier, commande
+        PokemonEntity mega = Bosses.spawnAt(staff, "ultime", "charizard", "mega", 3);
+        String formName = mega == null ? "-" : mega.getPokemon().getForm().getName();
+        if (Bosses.megaShowdown()) check("boss_test_forme_mega", mega != null && formName.toLowerCase(java.util.Locale.ROOT).startsWith("mega"), formName);
+        else info("Boss Mega : Mega Showdown absent, forme " + formName);
+        int before = countBosses(s);
+        int all = RootCommands.spawnAllTiers(staff.createCommandSourceStack());
+        check("boss_test_tous_les_paliers", all == Cfg.boss.tiers.size() && countBosses(s) == before + all, all + " / " + Cfg.boss.tiers.size());
+        check("boss_test_commande", cmd(s, staff.createCommandSourceStack(), "cp boss spawn rare pikachu base") && countBosses(s) == before + all + 1, null);
+        Bosses.clearAll();
+        // remise a zero du temps de jeu : joueur en ligne, joueur hors ligne, tous les joueurs
+        UUID off = uuid("HorsLigne");
+        PlayerStore.update(off, d -> {
+            d.name = "HorsLigne";
+            d.playtimeClaimed.add("h1");
+            d.activeSeconds = 5000;
+            d.activeSeeded = true;
+        });
+        Scheduler.later(20, () -> safe("temps_de_jeu_remise", () -> {
+            PlayerStore.get(b).playtimeClaimed.add("h1");
+            boolean onlineOk = fr.cobblepulse.utils.playtime.PlaytimeRewards.resetPlayer(s.createCommandSourceStack(), "TestB", false)
+                    && PlayerStore.get(b).playtimeClaimed.isEmpty();
+            boolean offOk = fr.cobblepulse.utils.playtime.PlaytimeRewards.resetPlayer(s.createCommandSourceStack(), "HorsLigne", true);
+            check("temps_de_jeu_remise_joueur", onlineOk && offOk, null);
+            Scheduler.later(20, () -> safe("temps_de_jeu_remise_hors_ligne", () -> {
+                PlayerData od = PlayerStore.peek(off);
+                check("temps_de_jeu_remise_hors_ligne", od.playtimeClaimed.isEmpty() && od.activeSeconds == 0, od.activeSeconds + " " + od.playtimeClaimed);
+                PlayerStore.update(off, d -> d.playtimeClaimed.add("h5"));
+                long aTime = PlayerStore.get(a).activeSeconds;
+                fr.cobblepulse.utils.playtime.PlaytimeRewards.resetAll(false, n -> safe("temps_de_jeu_remise_tous", () -> {
+                    PlayerData od2 = PlayerStore.peek(off);
+                    check("temps_de_jeu_remise_tous", n >= 5 && PlayerStore.get(a).playtimeClaimed.isEmpty() && PlayerStore.get(a).activeSeconds == aTime
+                            && od2.playtimeClaimed.isEmpty(), n + " joueurs");
+                    // A peut de nouveau reclamer son palier (verifie apres redemarrage)
+                    fr.cobblepulse.utils.playtime.PlaytimeRewards.claim(a, Cfg.playtime.tiers.get(0));
+                    check("temps_de_jeu_commande_tous", cmd(s, s.createCommandSourceStack(), "ptr reinitialiser HorsLigne tout"), null);
+                    safe("combat_boss", SelfTest::bossBattlePhase);
+                }));
+            }));
+        }));
+    }
+
+    private static int countBosses(MinecraftServer s) {
+        int n = 0;
+        for (ServerLevel l : s.getAllLevels()) for (var e : l.getAllEntities()) if (Bosses.isBoss(e)) n++;
+        return n;
+    }
+
+    /** Vrai combat Cobblemon (moteur Showdown) contre un Boss : le joueur factice joue Psyko jusqu'a la victoire. */
+    private static void bossBattlePhase() {
+        ServerLevel ow = a.serverLevel();
+        var sp = ow.getSharedSpawnPos();
+        int gy = ow.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, sp.getX() + 8, sp.getZ() + 8);
+        a.teleportTo(ow, sp.getX() + 8.5, gy, sp.getZ() + 8.5, 0, 0);
+        clearParty(a);
+        Pokemon champion = fr.cobblepulse.utils.pokemon.PokemonFactory.create(
+                MonSpecParser.parse("mewtwo niveau=100 ivs=31,31,31,31,31,31 nature=modest capacites=psychic"), new ArrayList<>());
+        PokemonText.party(a).add(champion);
+        a.getInventory().clearContent();
+        long money = Economy.balance(a.getUUID());
+        int handled = Bosses.victoriesHandled;
+        PokemonEntity boss = Bosses.spawnAt(a, "commun", "magikarp", "base", 4);
+        String err = boss == null ? "spawn" : Bosses.startBattle(a, boss);
+        check("boss_combat_demarre", err == null, err);
+        if (err != null) {
+            finish();
+            return;
+        }
+        long start = System.currentTimeMillis();
+        Scheduler.Task[] driver = new Scheduler.Task[1];
+        driver[0] = Scheduler.repeat(10, 10, () -> {
+            var battle = com.cobblemon.mod.common.battles.BattleRegistry.getBattleByParticipatingPlayer(a);
+            boolean timeout = System.currentTimeMillis() - start > 120_000;
+            if (battle != null && !timeout) {
+                for (var actor : battle.getActors()) {
+                    boolean mine = false;
+                    for (UUID u : actor.getPlayerUUIDs()) if (u.equals(a.getUUID())) mine = true;
+                    if (!mine || !actor.getMustChoose() || actor.getRequest() == null || !actor.getResponses().isEmpty()) continue;
+                    String target = null;
+                    for (var o : battle.getActors()) if (o != actor && !o.getActivePokemon().isEmpty()) target = o.getActivePokemon().get(0).getPNX();
+                    actor.setActionResponses(List.of(new com.cobblemon.mod.common.battles.MoveActionResponse("psychic", target, null)));
+                }
+                return;
+            }
+            if (battle != null) battle.stop();
+            driver[0].cancel();
+            // fin du combat : butin remis (argent du palier, Super Balls), Boss retire
+            Scheduler.later(60, () -> safe("combat_boss_fin", () -> {
+                long gained = Economy.balance(a.getUUID()) - money;
+                int balls = count(a, net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.parse("cobblemon:great_ball")));
+                check("boss_combat_victoire_detectee", Bosses.victoriesHandled == handled + 1, (System.currentTimeMillis() - start) / 1000 + " s");
+                check("boss_combat_butin_remis", gained >= 500 && balls >= 3, gained + " ₽, " + balls + " Super Balls");
+                check("boss_combat_boss_retire", boss.isRemoved(), null);
+                finish();
+            }));
+        });
     }
 
     private static void megaPhase() {

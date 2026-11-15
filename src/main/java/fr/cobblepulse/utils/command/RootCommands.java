@@ -17,6 +17,7 @@ import fr.cobblepulse.utils.core.TextUtil;
 import fr.cobblepulse.utils.hub.Hub;
 import fr.cobblepulse.utils.staff.StaffPanel;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.commands.SharedSuggestionProvider;
 
 import java.util.ArrayList;
@@ -81,17 +82,40 @@ public final class RootCommands {
                     Msg.send(ctx.getSource(), Cfg.boss.naturalSpawn ? "boss.toggle_on" : "boss.toggle_off");
                     return 1;
                 }))
+                // tests staff : un Boss d'un palier (espece et forme au choix), un de chaque palier, ou un combat immediat
                 .then(Cmd.lit("spawn").requires(Perms.adminReq("boss.spawn"))
-                        .then(argument("palier", StringArgumentType.word()).suggests((c, b) -> SharedSuggestionProvider.suggest(BossConfig.TIER_ORDER, b))
-                                .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"), null))
-                                .then(argument("espece", StringArgumentType.word()).executes(ctx -> spawnBoss(ctx.getSource(),
-                                        StringArgumentType.getString(ctx, "palier"), StringArgumentType.getString(ctx, "espece"))))))
+                        .then(argument("palier", StringArgumentType.word()).suggests(TIERS)
+                                .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"), null, "auto", false))
+                                .then(argument("espece", StringArgumentType.word()).suggests(SPECIES)
+                                        .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"), StringArgumentType.getString(ctx, "espece"), "auto", false))
+                                        .then(argument("forme", StringArgumentType.word()).suggests(FORMS)
+                                                .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"),
+                                                        StringArgumentType.getString(ctx, "espece"), StringArgumentType.getString(ctx, "forme"), false))))))
+                .then(Cmd.lit("tous").requires(Perms.adminReq("boss.spawn")).executes(ctx -> spawnAllTiers(ctx.getSource())))
+                .then(Cmd.lit("combat").requires(Perms.adminReq("boss.spawn"))
+                        .then(argument("palier", StringArgumentType.word()).suggests(TIERS)
+                                .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"), null, "auto", true))
+                                .then(argument("espece", StringArgumentType.word()).suggests(SPECIES)
+                                        .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"), StringArgumentType.getString(ctx, "espece"), "auto", true))
+                                        .then(argument("forme", StringArgumentType.word()).suggests(FORMS)
+                                                .executes(ctx -> spawnBoss(ctx.getSource(), StringArgumentType.getString(ctx, "palier"),
+                                                        StringArgumentType.getString(ctx, "espece"), StringArgumentType.getString(ctx, "forme"), true))))))
                 .then(Cmd.lit("clear").requires(Perms.adminReq("boss.clear")).executes(ctx -> {
                     int n = Bosses.clearAll();
                     Msg.send(ctx.getSource(), "boss.cleared", "count", n);
                     return n;
                 }))
                 .then(Cmd.lit("editor").requires(Perms.adminReq("boss")).executes(ctx -> Cmd.run(ctx, fr.cobblepulse.utils.boss.BossEditor::open))));
+        // test des annonces de spawns rares : vrai Pokemon sauvage + vraie annonce (a tous, ou au staff seul)
+        root.then(Cmd.lit("alertes").requires(Perms.adminReq("alerts"))
+                .then(Cmd.lit("test")
+                        .then(argument("categorie", StringArgumentType.word()).suggests((c, b) -> SharedSuggestionProvider.suggest(fr.cobblepulse.utils.alerts.SpawnAlerts.CATEGORIES, b))
+                                .executes(ctx -> testAlert(ctx.getSource(), StringArgumentType.getString(ctx, "categorie"), null, false))
+                                .then(argument("espece", StringArgumentType.word()).suggests(SPECIES)
+                                        .executes(ctx -> testAlert(ctx.getSource(), StringArgumentType.getString(ctx, "categorie"), StringArgumentType.getString(ctx, "espece"), false))
+                                        .then(Cmd.lit("moi").executes(ctx -> testAlert(ctx.getSource(), StringArgumentType.getString(ctx, "categorie"),
+                                                StringArgumentType.getString(ctx, "espece"), true))))
+                                .then(Cmd.lit("moi").executes(ctx -> testAlert(ctx.getSource(), StringArgumentType.getString(ctx, "categorie"), null, true))))));
         root.then(Cmd.lit("gts").then(Cmd.lit("toggle").requires(Perms.adminReq("gts.toggle")).executes(ctx -> {
             Cfg.gts.enabled = !Cfg.gts.enabled;
             Cfg.save("gts.json", Cfg.gts);
@@ -137,7 +161,23 @@ public final class RootCommands {
         return root;
     }
 
-    private static int spawnBoss(CommandSourceStack src, String tier, String species) {
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> TIERS = (c, b) ->
+            SharedSuggestionProvider.suggest(Cfg.boss.tiers.keySet(), b);
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> FORMS = (c, b) ->
+            SharedSuggestionProvider.suggest(java.util.List.of("auto", "base", "mega", "primal", "origin"), b);
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> SPECIES = (c, b) -> {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        out.add("*");
+        String rem = b.getRemaining().toLowerCase(Locale.ROOT);
+        for (var sp : com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getImplemented()) {
+            String n = sp.getResourceIdentifier().getPath();
+            if (n.startsWith(rem)) out.add(n);
+            if (out.size() > 60) break;
+        }
+        return SharedSuggestionProvider.suggest(out, b);
+    };
+
+    public static int spawnBoss(CommandSourceStack src, String tier, String species, String form, boolean fight) {
         if (!Cfg.boss.tiers.containsKey(tier)) {
             Msg.send(src, "boss.unknown_tier", "tier", tier, "tiers", String.join(", ", Cfg.boss.tiers.keySet()));
             return 0;
@@ -146,13 +186,55 @@ public final class RootCommands {
             Msg.send(src, "general.players_only");
             return 0;
         }
-        var e = Bosses.spawnAt(src.getPlayer(), tier, species);
+        String f = form == null ? "auto" : form.toLowerCase(Locale.ROOT);
+        if (!java.util.List.of("auto", "base", "mega", "primal", "origin").contains(f)) {
+            Msg.send(src, "boss.unknown_form", "form", form);
+            return 0;
+        }
+        ServerPlayer p = src.getPlayer();
+        var e = Bosses.spawnAt(p, tier, species, f, 3);
         if (e == null) {
             Msg.send(src, "boss.spawn_failed");
             return 0;
         }
-        Msg.send(src, "boss.spawned", "tier", Cfg.boss.tiers.get(tier).color + Cfg.boss.tiers.get(tier).name,
-                "pokemon", e.getPokemon().getSpecies().getTranslatedName().getString(), "level", e.getPokemon().getLevel());
+        var t = Cfg.boss.tiers.get(tier);
+        String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + e.getPokemon().getForm().getName() + ")";
+        Msg.send(src, "boss.spawned", "tier", t.color + t.name, "pokemon", e.getPokemon().getSpecies().getTranslatedName().getString() + formName,
+                "level", e.getPokemon().getLevel());
+        if (!f.equals("auto") && !f.equals("base") && formName.isEmpty()) Msg.send(src, "boss.form_unavailable", "form", f);
+        if (fight) {
+            String err = Bosses.startBattle(p, e);
+            if (err != null) Msg.send(src, err);
+        }
         return 1;
+    }
+
+    /** Un Boss de chaque palier, en arc de cercle devant le staff. */
+    public static int spawnAllTiers(CommandSourceStack src) {
+        if (!src.isPlayer()) {
+            Msg.send(src, "general.players_only");
+            return 0;
+        }
+        ServerPlayer p = src.getPlayer();
+        float yaw = p.getYRot();
+        int i = 0;
+        java.util.List<String> done = new java.util.ArrayList<>();
+        for (String tier : Cfg.boss.tiers.keySet()) {
+            p.setYRot(yaw - 60 + i * (120f / Math.max(1, Cfg.boss.tiers.size() - 1)));
+            var e = Bosses.spawnAt(p, tier, null, "auto", 6);
+            if (e != null) done.add(Cfg.boss.tiers.get(tier).color + Cfg.boss.tiers.get(tier).name);
+            i++;
+        }
+        p.setYRot(yaw);
+        Msg.send(src, "boss.spawned_all", "count", done.size(), "tiers", String.join("&7, ", done));
+        return done.size();
+    }
+
+    private static int testAlert(CommandSourceStack src, String cat, String species, boolean onlyMe) {
+        if (!src.isPlayer()) {
+            Msg.send(src, "general.players_only");
+            return 0;
+        }
+        return fr.cobblepulse.utils.alerts.SpawnAlerts.test(src.getPlayer(), cat, species, onlyMe) != null ? 1 : 0;
     }
 }

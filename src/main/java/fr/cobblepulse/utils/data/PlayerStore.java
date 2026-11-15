@@ -105,6 +105,47 @@ public final class PlayerStore {
         return out;
     }
 
+    /** Modifie les donnees d'un joueur, en ligne ou non, et les enregistre. */
+    public static void update(UUID uuid, java.util.function.Consumer<PlayerData> fn) {
+        PlayerData d = CACHE.get(uuid);
+        if (d != null) {
+            fn.accept(d);
+            save(uuid);
+            return;
+        }
+        PlayerData off = load(uuid);
+        fn.accept(off);
+        String json = Json.COMPACT.toJson(off);
+        db().async(c -> write(c, uuid, off.name, json));
+    }
+
+    /** Modifie les donnees de tous les joueurs connus (en ligne : cache ; hors ligne : base). Resultat : nombre de joueurs. */
+    public static java.util.concurrent.CompletableFuture<Integer> updateAll(java.util.function.Consumer<PlayerData> fn) {
+        java.util.Set<UUID> cached = new java.util.HashSet<>(CACHE.keySet());
+        for (UUID u : cached) {
+            fn.accept(CACHE.get(u));
+            save(u);
+        }
+        return db().txAsync(c -> {
+            int n = cached.size();
+            List<String[]> rows = new ArrayList<>();
+            try (PreparedStatement ps = c.prepareStatement("SELECT uuid, name, data FROM " + db().table("players")); ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) rows.add(new String[]{rs.getString(1), rs.getString(2), rs.getString(3)});
+            }
+            for (String[] r : rows) {
+                UUID u = UUID.fromString(r[0]);
+                if (cached.contains(u)) continue;
+                PlayerData d = r[2] == null ? new PlayerData() : Json.COMPACT.fromJson(r[2], PlayerData.class);
+                if (d == null) continue;
+                d.normalize();
+                fn.accept(d);
+                write(c, u, r[1] == null ? d.name : r[1], Json.COMPACT.toJson(d));
+                n++;
+            }
+            return n;
+        });
+    }
+
     public static void dirty(UUID uuid) {
         DIRTY.add(uuid);
     }

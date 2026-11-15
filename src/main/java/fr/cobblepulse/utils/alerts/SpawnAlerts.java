@@ -63,6 +63,8 @@ import static net.minecraft.commands.Commands.argument;
  */
 public final class SpawnAlerts {
     public static final List<String> CATEGORIES = List.of("shiny", "paradox", "ultra_beast", "legendary", "mythical");
+    /** Auto-test : texte de la derniere annonce. */
+    public static volatile String lastBroadcast = "";
 
     /** Entree d'historique (serialisee dans data/spawn_history.json). */
     public static final class Entry {
@@ -142,6 +144,67 @@ public final class SpawnAlerts {
     }
 
     public static void record(PokemonEntity entity, List<String> cats) {
+        record(entity, cats, null);
+    }
+
+    /**
+     * Test staff : un vrai Pokemon sauvage de la categorie apparait devant le joueur et l'annonce part comme pour un
+     * spawn naturel (historique, statut Capture / Disparu compris). onlyMe : annonce envoyee au staff seulement.
+     */
+    public static PokemonEntity test(ServerPlayer p, String cat, String speciesName, boolean onlyMe) {
+        if (!CATEGORIES.contains(cat)) {
+            Msg.send(p, "alerts.test_unknown", "category", cat, "categories", String.join(", ", CATEGORIES));
+            return null;
+        }
+        com.cobblemon.mod.common.pokemon.Species sp = speciesName == null || speciesName.equals("*") ? null
+                : fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve(speciesName);
+        if (sp == null) {
+            List<com.cobblemon.mod.common.pokemon.Species> pool = new ArrayList<>(com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getImplemented());
+            pool.removeIf(x -> cat.equals("shiny") ? x.getLabels().contains("legendary") || x.getLabels().contains("mythical") : !x.getLabels().contains(cat));
+            if (pool.isEmpty()) {
+                Msg.send(p, "alerts.test_no_species", "category", cat);
+                return null;
+            }
+            sp = pool.get(new java.util.Random().nextInt(pool.size()));
+        }
+        com.cobblemon.mod.common.api.pokemon.PokemonProperties pp = com.cobblemon.mod.common.api.pokemon.PokemonProperties.Companion
+                .parse("level=30 shiny=" + (cat.equals("shiny") ? "yes" : "no"));
+        pp.setSpecies(sp.getResourceIdentifier().toString());
+        Pokemon pk = pp.create();
+        net.minecraft.world.phys.Vec3 look = p.getLookAngle();
+        net.minecraft.world.phys.Vec3 pos = p.position().add(new net.minecraft.world.phys.Vec3(look.x, 0, look.z).normalize().scale(4));
+        PokemonEntity e = new PokemonEntity(p.serverLevel(), pk, com.cobblemon.mod.common.CobblemonEntities.POKEMON);
+        e.moveTo(pos.x, p.getY(), pos.z, p.getYRot() + 180, 0);
+        p.serverLevel().addFreshEntity(e);
+        List<String> cats = categories(pk);
+        if (cats.isEmpty()) {
+            // categorie desactivee dans alerts.json : on l'annonce quand meme pour le test
+            cats = new ArrayList<>(List.of(cat));
+        }
+        record(e, cats, onlyMe ? p : null);
+        Msg.send(p, "alerts.test_done", "pokemon", sp.getTranslatedName().getString(), "category", label(cats),
+                "target", onlyMe ? Msg.format("alerts.test_target_me") : Msg.format("alerts.test_target_all"));
+        return e;
+    }
+
+    /** Choix de la categorie a tester (clic : annonce a tous, clic droit : au staff seul). */
+    public static void testMenu(ServerPlayer p) {
+        Gui g = new Gui(3, Msg.format("alerts.test_title"));
+        g.fill(Gui.pane());
+        int slot = 11;
+        for (String c : CATEGORIES) {
+            AlertsConfig.Category ac = Cfg.alerts.categories.get(c);
+            if (ac == null) continue;
+            g.button(slot++, ItemBuilder.of(Reg.stack(ac.icon)).name(ac.color + ac.label).lore(Msg.format("alerts.test_cat_lore")).build(), (pl, click) -> {
+                Gui.close(pl);
+                test(pl, c, null, click.right());
+            });
+        }
+        g.button(22, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), pl -> openHistory(pl, null));
+        g.open(p);
+    }
+
+    public static void record(PokemonEntity entity, List<String> cats, ServerPlayer onlyTo) {
         Pokemon pk = entity.getPokemon();
         ServerLevel level = (ServerLevel) entity.level();
         ResourceLocation biome = level.getBiome(entity.blockPosition()).unwrapKey().map(k -> k.location()).orElse(ResourceLocation.withDefaultNamespace("plains"));
@@ -170,7 +233,7 @@ public final class SpawnAlerts {
             while (dq.size() > Cfg.alerts.historySize) dq.removeLast();
         }
         BY_ENTITY.computeIfAbsent(en.entityUuid, k -> new ArrayList<>()).add(en);
-        broadcast(pk, cats, en);
+        broadcast(pk, cats, en, onlyTo);
     }
 
     private static Component biomeName(String biome) {
@@ -188,7 +251,7 @@ public final class SpawnAlerts {
         return String.join("&7, ", parts);
     }
 
-    private static void broadcast(Pokemon pk, List<String> cats, Entry en) {
+    private static void broadcast(Pokemon pk, List<String> cats, Entry en, ServerPlayer onlyTo) {
         AlertsConfig.Category first = Cfg.alerts.categories.get(cats.get(0));
         MutableComponent name = pk.getSpecies().getTranslatedName().copy();
         String world = fr.cobblepulse.utils.teleport.Worlds.isMain(en.loc.world) ? ""
@@ -202,8 +265,9 @@ public final class SpawnAlerts {
                         "world", en.loc.shortWorld(), "coords", en.loc.coords()).replace("|", "\n"))))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/execute in " + en.loc.world + " run tp @s "
                         + (int) en.loc.x + " " + (int) en.loc.y + " " + (int) en.loc.z)));
-        for (ServerPlayer p : CobbleUtils.server().getPlayerList().getPlayers()) {
-            if (!Msg.reachable(p) || !Perms.player(p, Perms.ALERTS_RECEIVE)) continue;
+        lastBroadcast = text;
+        for (ServerPlayer p : onlyTo != null ? List.of(onlyTo) : CobbleUtils.server().getPlayerList().getPlayers()) {
+            if (!Msg.reachable(p) || onlyTo == null && !Perms.player(p, Perms.ALERTS_RECEIVE)) continue;
             p.sendSystemMessage(Perms.perkOrOp(p, Perms.ALERTS_COORDS) ? staff : normal);
             if (first.sound) p.playNotifySound(net.minecraft.sounds.SoundEvents.NOTE_BLOCK_CHIME.value(), net.minecraft.sounds.SoundSource.MASTER, 0.7f, 1.6f);
         }
@@ -326,6 +390,8 @@ public final class SpawnAlerts {
         if (entries.isEmpty()) g.set(31, ItemBuilder.of(Items.BARRIER).name(Msg.format("alerts.none")).build());
         for (int i = 45; i < 54; i++) g.set(i, Gui.pane());
         g.button(49, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);
+        if (Perms.admin(p, "alerts")) g.button(51, ItemBuilder.of(Items.BELL).name(Msg.format("alerts.test_button")).lore(Msg.format("alerts.test_button_lore")).build(),
+                SpawnAlerts::testMenu);
         g.open(p);
     }
 

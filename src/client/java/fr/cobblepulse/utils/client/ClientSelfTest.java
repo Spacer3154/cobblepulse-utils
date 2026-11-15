@@ -279,6 +279,36 @@ final class ClientSelfTest {
             check("article_pokemon_cree", menu(mc) != null && titled(mc, "Article"), screenName(mc));
             shot(mc, "live_49_article_pokemon");
         });
+        // ---------------------------------------------------------------- outils de test du staff (alerte, Boss Mega)
+        STEPS.add(mc -> {
+            if (mc.screen != null) mc.setScreen(null);
+            mc.player.setYRot(0);
+            mc.player.setXRot(10);
+            mc.player.connection.sendCommand("cp alertes test shiny pikachu moi");
+        });
+        STEPS.add(mc -> shot(mc, "live_54_alerte_test"));
+        STEPS.add(mc -> mc.player.connection.sendCommand("cp boss spawn ultime charizard mega"));
+        STEPS.add(mc -> {
+        });
+        STEPS.add(mc -> shot(mc, "live_55_boss_mega_test"));
+        STEPS.add(mc -> command(mc, "cp admin"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Boss", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("editeur_boss_tests", m != null && m.entryNames().stream().anyMatch(n -> n.contains("Test")) || m != null && m.barNames().stream().anyMatch(n -> n.contains("Test")),
+                    m == null ? screenName(mc) : String.valueOf(m.barNames()));
+            if (m != null) m.clickNamed("Ultime", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("editeur_palier_tests", m != null && m.entryNames().stream().anyMatch(n -> n.contains("combat immédiat")), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_56_boss_palier_tests");
+        });
+        STEPS.add(mc -> mc.player.connection.sendCommand("cp boss clear"));
+
         // ---------------------------------------------------------------- Mondes et dimensions
         STEPS.add(mc -> command(mc, "cp admin"));
         STEPS.add(mc -> {

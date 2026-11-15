@@ -76,6 +76,18 @@ public final class BossEditor {
         });
         g.set(4, ItemBuilder.of(Items.DRAGON_HEAD).name(Msg.format("boss.editor_info", "count", Bosses.activeCount())).build());
         g.button(27, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), StaffPanel::open);
+        if (Perms.admin(p, "boss.spawn")) {
+            g.button(34, ItemBuilder.of(Items.SPAWNER).name(Msg.format("boss.editor_test_all")).lore(Msg.format("boss.editor_test_all_lore")).build(), pl -> {
+                fr.cobblepulse.utils.gui.Gui.close(pl);
+                fr.cobblepulse.utils.command.RootCommands.spawnAllTiers(pl.createCommandSourceStack());
+            });
+        }
+        if (Perms.admin(p, "boss.clear")) {
+            g.button(35, ItemBuilder.of(Items.BARRIER).name(Msg.format("boss.editor_clear")).build(), pl -> {
+                Msg.send(pl, "boss.cleared", "count", Bosses.clearAll());
+                open(pl);
+            });
+        }
         g.open(p);
     }
 
@@ -113,6 +125,21 @@ public final class BossEditor {
             });
         }
         for (int i = 36; i < 45; i++) g.set(i, Gui.pane());
+        if (Perms.admin(p, "boss.spawn")) {
+            // tests : apparition, combat immediat, version Mega / Primo / Originelle
+            g.button(39, ItemBuilder.of(Items.SPAWNER).name(Msg.format("boss.editor_test_spawn")).lore(Msg.format("boss.editor_test_spawn_lore")).build(), pl -> {
+                fr.cobblepulse.utils.gui.Gui.close(pl);
+                fr.cobblepulse.utils.command.RootCommands.spawnBoss(pl.createCommandSourceStack(), id, null, "auto", false);
+            });
+            g.button(40, ItemBuilder.of(Items.IRON_SWORD).name(Msg.format("boss.editor_test_fight")).lore(Msg.format("boss.editor_test_fight_lore")).hideExtra().build(), pl -> {
+                fr.cobblepulse.utils.gui.Gui.close(pl);
+                fr.cobblepulse.utils.command.RootCommands.spawnBoss(pl.createCommandSourceStack(), id, null, "auto", true);
+            });
+            g.button(41, ItemBuilder.of(Items.AMETHYST_SHARD).name(Msg.format("boss.editor_test_mega")).lore(Msg.format("boss.editor_test_mega_lore")).build(), pl -> {
+                fr.cobblepulse.utils.gui.Gui.close(pl);
+                fr.cobblepulse.utils.command.RootCommands.spawnBoss(pl.createCommandSourceStack(), id, null, "mega", false);
+            });
+        }
         g.button(45, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), BossEditor::open);
         g.button(46, ItemBuilder.of(Items.CHEST).name(Msg.format("dex.edit_add_item")).build(), pl -> {
             ItemStack hand = pl.getMainHandItem();

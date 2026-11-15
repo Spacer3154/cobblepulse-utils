@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblepulse_utils",
+  "version": "${version}",
+  "name": "CobblePulse Utils",
+  "description": "Mod central de CobblePulse : Hub, Wiki Cobblemon, warps/homes, Shop, GTS, STS, Echange Miracle, kits, enderchest evolutif, Dex Rewards, alertes de spawns rares, Boss PVE et commandes utilitaires.",
+  "authors": ["CobblePulse"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cobblepulse_utils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["fr.cobblepulse.utils.CobbleUtils"],
+    "client": ["fr.cobblepulse.utils.client.UtilsClient"]
+  },
+  "mixins": ["cobblepulse_utils.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*",
+    "fabric-language-kotlin": "*",
+    "cobblemon": ">=1.8.0"
+  },
+  "recommends": {
+    "luckperms": "*",
+    "cobbledollars": "*"
+  }
+}

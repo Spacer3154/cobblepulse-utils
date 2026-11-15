@@ -1,0 +1,95 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: cputils
+          MYSQL_DATABASE: cobblepulse_utils
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pcputils"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Discover versions & optional mods
+        run: |
+          mkdir -p out
+          python3 ci/discover.py out/discover > out/discover.log 2>&1 || true
+
+      - name: Export compile classpath (branche ci-deps)
+        if: hashFiles('ci/DEPS') != ''
+        run: |
+          ./gradlew exportDeps --no-daemon > out/deps.log 2>&1 || true
+          if [ -d build/deps ]; then
+            cp out/discover/jars/*.jar build/deps/ 2>/dev/null || true
+            python3 ci/slim_jars.py build/deps > out/deps-list.txt 2>&1 || true
+            cd build/deps
+            git init -q -b ci-deps
+            git config user.name "utils-ci"
+            git config user.email "ci@users.noreply.github.com"
+            git add -A
+            git commit -qm "Compile classpath ${GITHUB_SHA}"
+            git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" ci-deps >> ../../out/deps.log 2>&1 || echo "push ci-deps en echec" >> ../../out/deps.log
+          fi
+
+      - name: Build
+        id: build
+        run: |
+          mkdir -p out
+          set +e
+          ./gradlew build --stacktrace --no-daemon > out/build.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          grep -E "error:|warning: \[removal\]|FAILURE|What went wrong" -A3 out/build.log > out/build-errors.txt || true
+          cp build/libs/*.jar out/ 2>/dev/null || true
+          exit 0
+
+      - name: Server tests (SQLite, MySQL, redemarrage)
+        if: steps.build.outputs.status == '0' && hashFiles('ci/smoke.py') != '' && hashFiles('ci/QUICK') == ''
+        timeout-minutes: 60
+        env:
+          CPU_MYSQL: '1'
+        run: python3 ci/smoke.py out || true
+
+      - name: Client screenshots
+        if: steps.build.outputs.status == '0' && hashFiles('ci/client.py') != '' && hashFiles('ci/QUICK') == ''
+        timeout-minutes: 30
+        run: python3 ci/client.py out || true
+
+      - name: Publish CI outputs to branch ci-output
+        if: always()
+        run: |
+          cd out
+          echo "sha=${GITHUB_SHA} build=${{ steps.build.outputs.status }} run=${GITHUB_RUN_ID}" > STATUS
+          git init -q -b ci-output
+          git config user.name "utils-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git add -A
+          git commit -qm "CI output ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" ci-output

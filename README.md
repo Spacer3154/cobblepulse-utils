@@ -129,12 +129,23 @@ ciel, blocs, structures. L'onglet Boss montre les tables de récompenses.
 **Alertes** : chromatiques, paradoxes, Ultra-Chimères, légendaires et fabuleux. L'annonce donne le biome traduit et le
 joueur le plus proche ; le staff voit les coordonnées au survol. L'historique garde les 10 derniers spawns par catégorie
 (Actif / Capturé par X / Disparu). Les Boss ne sont jamais annoncés.
+Pour tester (`cobblepulse.admin.alerts`, ou bouton « Tester une alerte » du radar) :
+`/cp alertes test <shiny|paradox|ultra_beast|legendary|mythical> [espèce|*] [moi]`. Un vrai Pokémon sauvage de la
+catégorie apparaît devant soi et l'annonce part exactement comme pour un spawn naturel, à tous les joueurs ou à soi seul
+avec `moi`. Il entre dans l'historique, et son statut suit la capture ou la disparition.
 
 **Boss** : un spawn naturel a 1 % de chances (réglable) d'être promu Boss, sur 6 paliers (Commun → Ultime, niveaux 25 à 140).
 Un Boss reçoit des IV parfaits, une taille augmentée, une aura et l'IA de combat forte de Cobblemon. Il est invulnérable
 aux dégâts physiques et incapturable. Le butin est éditable : objets, argent, BP de la Tour, commandes.
 Avec Mega Showdown, un Boss peut apparaître Méga / Primo / Origine. Sa Méga-Gemme, son Orbe ou son Globe tombe à 100 %
-à la première victoire du joueur, puis à 10 %. `/cp boss spawn|clear|toggle|editor`.
+à la première victoire du joueur, puis à 10 %. Le butin est remis dès que le combat est gagné (dans l'inventaire, avec un
+récapitulatif dans le chat), en plus des objets que Cobblemon fait tomber du Pokémon.
+
+Outils de test du staff (`cobblepulse.admin.boss.spawn`), aussi en boutons dans l'éditeur des Boss :
+- `/cp boss spawn <palier> [espèce|*] [auto|base|mega|primal|origin]` fait apparaître un Boss devant soi ;
+- `/cp boss combat <palier> [espèce|*] [forme]` fait apparaître un Boss et lance aussitôt le combat avec son équipe ;
+- `/cp boss tous` fait apparaître un Boss de chaque palier en arc de cercle ;
+- `/cp boss clear` retire tous les Boss, `/cp boss toggle` coupe ou rétablit les Boss naturels.
 
 **Shop** : catégories avec emblème, ouverture et fermeture (globale ou par catégorie), promotions (globale, par catégorie,
 par article). La réduction de grade `cobblepulse.shop.discount.N` s'y ajoute. Achat et vente groupés, `/sell hand [all]`.
@@ -174,7 +185,9 @@ vanilla est importé une fois. `/ec <joueur>` et `/endersee` pour le staff.
 bouge pas, ne tourne pas la caméra et n'écrit pas pendant 5 min (réglable) est AFK. Le temps déjà joué avant
 l'installation est repris de la statistique du jeu. Les paliers sont à réclamer dans le menu, ou remis automatiquement
 selon l'option choisie. Un palier peut être réservé à un grade (nœud LuckPerms). Côté staff : éditeur en jeu,
-`/ptr ajouter <joueur> <durée>` et `/ptr reinitialiser <joueur>` (`cobblepulse.admin.playtime`). `/playtime` affiche
+`/ptr ajouter <joueur> <durée>` et `/ptr reinitialiser <joueur|tous> [paliers|tout]` (`cobblepulse.admin.playtime`).
+`paliers` (par défaut) permet de réclamer à nouveau paliers et bonus en gardant le temps joué ; `tout` remet aussi le
+temps actif à zéro. Joueurs hors ligne compris. Les mêmes actions existent en boutons dans l'éditeur des paliers. `/playtime` affiche
 aussi le temps actif et le prochain palier.
 
 **Dex Rewards** : paliers en pourcentage ou en nombre d'espèces capturées, récompenses éditables en jeu.
@@ -196,7 +209,7 @@ elle est **fusionnée** : la forme sans argument est celle de CobblePulse, et le
 |---|---|
 | `cobblepulse.command.<commande>` | commandes joueurs (`menu`, `wiki`, `warp`, `home`, `gts`, `fly`…) |
 | `cobblepulse.command.gts.sell`, `.gts.sellpoke`, `.sts.sell` | sous-commandes de vente |
-| `cobblepulse.admin.<nœud>` | staff : `menu`, `reload`, `setspawn`, `warps`, `shop`, `kits`, `boss`, `boss.toggle`, `boss.spawn`, `boss.clear`, `gts`, `gts.toggle`, `sts.toggle`, `shop.toggle`, `dexrewards`, `invsee`, `endersee`, `tp`, `tphere`, `tpall`, `vanish`, `vanish.see`, `god`, `gamemode`, `speed`, `broadcast`, `sudo`, `mute`, `mute.bypass`, `sanctions`, `worlds`, `playtime` |
+| `cobblepulse.admin.<nœud>` | staff : `menu`, `reload`, `setspawn`, `warps`, `shop`, `kits`, `boss`, `boss.toggle`, `boss.spawn`, `boss.clear`, `gts`, `gts.toggle`, `sts.toggle`, `shop.toggle`, `dexrewards`, `invsee`, `endersee`, `tp`, `tphere`, `tpall`, `vanish`, `vanish.see`, `god`, `gamemode`, `speed`, `broadcast`, `sudo`, `mute`, `mute.bypass`, `sanctions`, `worlds`, `playtime`, `alerts` |
 | `cobblepulse.warp.<nom>` / `cobblepulse.warp.*` | warps privés |
 | `cobblepulse.world.<namespace>.<monde>` / `cobblepulse.world.*` | mondes réservés (menu Mondes, `/mondes`, `/spawn <monde>`) |
 | `cobblepulse.home.limit.<n>` | nombre de homes |

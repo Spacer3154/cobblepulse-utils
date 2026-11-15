@@ -128,7 +128,7 @@ run_server("sqlite-2", CHECK)
 shutil.copytree(cfg_dir, os.path.join(OUT, "server-config-sqlite"), dirs_exist_ok=True,
                 ignore=shutil.ignore_patterns("*.db", "*.db-wal", "*.db-shm"))
 
-if os.environ.get("CPU_MYSQL") == "1":
+if os.environ.get("CPU_MYSQL") == "1" and not os.path.exists("ci/SQLITE_ONLY"):
     db = os.path.join(cfg_dir, "database.json")
     txt = open(db).read()
     txt = txt.replace('"storage_type": "SQLITE"', '"storage_type": "MYSQL"').replace('"host": "localhost"', '"host": "127.0.0.1"') \

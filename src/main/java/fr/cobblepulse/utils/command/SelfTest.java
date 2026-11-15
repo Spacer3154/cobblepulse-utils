@@ -1271,17 +1271,31 @@ public final class SelfTest {
         }
         long start = System.currentTimeMillis();
         Scheduler.Task[] driver = new Scheduler.Task[1];
+        int[] ticks = {0};
+        int[] errors = {0};
         driver[0] = Scheduler.repeat(10, 10, () -> {
             var battle = com.cobblemon.mod.common.battles.BattleRegistry.getBattleByParticipatingPlayer(a);
             boolean timeout = System.currentTimeMillis() - start > 120_000;
+            ticks[0]++;
             if (battle != null && !timeout) {
                 for (var actor : battle.getActors()) {
                     boolean mine = false;
                     for (UUID u : actor.getPlayerUUIDs()) if (u.equals(a.getUUID())) mine = true;
-                    if (!mine || !actor.getMustChoose() || actor.getRequest() == null || !actor.getResponses().isEmpty()) continue;
+                    if (ticks[0] % 10 == 1) {
+                        StringBuilder d = new StringBuilder();
+                        for (var ap : actor.getActivePokemon()) d.append(ap.getPNX()).append(' ');
+                        info("combat t=" + ticks[0] + " " + actor.getType() + " doit_choisir=" + actor.getMustChoose() + " demande=" + (actor.getRequest() != null)
+                                + " reponses=" + actor.getResponses().size() + " actifs=" + d + " termine=" + battle.getEnded());
+                    }
+                    if (!mine || actor.getRequest() == null || !actor.getResponses().isEmpty()) continue;
+                    if (!actor.getMustChoose() && ticks[0] < 6) continue;
                     String target = null;
                     for (var o : battle.getActors()) if (o != actor && !o.getActivePokemon().isEmpty()) target = o.getActivePokemon().get(0).getPNX();
-                    actor.setActionResponses(List.of(new com.cobblemon.mod.common.battles.MoveActionResponse("psychic", target, null)));
+                    try {
+                        actor.setActionResponses(List.of(new com.cobblemon.mod.common.battles.MoveActionResponse("psychic", target, null)));
+                    } catch (Throwable ex) {
+                        if (errors[0]++ < 5) info("choix refuse : " + ex);
+                    }
                 }
                 return;
             }

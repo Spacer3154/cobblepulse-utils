@@ -80,7 +80,7 @@ jobs:
         run: python3 ci/smoke.py out || true
 
       - name: Live test (vrai client connecte au serveur)
-        if: steps.build.outputs.status == '0' && hashFiles('ci/live.py') != '' && hashFiles('ci/QUICK') == ''
+        if: steps.build.outputs.status == '0' && hashFiles('ci/live.py') != '' && hashFiles('ci/QUICK') == '' && hashFiles('ci/SQLITE_ONLY') == ''
         timeout-minutes: 40
         run: python3 ci/live.py out || true
 

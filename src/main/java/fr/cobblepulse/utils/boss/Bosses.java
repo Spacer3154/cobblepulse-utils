@@ -337,9 +337,36 @@ public final class Bosses {
 
     // ------------------------------------------------------------------ combats
 
+    /**
+     * Entite du Boss d'un combat. Pour un Pokemon sauvage, Cobblemon ne renseigne pas l'etat « actif » :
+     * PokemonBattleActor.getEntity() vaut toujours null. On passe donc par les donnees du Pokemon puis par l'entite suivie.
+     */
     private static PokemonEntity bossOf(PokemonBattle battle) {
         for (BattleActor a : battle.getActors()) {
-            if (a instanceof PokemonBattleActor pa && pa.getEntity() != null && isBoss(pa.getEntity())) return pa.getEntity();
+            if (!(a instanceof PokemonBattleActor pa)) continue;
+            if (pa.getEntity() != null && isBoss(pa.getEntity())) return pa.getEntity();
+            Pokemon pk = bossPokemon(a);
+            if (pk != null) {
+                PokemonEntity e = entityOf(pk);
+                if (e != null) return e;
+            }
+        }
+        return null;
+    }
+
+    private static PokemonBattleActor bossActor(PokemonBattle battle) {
+        for (BattleActor a : battle.getActors()) if (bossPokemon(a) != null) return (PokemonBattleActor) a;
+        return null;
+    }
+
+    /** Entite portant ce Pokemon (Boss suivis, puis tous les mondes). */
+    private static PokemonEntity entityOf(Pokemon pk) {
+        if (pk.getEntity() != null) return pk.getEntity();
+        for (Map.Entry<UUID, ServerLevel> en : ACTIVE.entrySet()) {
+            if (en.getValue().getEntity(en.getKey()) instanceof PokemonEntity pe && pe.getPokemon() == pk) return pe;
+        }
+        for (Map.Entry<UUID, ServerLevel> en : ACTIVE.entrySet()) {
+            if (en.getValue().getEntity(en.getKey()) instanceof PokemonEntity pe && pe.getPokemon().getUuid().equals(pk.getUuid())) return pe;
         }
         return null;
     }
@@ -359,13 +386,6 @@ public final class Bosses {
         String tierId = tierOf(boss);
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         if (t == null) return;
-        // nom court pendant le combat (« ☠ Magicarpe » a la couleur du palier) : la fenetre de combat de Cobblemon
-        // affiche deja le niveau et n'a pas la place pour le palier. Plaque complete retablie apres le combat.
-        boss.getPokemon().setNickname(Component.translatable("%s%s", Component.literal("☠ ").withStyle(TextUtil.styleOf(t.color)),
-                boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
-        BATTLE_NAMED.add(boss.getUUID());
-        FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
-                boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
         long cd = t.engageCooldownSeconds * 1000;
         List<ServerPlayer> players = new ArrayList<>();
         for (BattleActor a : battle.getActors()) {
@@ -391,11 +411,19 @@ public final class Bosses {
                 PlayerStore.dirty(p.getUUID());
             }
         }
+        FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
+                boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
+        // nom court pendant le combat (« ☠ Magicarpe » a la couleur du palier) : la fenetre de combat de Cobblemon
+        // affiche deja le niveau et n'a pas la place pour le palier. Plaque complete retablie apres le combat.
+        boss.getPokemon().setNickname(Component.translatable("%s%s", Component.literal("☠ ").withStyle(TextUtil.styleOf(t.color)),
+                boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+        BATTLE_NAMED.add(boss.getUUID());
         // IA de combat forte pour le Boss
-        for (BattleActor a : battle.getActors()) {
-            if (a instanceof PokemonBattleActor pa && pa.getEntity() == boss) setAi(pa, t.aiSkill);
-        }
-        for (ServerPlayer p : players) Msg.send(p, "boss.engaged", "tier", t.color + t.name, "pokemon", boss.getPokemon().getSpecies().getTranslatedName().getString());
+        PokemonBattleActor actor = bossActor(battle);
+        if (actor != null) setAi(actor, t.aiSkill);
+        CobbleUtils.LOG.info("[CobblePulse-Utils] Combat contre le Boss {} ({}) : {}", boss.getPokemon().getSpecies().getName(), tierId,
+                players.stream().map(x -> x.getGameProfile().getName()).toList());
+        for (ServerPlayer p : players) Msg.send(p, Msg.withComponent("boss.engaged", "pokemon", boss.getPokemon().getSpecies().getTranslatedName(), "tier", t.color + t.name));
     }
 
     private static void setAi(AIBattleActor actor, int skill) {
@@ -420,6 +448,7 @@ public final class Bosses {
             if (pk != null) {
                 lost = pk;
                 entity = ((PokemonBattleActor) a).getEntity();
+                if (entity == null) entity = entityOf(pk);
             }
         }
         if (lost == null) return;

@@ -1273,6 +1273,8 @@ public final class SelfTest {
             finish();
             return;
         }
+        String battleName = boss.getPokemon().getDisplayName(false).getString();
+        check("boss_nom_court_combat", battleName.startsWith("☠") && !battleName.contains("["), battleName);
         // Un joueur factice ne peut pas jouer les tours (le vrai combat est joue par le client du test de bout en bout).
         // On reproduit ici la fin de combat telle que Cobblemon l'emet : Boss K.O. deja retire du monde, puis victoire.
         Scheduler.later(60, () -> safe("combat_boss_victoire", () -> {

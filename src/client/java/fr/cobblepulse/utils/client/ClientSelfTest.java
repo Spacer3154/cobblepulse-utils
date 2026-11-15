@@ -351,7 +351,7 @@ final class ClientSelfTest {
                         .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
                         .filter(n -> n.contains("Commun")).findFirst().orElse("");
                 check("combat_boss_engage", MESSAGES.stream().anyMatch(x -> x.contains("Combat contre le Boss") && x.contains("Magicarpe")), String.valueOf(MESSAGES));
-                check("combat_boss_nom_fenetre", foe.contains("☠") && foe.contains("Magicarpe") && !foe.contains("Nv.") && !foe.contains("Magikarp"), foe);
+                check("combat_boss_nom_fenetre", foe.equals("Magicarpe"), foe);
             }
             shot(mc, "live_57_combat_boss");
         });

@@ -413,10 +413,9 @@ public final class Bosses {
         }
         FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
                 boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
-        // nom court pendant le combat (« ☠ Magicarpe » a la couleur du palier) : la fenetre de combat de Cobblemon
-        // affiche deja le niveau et n'a pas la place pour le palier. Plaque complete retablie apres le combat.
-        boss.getPokemon().setNickname(Component.translatable("%s%s", Component.literal("☠ ").withStyle(TextUtil.styleOf(t.color)),
-                boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+        // pendant le combat, le nom d'espece seul, a la couleur du palier : la fenetre de combat de Cobblemon affiche deja
+        // le niveau, n'a pas la place pour le palier et sa police n'a pas les symboles. Plaque complete retablie apres.
+        boss.getPokemon().setNickname(Component.translatable("%s", boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
         BATTLE_NAMED.add(boss.getUUID());
         // IA de combat forte pour le Boss
         PokemonBattleActor actor = bossActor(battle);

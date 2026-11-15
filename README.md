@@ -19,7 +19,23 @@ SQLite, MySQL et HikariCP sont inclus dans le jar.
 Recommandés : **LuckPerms** (grades, quotas, taxes), **CobbleDollars** (économie par défaut) ou **Impactor**.
 Optionnels : CobblePulse (Clans), Battletower, Crates, Battlepass (passerelles du Hub), Mega Showdown (Boss Méga / Primo).
 
-Un joueur dont le client n'a pas le mod reçoit le Hub sous forme de menu coffre. Le Wiki, lui, demande le mod côté client.
+## Menus
+
+Avec le mod côté client, **tous les menus sont des écrans CobblePulse** : Hub, Wiki, Boutique, GTS, STS, Échange Miracle,
+warps, homes, kits, Dex Rewards, radar des spawns, panneau Staff et tous les éditeurs.
+- Chaque entrée est une carte : icône, nom et deux lignes de description, avec le détail complet au survol.
+  Les actions (retour, pages, solde, créer…) sont dans la barre du bas.
+- Les listes défilent sans pagination et ont une barre de recherche (Ctrl+F) dès 13 entrées.
+- Les saisies (prix, nom de home, délai, commande…) se font dans une fenêtre par-dessus le menu, pas dans le chat.
+  Annuler revient au menu.
+- Les messages du serveur (achat réussi, fonds insuffisants…) s'affichent dans l'écran ouvert.
+- Clic gauche, clic droit, Maj + clic et clic molette gardent leur rôle. Échap ou la touche d'inventaire ferme l'écran.
+
+Restent de vrais inventaires, parce qu'on y dépose des objets : l'Enderchest, la poubelle, `/invsee` et `/endersee`,
+le contenu d'un kit dans l'éditeur, l'établi et l'enclume.
+
+Un joueur sans le mod côté client reçoit les mêmes menus sous forme de coffres, avec la saisie dans le chat.
+Le Wiki, lui, demande le mod. `general.json` → `client_screens: false` force les coffres pour tout le monde.
 
 ## Hub (touche H, `/menu`, `/cp`, `/cobblepulse`)
 
@@ -155,5 +171,8 @@ les nœuds staff demandent d'être opérateur (niveau 2, réglable), et les avan
 
 À chaque push, un vrai serveur Fabric 1.21.1 démarre avec Cobblemon 1.8.4, LuckPerms, CobbleDollars et les mods
 CobblePulse (Clans, Tour, Caisses). Les auto-tests tournent en SQLite puis en MySQL, avec un redémarrage pour vérifier
-la persistance. Un vrai client se connecte ensuite et ouvre le Hub, le Wiki (chaque onglet) et les menus. Les journaux
-et les captures sont sur la branche `ci-output`.
+la persistance. Les auto-tests vérifient aussi que chaque menu s'ouvre en écran : navigation par clic, clic périmé
+ignoré, saisie validée ou annulée, liste complète, rafraîchissement, fermeture, coffre pour un client sans le mod.
+Un vrai client se connecte ensuite et ouvre le Hub, le Wiki (chaque onglet) et tous les menus. Il navigue au clic
+(catégorie, quantité, achat), crée un home par la fenêtre de saisie et filtre une longue liste avec la recherche.
+Les journaux et les captures sont sur la branche `ci-output`.

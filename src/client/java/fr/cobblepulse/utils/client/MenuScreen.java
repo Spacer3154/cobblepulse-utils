@@ -235,6 +235,37 @@ public final class MenuScreen extends Screen {
         return Math.max(0, h - GAP - (list ? 0 : 4));
     }
 
+    private List<List<Integer>> barLines = new ArrayList<>();
+    private boolean barCompact;
+    private int noticeH;
+
+    private int barWidth(Entry e) {
+        return barCompact ? 20 : 24 + Math.min(130, font.width(e.stack.getHoverName())) + 6;
+    }
+
+    /** Barre d'actions : une ou deux lignes de boutons avec libelle, sinon icones seules. */
+    private List<List<Integer>> barLayout() {
+        for (int attempt = 0; attempt < 2; attempt++) {
+            barCompact = attempt == 1;
+            List<List<Integer>> lines = new ArrayList<>();
+            List<Integer> cur = new ArrayList<>();
+            int w = 0;
+            for (int i = 0; i < bar.size(); i++) {
+                int bw = barWidth(bar.get(i)) + 6;
+                if (!cur.isEmpty() && w + bw - 6 > aw) {
+                    lines.add(cur);
+                    cur = new ArrayList<>();
+                    w = 0;
+                }
+                cur.add(i);
+                w += bw;
+            }
+            if (!cur.isEmpty()) lines.add(cur);
+            if (lines.size() <= 2 || barCompact) return lines;
+        }
+        return new ArrayList<>();
+    }
+
     private void layout() {
         pw = Math.min(width - 24, 640);
         px = (width - pw) / 2;
@@ -243,7 +274,11 @@ public final class MenuScreen extends Screen {
         cardW = (inner - (cols - 1) * GAP) / cols;
         aw = pw - 20;
         int contentH = contentHeight(groups(visible()));
-        int barH = bar.isEmpty() ? 0 : BAR_H + 10;
+        barLines = barLayout();
+        int lines = barLines.isEmpty() ? 0 : barLines.size();
+        int barH = bar.isEmpty() ? 0 : lines * BAR_H + (lines - 1) * 4 + 10;
+        noticeH = hasNotice() ? Math.min(2, font.split(notice, aw - 16).size()) * 10 + 10 : 0;
+        barH += noticeH;
         if (list) ph = height - 16;
         else ph = Math.min(height - 16, HEADER + 8 + Math.max(contentH, 24) + 10 + barH);
         py = (height - ph) / 2;
@@ -313,40 +348,35 @@ public final class MenuScreen extends Screen {
 
         // barre d'actions
         if (!bar.isEmpty()) {
-            int by = py + ph - 8 - BAR_H;
-            List<Integer> widths = new ArrayList<>();
-            int total = 0;
-            for (Entry e : bar) {
-                int w = 24 + Math.min(130, font.width(e.stack.getHoverName())) + 6;
-                widths.add(w);
-                total += w + 6;
-            }
-            boolean compact = total - 6 > aw;
-            if (compact) total = bar.size() * 26 - 6;
-            else total -= 6;
-            int bx = px + (pw - total) / 2;
-            for (int i = 0; i < bar.size(); i++) {
-                Entry e = bar.get(i);
-                int w = compact ? 20 : widths.get(i);
-                boolean hov = Ui.in(mx, my, bx, by, w, BAR_H);
-                if (hov) hovered = e;
-                Ui.panel(g, bx, by, w, BAR_H, hov && e.click ? Ui.CARD_ON : Ui.CARD, hov ? (e.click ? Ui.ACCENT : Ui.MUTED) : Ui.BORDER);
-                g.renderItem(e.stack, bx + 2, by + 2);
-                if (!compact) drawClipped(g, e.stack.getHoverName(), bx + 22, by + 6, w - 26, Ui.TEXT);
-                boxes.add(new int[]{1, i, bx, by, w, BAR_H});
-                bx += (compact ? 26 : w + 6);
+            int by = py + ph - 8 - barLines.size() * (BAR_H + 4) + 4;
+            for (List<Integer> line : barLines) {
+                int total = -6;
+                for (int i : line) total += barWidth(bar.get(i)) + 6;
+                int bx = px + (pw - total) / 2;
+                for (int i : line) {
+                    Entry e = bar.get(i);
+                    int w = barWidth(e);
+                    boolean hov = Ui.in(mx, my, bx, by, w, BAR_H);
+                    if (hov) hovered = e;
+                    Ui.panel(g, bx, by, w, BAR_H, hov && e.click ? Ui.CARD_ON : Ui.CARD, hov ? (e.click ? Ui.ACCENT : Ui.MUTED) : Ui.BORDER);
+                    g.renderItem(e.stack, bx + 2, by + 2);
+                    if (!barCompact) drawClipped(g, e.stack.getHoverName(), bx + 22, by + 6, w - 26, Ui.TEXT);
+                    boxes.add(new int[]{1, i, bx, by, w, BAR_H});
+                    bx += w + 6;
+                }
+                by += BAR_H + 4;
             }
         }
 
         super.render(g, mx, my, pt);
 
         // message du serveur (achat reussi, erreur...) : les menus couvrent le chat
-        if (notice != null && System.currentTimeMillis() < noticeUntil) {
+        if (noticeH > 0) {
             g.pose().pushPose();
             g.pose().translate(0, 0, 300);
             List<net.minecraft.util.FormattedCharSequence> lines = font.split(notice, aw - 16);
-            int nh = Math.min(2, lines.size()) * 10 + 8;
-            int ny = ay + ah - nh;
+            int nh = noticeH - 6;
+            int ny = ay + ah + 6;
             Ui.panel(g, ax, ny, aw, nh, 0xF0122133, Ui.ACCENT);
             for (int i = 0; i < Math.min(2, lines.size()); i++) g.drawString(font, lines.get(i), ax + 8, ny + 5 + i * 10, Ui.TEXT, false);
             g.pose().popPose();
@@ -367,8 +397,25 @@ public final class MenuScreen extends Screen {
             g.renderItem(e.stack, x + (w - 16) / 2, y + 4);
             g.renderItemDecorations(font, e.stack, x + (w - 16) / 2, y + 4);
             Component name = e.stack.getHoverName();
-            int nw = Math.min(font.width(name), w - 6);
-            drawClipped(g, name, x + (w - nw) / 2, y + 26, w - 6, Ui.TEXT);
+            List<net.minecraft.util.FormattedCharSequence> nl = font.split(name, w - 6);
+            if (nl.size() <= 1) {
+                int nw = Math.min(font.width(name), w - 6);
+                drawClipped(g, name, x + (w - nw) / 2, y + 25, w - 6, Ui.TEXT);
+            } else {
+                g.drawString(font, nl.get(0), x + (w - font.width(nl.get(0))) / 2, y + 21, Ui.TEXT, false);
+                net.minecraft.util.FormattedCharSequence second = nl.get(1);
+                if (nl.size() > 2) {
+                    // reste du nom coupe proprement
+                    StringBuilder rest = new StringBuilder();
+                    for (int k = 1; k < nl.size(); k++) nl.get(k).accept((idx, st, cp) -> {
+                        rest.appendCodePoint(cp);
+                        return true;
+                    });
+                    Component rc = Component.literal(rest.toString()).withStyle(name.getStyle());
+                    int rw = Math.min(font.width(rc), w - 6);
+                    drawClipped(g, rc, x + (w - rw) / 2, y + 30, w - 6, Ui.TEXT);
+                } else g.drawString(font, second, x + (w - font.width(second)) / 2, y + 30, Ui.TEXT, false);
+            }
             return;
         }
         g.pose().pushPose();

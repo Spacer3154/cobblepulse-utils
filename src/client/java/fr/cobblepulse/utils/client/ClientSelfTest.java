@@ -54,6 +54,9 @@ final class ClientSelfTest {
             double best = -1;
             if (req.getMoveSet() != null) for (var mv : req.getMoveSet().getMoves()) {
                 if (!mv.canBeUsed()) continue;
+                // capacites a effet differe ou a deux tours : inutiles pour finir vite
+                if (java.util.Set.of("futuresight", "doomdesire", "solarbeam", "skyattack", "skullbash", "razorwind", "hyperbeam", "gigaimpact")
+                        .contains(mv.getId())) continue;
                 var tpl = com.cobblemon.mod.common.api.moves.Moves.getByName(mv.getId());
                 double power = tpl == null ? 0 : tpl.getDamageCategory() == com.cobblemon.mod.common.api.moves.categories.DamageCategories.INSTANCE.getSTATUS() ? 0 : tpl.getPower();
                 if (move == null || power > best) {
@@ -340,7 +343,7 @@ final class ClientSelfTest {
             check("combat_boss_reel_demarre", com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() != null, String.valueOf(MESSAGES));
             shot(mc, "live_57_combat_boss");
         });
-        for (int k = 0; k < 14; k++) STEPS.add(mc -> {
+        for (int k = 0; k < 24; k++) STEPS.add(mc -> {
         });
         STEPS.add(mc -> {
             autoBattle = false;

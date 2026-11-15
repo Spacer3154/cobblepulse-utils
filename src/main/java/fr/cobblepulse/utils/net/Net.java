@@ -39,6 +39,14 @@ public final class Net {
         ServerPlayNetworking.send(p, new Payloads.Data(kind, data instanceof String s ? s : Json.COMPACT.toJson(data)));
     }
 
+    private static int num(JsonObject o, String k) {
+        try {
+            return o.has(k) ? o.get(k).getAsInt() : -1;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     private static void handle(ServerPlayer p, String action, String json) {
         JsonObject o;
         try {
@@ -52,6 +60,10 @@ public final class Net {
                 case "hub_tile" -> Hub.action(p, o.has("id") ? o.get("id").getAsString() : "");
                 case "wiki_species" -> WikiService.sendSpecies(p, o.has("species") ? o.get("species").getAsString() : "");
                 case "wiki_bosses" -> WikiService.sendBosses(p);
+                case "menu_click" -> fr.cobblepulse.utils.gui.Screens.click(p, num(o, "id"), num(o, "slot"), o.has("kind") ? o.get("kind").getAsString() : "left");
+                case "menu_close" -> fr.cobblepulse.utils.gui.Screens.closedByClient(p, num(o, "id"));
+                case "prompt_answer" -> fr.cobblepulse.utils.gui.ChatInput.answer(p, o.has("text") ? o.get("text").getAsString() : "",
+                        o.has("cancel") && o.get("cancel").getAsBoolean());
                 default -> CobbleUtils.LOG.debug("[CobblePulse-Utils] Action inconnue {}", action);
             }
         } catch (Throwable t) {

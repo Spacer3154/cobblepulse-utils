@@ -42,6 +42,15 @@ public final class Msg {
         return s;
     }
 
+    /** Comme {@link #format} mais sans prefixe (titres, fenetres de saisie). */
+    public static String formatBare(String key, Object... kv) {
+        String s = raw(key).replaceAll("%prefix(_[a-z0-9_]+)?%", "");
+        for (int i = 0; i + 1 < kv.length; i += 2) {
+            s = s.replace("%" + kv[i] + "%", String.valueOf(kv[i + 1]));
+        }
+        return s.trim();
+    }
+
     public static MutableComponent get(String key, Object... kv) {
         return TextUtil.legacy(format(key, kv));
     }

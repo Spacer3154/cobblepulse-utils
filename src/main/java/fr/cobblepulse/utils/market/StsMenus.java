@@ -51,7 +51,7 @@ public final class StsMenus {
         g.fill(Gui.pane());
         g.set(13, PokemonText.icon(pk, Msg.format("sts.icon_price", "money", Economy.format(price))));
         g.button(11, ItemBuilder.of(Items.LIME_CONCRETE).name(Msg.format("sts.confirm_sell", "money", Economy.format(price))).build(), pl -> {
-            pl.closeContainer();
+            fr.cobblepulse.utils.gui.Gui.close(pl);
             Sts.sell(pl, slot, ok -> open(pl));
         });
         g.button(15, ItemBuilder.of(Items.RED_CONCRETE).name(Msg.format("general.cancel")).build(), StsMenus::open);

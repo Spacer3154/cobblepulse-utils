@@ -57,14 +57,14 @@ public final class WarpMenus {
         gui.border();
         gui.button(1, ItemBuilder.of(Items.BEACON).name(Msg.format("warps.spawn_name")).lore(Msg.format("warps.spawn_lore")).build(),
                 pl -> {
-                    pl.closeContainer();
+                    fr.cobblepulse.utils.gui.Gui.close(pl);
                     Teleports.teleport(pl, Teleports.spawn(), Msg.format("teleport.spawn_label"), null);
                 });
         gui.button(4, ItemBuilder.of(Items.RED_BED).name(Msg.format("homes.menu_name"))
                 .lore(Msg.format("homes.menu_lore", "count", PlayerStore.get(p).homes.size(), "max", HomeLimits.limit(p))).build(), WarpMenus::homes);
         if (Perms.command(p, "rtp")) {
             gui.button(7, ItemBuilder.of(Items.GRASS_BLOCK).name(Msg.format("warps.rtp_name")).lore(Msg.format("warps.rtp_lore")).build(), pl -> {
-                pl.closeContainer();
+                fr.cobblepulse.utils.gui.Gui.close(pl);
                 pl.getServer().getCommands().performPrefixedCommand(pl.createCommandSourceStack(), "rtp");
             });
         }
@@ -97,7 +97,7 @@ public final class WarpMenus {
             Msg.send(p, "general.no_permission");
             return;
         }
-        p.closeContainer();
+        fr.cobblepulse.utils.gui.Gui.close(p);
         Teleports.teleport(p, w.loc, w.display, null);
     }
 
@@ -124,7 +124,7 @@ public final class WarpMenus {
             entries.add(new Paged.Entry(homeIcon(name, loc), (pl, click) -> {
                 if (click.right() || click.shift()) confirmDelete(pl, name);
                 else {
-                    pl.closeContainer();
+                    fr.cobblepulse.utils.gui.Gui.close(pl);
                     Teleports.teleport(pl, loc, Msg.format("homes.label", "home", name), null);
                 }
             }));

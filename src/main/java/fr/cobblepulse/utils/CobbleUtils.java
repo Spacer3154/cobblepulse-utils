@@ -150,6 +150,7 @@ public final class CobbleUtils implements ModInitializer {
             Teleports.cancel(p.getUUID());
             Tpa.clear(p.getUUID());
             ChatInput.clear(p.getUUID());
+            fr.cobblepulse.utils.gui.Screens.forget(p.getUUID());
             Vanish.onLeave(p);
             ChatFeatures.onLeave(p);
             PlayerStore.onLeave(p);

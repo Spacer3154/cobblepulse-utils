@@ -104,7 +104,7 @@ public final class GtsMenus {
         g.fill(Gui.pane());
         g.set(13, Gts.icon(l, Msg.format("gts.icon_price", "money", Economy.format(l.price())), Msg.format("gts.icon_seller", "player", l.sellerName())));
         g.button(11, ItemBuilder.of(Items.LIME_CONCRETE).name(Msg.format("gts.confirm_buy", "money", Economy.format(l.price()))).build(), pl -> {
-            pl.closeContainer();
+            fr.cobblepulse.utils.gui.Gui.close(pl);
             Gts.buy(pl, l, ok -> browse(pl, filter, page));
         });
         g.button(15, ItemBuilder.of(Items.RED_CONCRETE).name(Msg.format("general.cancel")).build(), pl -> browse(pl, filter, page));
@@ -116,7 +116,7 @@ public final class GtsMenus {
         g.fill(Gui.pane());
         g.set(13, Gts.icon(l, Msg.format("gts.icon_price", "money", Economy.format(l.price()))));
         g.button(11, ItemBuilder.of(Items.LIME_CONCRETE).name(Msg.format("gts.confirm_cancel")).build(), pl -> {
-            pl.closeContainer();
+            fr.cobblepulse.utils.gui.Gui.close(pl);
             Gts.cancel(pl, l, false, ok -> mine(pl));
         });
         g.button(15, ItemBuilder.of(Items.RED_CONCRETE).name(Msg.format("general.back")).build(), GtsMenus::mine);

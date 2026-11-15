@@ -314,7 +314,7 @@ public final class SpawnAlerts {
             if (slot >= 45) break;
             g.button(slot++, icon(e, staff), pl -> {
                 if (staff && e.loc != null) {
-                    pl.closeContainer();
+                    fr.cobblepulse.utils.gui.Gui.close(pl);
                     Teleports.perform(pl, e.loc, null, null);
                 }
             });

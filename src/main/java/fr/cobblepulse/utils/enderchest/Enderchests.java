@@ -153,7 +153,7 @@ public final class Enderchests {
             final int page = i;
             g.button(start + i, ItemBuilder.of(Items.ENDER_CHEST).count(i + 1).name(Msg.format("enderchest.selector_page", "page", i + 1))
                     .lore(Msg.format("enderchest.selector_lore", "rows", rows)).build(), pl -> {
-                pl.closeContainer();
+                fr.cobblepulse.utils.gui.Gui.close(pl);
                 fr.cobblepulse.utils.core.Scheduler.next(() -> open(pl, owner, ownerName, page));
             });
         }

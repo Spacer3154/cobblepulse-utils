@@ -21,10 +21,22 @@ public final class ChatInput {
     private ChatInput() {}
 
     public static void ask(ServerPlayer p, String promptKey, Consumer<String> handler, Runnable onCancel, Object... kv) {
-        p.closeContainer();
         PENDING.put(p.getUUID(), new Pending(handler, onCancel, System.currentTimeMillis() + 90_000));
+        if (Screens.enabled(p)) {
+            // fenetre de saisie par-dessus l'ecran : le menu reste ouvert en cas d'annulation
+            Screens.prompt(p, Msg.formatBare(promptKey, kv));
+            return;
+        }
+        p.closeContainer();
         Msg.send(p, promptKey, kv);
         Msg.send(p, "general.input_hint");
+    }
+
+    /** Reponse saisie dans la fenetre de l'ecran client. */
+    public static void answer(ServerPlayer p, String text, boolean cancel) {
+        if (!PENDING.containsKey(p.getUUID())) return;
+        if (!cancel) Screens.forget(p);
+        intercept(p, cancel ? "annuler" : text);
     }
 
     public static void ask(ServerPlayer p, String promptKey, Consumer<String> handler, Object... kv) {

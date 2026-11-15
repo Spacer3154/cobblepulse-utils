@@ -58,7 +58,7 @@ public final class WonderTradeMenus {
         g.fill(Gui.pane());
         g.set(13, PokemonText.icon(pk));
         g.button(11, ItemBuilder.of(Items.LIME_CONCRETE).name(Msg.format("wt.confirm")).lore(Msg.format("wt.confirm_lore")).build(), pl -> {
-            pl.closeContainer();
+            fr.cobblepulse.utils.gui.Gui.close(pl);
             WonderTrade.trade(pl, slot, received -> {
                 if (received == null) return;
                 Gui r = new Gui(3, Msg.format("wt.result_title"));

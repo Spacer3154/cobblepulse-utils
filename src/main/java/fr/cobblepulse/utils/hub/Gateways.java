@@ -49,7 +49,7 @@ public final class Gateways {
                 if (maintenance) b.lore(Msg.format("hub.crates_maintenance"));
                 b.lore("", Msg.format("hub.crates_click"));
                 entries.add(new Paged.Entry(b.hideExtra().build(), (pl, c) -> {
-                    pl.closeContainer();
+                    fr.cobblepulse.utils.gui.Gui.close(pl);
                     CobbleUtils.server().getCommands().performPrefixedCommand(pl.createCommandSourceStack(), "lootbox preview " + id);
                 }));
             } catch (Exception e) {

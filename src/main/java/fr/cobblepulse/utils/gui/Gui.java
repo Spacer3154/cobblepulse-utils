@@ -16,8 +16,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Menu coffre pilote par le serveur. Aucun item ne peut etre deplace, retire ou jete :
- * chaque clic est intercepte et transforme en action.
+ * Menu pilote par le serveur. Avec le mod cote client, il s'affiche comme un ecran CobblePulse (cartes, barre d'actions,
+ * recherche, saisie integree, voir {@link Screens}) ; sinon comme un coffre verrouille. Dans les deux cas, chaque clic
+ * est transforme en action cote serveur et aucun objet ne peut etre deplace.
  */
 public class Gui {
     public record Click(ClickType type, int button) {
@@ -41,9 +42,14 @@ public class Gui {
 
     final int rows;
     final Component title;
-    final SimpleContainer container;
+    SimpleContainer container;
     final Map<Integer, Handler> handlers = new HashMap<>();
     Consumer<ServerPlayer> onClose;
+    /** Liste (menus pagines) : l'ecran client affiche une grille unique avec recherche. */
+    boolean list;
+    /** Joueur dont l'ecran client affiche ce menu (rafraichi a chaque modification). */
+    ServerPlayer shownTo;
+    boolean resendQueued;
 
     public Gui(int rows, String legacyTitle) {
         this(rows, TextUtil.legacy(legacyTitle));
@@ -56,7 +62,21 @@ public class Gui {
     }
 
     public int size() {
-        return rows * 9;
+        return container.getContainerSize();
+    }
+
+    /** Agrandit le menu au-dela de 54 cases (ecran client uniquement : listes completes sans pagination). */
+    public Gui grow(int slots) {
+        if (slots <= size()) return this;
+        SimpleContainer c = new SimpleContainer(slots);
+        for (int i = 0; i < container.getContainerSize(); i++) c.setItem(i, container.getItem(i));
+        container = c;
+        return this;
+    }
+
+    public Gui list(boolean list) {
+        this.list = list;
+        return this;
     }
 
     public Gui set(int slot, ItemStack item) {
@@ -68,6 +88,7 @@ public class Gui {
         container.setItem(slot, item == null ? ItemStack.EMPTY : item);
         if (handler != null) handlers.put(slot, handler);
         else handlers.remove(slot);
+        if (shownTo != null) Screens.queueRefresh(this);
         return this;
     }
 
@@ -121,7 +142,23 @@ public class Gui {
     }
 
     public void open(ServerPlayer player) {
+        if (Screens.enabled(player)) {
+            Screens.show(player, this);
+            return;
+        }
+        Screens.forget(player);
+        if (size() > rows * 9) {
+            SimpleContainer c = new SimpleContainer(rows * 9);
+            for (int i = 0; i < rows * 9; i++) c.setItem(i, container.getItem(i));
+            container = c;
+        }
         player.openMenu(new SimpleMenuProvider((id, inv, p) -> new LockedMenu(id, inv, this), title));
+    }
+
+    /** Ferme le menu du joueur (coffre ou ecran client). */
+    public static void close(ServerPlayer player) {
+        player.closeContainer();
+        Screens.close(player);
     }
 
     /** Ouvre au tick suivant (a utiliser depuis un clic pour eviter la reentrance). */

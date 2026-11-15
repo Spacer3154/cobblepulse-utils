@@ -80,7 +80,7 @@ public final class StaffPanel {
             open(pl);
         });
         if (Perms.admin(p, "reload")) g.button(25, ItemBuilder.of(Items.REPEATER).name(Msg.format("staff.panel_reload")).build(), pl -> {
-            pl.closeContainer();
+            fr.cobblepulse.utils.gui.Gui.close(pl);
             pl.getServer().getCommands().performPrefixedCommand(pl.createCommandSourceStack(), "cp reload");
         });
         g.button(27, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);

@@ -110,6 +110,7 @@ public final class Hub {
     public static void open(ServerPlayer p) {
         List<Tile> tiles = tiles(p);
         if (Net.hasClient(p)) {
+            fr.cobblepulse.utils.gui.Screens.forget(p);
             com.google.gson.JsonObject o = new com.google.gson.JsonObject();
             o.addProperty("title", Msg.format("hub.title"));
             o.addProperty("player", p.getGameProfile().getName());
@@ -179,7 +180,7 @@ public final class Hub {
             case "@clans" -> Gateways.clans(p);
             default -> {
                 if (cmd.isBlank()) return;
-                p.closeContainer();
+                fr.cobblepulse.utils.gui.Gui.close(p);
                 CobbleUtils.server().getCommands().performPrefixedCommand(p.createCommandSourceStack(), cmd.replace("%player%", p.getGameProfile().getName()));
             }
         }

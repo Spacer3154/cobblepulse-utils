@@ -48,6 +48,100 @@ final class ClientSelfTest {
             {"wondertrade", "Échange Miracle"}, {"dex", "Pokédex"}, {"spawns", "Radar"}, {"ec", "Enderchest"},
             {"homes", "Mes Homes"}, {"cp admin", "Panneau Staff"}, {"shop pokeballs", "Poké Balls"}};
 
+    private static final java.util.List<java.util.function.Consumer<Minecraft>> STEPS = new java.util.ArrayList<>();
+
+    private static MenuScreen menu(Minecraft mc) {
+        return mc.screen instanceof MenuScreen m ? m : null;
+    }
+
+    private static boolean titled(Minecraft mc, String part) {
+        return mc.screen != null && mc.screen.getTitle().getString().contains(part);
+    }
+
+    static {
+        // chaque menu : ouverture puis verification (ecran CobblePulse ; l'Enderchest reste un vrai coffre de stockage)
+        for (int k = 0; k < MENUS.length; k++) {
+            final int i = k;
+            STEPS.add(mc -> command(mc, MENUS[i][0]));
+            STEPS.add(mc -> {
+                boolean storage = MENUS[i][0].equals("ec");
+                boolean ok = (storage ? mc.screen instanceof AbstractContainerScreen<?> : mc.screen instanceof MenuScreen) && titled(mc, MENUS[i][1]);
+                check("menu_" + MENUS[i][0].replace(' ', '_'), ok, screenName(mc));
+                shot(mc, String.format("live_%02d_%s", 10 + i, MENUS[i][0].replace(' ', '_')));
+            });
+        }
+        // navigation par clics : boutique -> categorie -> achat (fonds insuffisants : message dans l'ecran)
+        STEPS.add(mc -> command(mc, "shop"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("clic_categorie", m != null && m.clickNamed("Poké Balls", "left"), screenName(mc));
+        });
+        STEPS.add(mc -> {
+            check("ecran_categorie", menu(mc) != null && titled(mc, "Poké Balls"), screenName(mc));
+            shot(mc, "live_30_shop_categorie");
+            if (menu(mc) != null) menu(mc).clickFirst("left");
+        });
+        STEPS.add(mc -> {
+            check("ecran_achat", menu(mc) != null && titled(mc, "Achat"), screenName(mc));
+            if (menu(mc) != null) menu(mc).clickNamed("+10", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("quantite_mise_a_jour", m != null && m.entryNames().stream().anyMatch(n -> n.contains("11")), m == null ? "-" : String.valueOf(m.entryNames()));
+            if (m != null) m.clickNamed("Acheter", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("message_dans_ecran", m != null && m.hasNotice(), m == null ? "-" : m.noticeText());
+            shot(mc, "live_31_shop_achat");
+        });
+        // fenetre de saisie : nouveau home
+        STEPS.add(mc -> command(mc, "homes"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("clic_nouveau_home", m != null && m.clickNamed("Nouveau home", "left"), screenName(mc));
+        });
+        STEPS.add(mc -> {
+            boolean ok = mc.screen instanceof PromptScreen;
+            check("fenetre_saisie", ok, screenName(mc));
+            if (mc.screen instanceof PromptScreen ps) ps.setText("ecranlive");
+            shot(mc, "live_32_saisie");
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PromptScreen ps) ps.submit();
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("saisie_enregistree", m != null && titled(mc, "Mes Homes") && m.entryNames().contains("ecranlive"), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_33_homes");
+            if (m != null) m.onClose();
+        });
+        STEPS.add(mc -> check("echap_ferme", mc.screen == null, screenName(mc)));
+        // liste longue : recherche
+        STEPS.add(mc -> {
+            for (int k = 1; k <= 14; k++) mc.player.connection.sendCommand("setwarp livetest" + k);
+        });
+        STEPS.add(mc -> command(mc, "cp admin"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("clic_editeur_warps", m != null && m.clickNamed("Warps", "left"), screenName(mc));
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("liste_avec_recherche", m != null && m.hasSearch() && m.visibleCount() >= 14, m == null ? screenName(mc) : m.visibleCount() + " entrees");
+            shot(mc, "live_34_liste");
+            if (m != null) m.setQuery("livetest1");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            int n = m == null ? -1 : m.visibleCount();
+            check("recherche_filtre", n >= 1 && n <= 6, String.valueOf(n));
+            shot(mc, "live_35_recherche");
+        });
+        STEPS.add(mc -> command(mc, "gts"));
+        STEPS.add(mc -> shot(mc, "live_36_gts"));
+    }
+
     private static void tick(Minecraft mc) {
         ticks++;
         if (start < 0) {
@@ -127,19 +221,12 @@ final class ClientSelfTest {
                 }
                 default -> {
                     int base = 300;
-                    if (t >= base && (t - base) % 50 == 0) {
-                        int i = (t - base) / 50;
-                        if (i < MENUS.length) command(mc, MENUS[i][0]);
-                        else if (i == MENUS.length) {
+                    if (t >= base && (t - base) % 30 == 0) {
+                        int i = (t - base) / 30;
+                        if (i < STEPS.size()) STEPS.get(i).accept(mc);
+                        else if (i == STEPS.size()) {
                             CobbleUtils.LOG.info("[CobblePulse-Utils][livetest] LIVETEST SUMMARY: {} pass, {} fail", pass, fail);
                             mc.stop();
-                        }
-                    } else if (t >= base && (t - base) % 50 == 30) {
-                        int i = (t - base) / 50;
-                        if (i < MENUS.length) {
-                            boolean ok = mc.screen instanceof AbstractContainerScreen<?> && mc.screen.getTitle().getString().contains(MENUS[i][1]);
-                            check("menu_" + MENUS[i][0].replace(' ', '_'), ok, screenName(mc));
-                            shot(mc, String.format("live_%02d_%s", 10 + i, MENUS[i][0].replace(' ', '_')));
                         }
                     }
                 }

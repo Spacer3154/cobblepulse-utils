@@ -34,6 +34,10 @@ import fr.cobblepulse.utils.enderchest.Enderchests;
 import fr.cobblepulse.utils.essentials.ChatFeatures;
 import fr.cobblepulse.utils.essentials.EssentialsCommands;
 import fr.cobblepulse.utils.essentials.Vanish;
+import fr.cobblepulse.utils.gui.Screens;
+import fr.cobblepulse.utils.staff.StaffPanel;
+import fr.cobblepulse.utils.boss.BossEditor;
+import fr.cobblepulse.utils.shop.ShopMenus;
 import fr.cobblepulse.utils.hub.Hub;
 import fr.cobblepulse.utils.integration.Economy;
 import fr.cobblepulse.utils.integration.LuckPermsBridge;
@@ -787,8 +791,145 @@ public final class SelfTest {
             Mailbox.autoClaimMoney(b, false);
             Scheduler.later(40, () -> {
                 check("boite_reception_argent_reseau", Economy.balance(b.getUUID()) == before + 777, Economy.balance(b.getUUID()) - before);
-                finish();
+                safe("ecrans", SelfTest::screensPhase);
             });
+        }));
+    }
+
+    // ------------------------------------------------------------------ menus en ecrans client (paquets captures)
+
+    private static int menuItems(JsonObject o) {
+        return o == null || !o.has("items") ? -1 : o.getAsJsonArray("items").size();
+    }
+
+    private static String menuTitle(ServerPlayer p) {
+        JsonObject o = Screens.last(p.getUUID());
+        if (o == null || !o.has("title")) return "";
+        var c = net.minecraft.network.chat.Component.Serializer.fromJson(o.get("title").getAsString(), p.registryAccess());
+        return c == null ? "" : c.getString();
+    }
+
+    private static void screensPhase() {
+        UUID ua = a.getUUID();
+        Screens.capture(ua, true);
+        Screens.capture(staff.getUUID(), true);
+        // chaque menu du Hub s'ouvre en ecran (aucun coffre) ; certains chargent leurs donnees en base (asynchrone)
+        String[][] menus = {{"warps", "Téléportation"}, {"shop", "Boutique"}, {"sts", "STS"}, {"wondertrade", "Miracle"}, {"kits", "Kits"},
+                {"dex", "Pokédex"}, {"spawns", "Radar"}, {"gts", "GTS"}};
+        screensMenus(menus, 0, new ArrayList<>());
+    }
+
+    private static void screensMenus(String[][] menus, int i, List<String> bad) {
+        UUID ua = a.getUUID();
+        if (i > 0) {
+            String[] m = menus[i - 1];
+            JsonObject o = Screens.last(ua);
+            boolean ok = "menu".equals(Screens.lastKind(ua)) && menuTitle(a).contains(m[1]) && menuItems(o) > 0 && a.containerMenu == a.inventoryMenu;
+            if (!ok) bad.add(m[0] + "=" + menuTitle(a) + "/" + menuItems(o));
+        }
+        if (i < menus.length) {
+            Hub.action(a, menus[i][0]);
+            Scheduler.later(20, () -> safe("ecrans_menus", () -> screensMenus(menus, i + 1, bad)));
+            return;
+        }
+        StaffPanel.open(staff);
+        if (!menuTitle(staff).contains("Staff") || menuItems(Screens.last(staff.getUUID())) < 5) bad.add("staff=" + menuTitle(staff));
+        BossEditor.open(staff);
+        if (menuItems(Screens.last(staff.getUUID())) < 6) bad.add("boss_editor=" + menuItems(Screens.last(staff.getUUID())));
+        ShopMenus.editor(staff);
+        if (menuItems(Screens.last(staff.getUUID())) < 4) bad.add("shop_editor=" + menuItems(Screens.last(staff.getUUID())));
+        Kits.editor(staff);
+        if (menuItems(Screens.last(staff.getUUID())) < 3) bad.add("kits_editor=" + menuItems(Screens.last(staff.getUUID())));
+        check("ecrans_tous_les_menus", bad.isEmpty(), bad.isEmpty() ? (menus.length + 4) + " menus" : bad);
+        safe("ecrans_contenu", SelfTest::screensContent);
+    }
+
+    private static void screensContent() {
+        UUID ua = a.getUUID();
+        // pas de vitres de decoration, barre d'actions marquee, objets fideles (aller-retour reseau)
+        ShopMenus.open(a);
+        JsonObject o = Screens.last(ua);
+        boolean noPane = true;
+        boolean bar = false;
+        boolean roundTrip = true;
+        for (var el : o.getAsJsonArray("items")) {
+            JsonObject it = el.getAsJsonObject();
+            ItemStack st = Screens.decodeStack(a, it.get("i").getAsString());
+            if (st.getItem().toString().contains("glass_pane")) noPane = false;
+            if (it.has("bar")) bar = true;
+            if (st.isEmpty()) roundTrip = false;
+        }
+        check("ecran_contenu_propre", noPane && bar && roundTrip, null);
+        ItemStack poke = PokemonText.icon(mon("pikachu", 30, true));
+        ItemStack back = Screens.decodeStack(a, fr.cobblepulse.utils.gui.Screens.encodeForTest(a, poke));
+        check("ecran_objet_pokemon_fidele", ItemStack.isSameItemSameComponents(poke, back), back.getHoverName().getString());
+        // navigation : clic sur une categorie -> nouvel ecran
+        int cat = Screens.slotNamed(ua, "Poké Balls");
+        int id = Screens.sessionId(ua);
+        Screens.click(a, id, cat, "left");
+        Scheduler.later(5, () -> safe("ecrans_2", () -> {
+            check("ecran_clic_navigation", cat >= 0 && menuTitle(a).contains("Poké Balls") && Screens.sessionId(ua) != id, menuTitle(a));
+            // clic perime (ancien ecran) ignore
+            int before = Screens.sessionId(ua);
+            Screens.click(a, id, cat, "left");
+            Scheduler.later(5, () -> safe("ecrans_3", () -> {
+                check("ecran_clic_perime_ignore", Screens.sessionId(ua) == before, null);
+                screensPrompt();
+            }));
+        }));
+    }
+
+    private static void screensPrompt() {
+        UUID ua = a.getUUID();
+        WarpMenus.homes(a);
+        int set = Screens.slotNamed(ua, "Nouveau home");
+        Screens.click(a, Screens.sessionId(ua), set, "left");
+        Scheduler.later(5, () -> safe("ecrans_saisie", () -> {
+            check("ecran_fenetre_saisie", "prompt".equals(Screens.lastKind(ua)) && Screens.hasSession(ua), Screens.lastKind(ua));
+            int homes = PlayerStore.get(a).homes.size();
+            fr.cobblepulse.utils.gui.ChatInput.answer(a, "annule", true);
+            Scheduler.later(5, () -> safe("ecrans_annulation", () -> {
+                check("ecran_saisie_annulee", PlayerStore.get(a).homes.size() == homes && Screens.hasSession(ua), null);
+                Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Nouveau home"), "left");
+                Scheduler.later(5, () -> {
+                    fr.cobblepulse.utils.gui.ChatInput.answer(a, "ecran", false);
+                    Scheduler.later(5, () -> safe("ecrans_validation", () -> {
+                        boolean saved = PlayerStore.get(a).homes.containsKey("ecran");
+                        boolean listed = Screens.names(ua).stream().anyMatch(n -> n.contains("ecran"));
+                        check("ecran_saisie_validee", saved && listed && menuTitle(a).contains("Mes Homes"), Screens.names(ua));
+                        screensMisc();
+                    }));
+                });
+            }));
+        }));
+    }
+
+    private static void screensMisc() {
+        UUID ua = a.getUUID();
+        // liste longue : pas de pagination a l'ecran
+        List<fr.cobblepulse.utils.gui.Paged.Entry> many = new ArrayList<>();
+        for (int i = 0; i < 70; i++) many.add(new fr.cobblepulse.utils.gui.Paged.Entry(new ItemStack(Items.PAPER).copyWithCount(1 + i % 60), (pl, cl) -> {}));
+        fr.cobblepulse.utils.gui.Paged.open(a, "&8Liste de test", many, 0, null);
+        JsonObject o = Screens.last(ua);
+        int content = 0;
+        for (var el : o.getAsJsonArray("items")) if (!el.getAsJsonObject().has("bar")) content++;
+        check("ecran_liste_complete", content == 70 && o.get("list").getAsBoolean() && !menuTitle(a).contains("1/2"), content);
+        // modification du menu ouvert -> renvoi automatique
+        fr.cobblepulse.utils.gui.Gui g = new fr.cobblepulse.utils.gui.Gui(3, "&8Rafraichissement");
+        g.set(13, new ItemStack(Items.APPLE));
+        g.open(a);
+        int n1 = menuItems(Screens.last(ua));
+        g.set(14, new ItemStack(Items.CARROT));
+        Scheduler.later(3, () -> safe("ecrans_refresh", () -> {
+            check("ecran_rafraichi", n1 == 1 && menuItems(Screens.last(ua)) == 2, n1 + " -> " + menuItems(Screens.last(ua)));
+            fr.cobblepulse.utils.gui.Gui.close(a);
+            check("ecran_ferme_par_serveur", "menu_close".equals(Screens.lastKind(ua)) && !Screens.hasSession(ua), null);
+            Screens.capture(ua, false);
+            Screens.capture(staff.getUUID(), false);
+            // sans le mod cote client (joueur factice ordinaire) : menu coffre classique
+            ShopMenus.open(b);
+            check("coffre_pour_client_sans_mod", !Screens.enabled(b) && !Screens.hasSession(b.getUUID()), null);
+            finish();
         }));
     }
 

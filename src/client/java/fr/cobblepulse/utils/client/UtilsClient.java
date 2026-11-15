@@ -11,6 +11,8 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 /** Cote client : touche du Hub (H par defaut, configurable), ecrans Hub et Wiki. */
@@ -33,6 +35,13 @@ public final class UtilsClient implements ClientModInitializer {
             }
         });
         ClientPlayNetworking.registerGlobalReceiver(Payloads.Data.TYPE, (payload, ctx) -> ctx.client().execute(() -> receive(payload.kind(), payload.json())));
+        // les menus couvrent le chat : les messages du serveur s'affichent dans l'ecran ouvert
+        net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            if (overlay) return;
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.screen instanceof MenuScreen m) m.notice(message);
+            else if (mc.screen instanceof PromptScreen ps && ps.parent instanceof MenuScreen m) m.notice(message);
+        });
         if ("true".equals(System.getProperty("cobblepulse_utils.livetest"))) ClientSelfTest.install();
         CobbleUtils.LOG.info("[CobblePulse-Utils] Client initialise");
     }
@@ -48,6 +57,27 @@ public final class UtilsClient implements ClientModInitializer {
         }
         switch (kind) {
             case "hub" -> mc.setScreen(new HubScreen(o));
+            case "menu" -> {
+                if (mc.screen instanceof MenuScreen m) m.update(o);
+                else if (mc.screen instanceof PromptScreen ps) {
+                    if (ps.parent instanceof MenuScreen m) m.update(o);
+                    else ps.parent = new MenuScreen(o);
+                } else mc.setScreen(new MenuScreen(o));
+            }
+            case "menu_close" -> {
+                if (mc.screen instanceof MenuScreen || mc.screen instanceof PromptScreen) mc.setScreen(null);
+            }
+            case "prompt" -> {
+                Component text = Component.literal(Ui.str(o, "text", ""));
+                try {
+                    var conn = mc.getConnection();
+                    var c = conn == null ? null : Component.Serializer.fromJson(Ui.str(o, "text", ""), conn.registryAccess());
+                    if (c != null) text = c;
+                } catch (Exception ignored) {
+                }
+                Screen parent = mc.screen instanceof MenuScreen ? mc.screen : null;
+                mc.setScreen(new PromptScreen(parent, text));
+            }
             case "wiki_open" -> {
                 String sp = o.has("species") ? o.get("species").getAsString() : null;
                 if (mc.screen instanceof WikiScreen w && sp != null) {

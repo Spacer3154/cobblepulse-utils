@@ -102,6 +102,7 @@ public final class ShopMenus {
 
     private static ItemStack entryIcon(ServerPlayer p, ShopConfig.Category c, ShopConfig.Entry e) {
         ItemStack base = "item".equals(e.type) ? ShopService.stack(e) : Reg.stack(e.item.isBlank() ? ("pokemon".equals(e.type) ? "cobblemon:poke_ball" : "minecraft:paper") : e.item);
+        if ("pokemon".equals(e.type) && e.item.isBlank() && e.pokemon != null) base = pokemonIcon(e.pokemon, base);
         if (base.isEmpty()) base = new ItemStack(Items.BARRIER);
         ItemBuilder b = ItemBuilder.of(base.copyWithCount(Math.max(1, Math.min(base.getMaxStackSize(), base.getCount()))));
         if (!e.display.isBlank()) b.name(e.display);
@@ -116,6 +117,28 @@ public final class ShopMenus {
         if (e.sell >= 0 && "item".equals(e.type) && Cfg.shop.allowSell) b.lore(Msg.format("shop.price_sell", "money", Economy.format(e.sell)));
         b.lore("", Msg.format(unit >= 0 && e.sell >= 0 ? "shop.click_both" : unit >= 0 ? "shop.click_buy" : "shop.click_sell"));
         return b.glow(e.discount > 0).build();
+    }
+
+    /** Icone d'un Pokemon vendu : son sprite (forme et chromatique compris) et son nom traduit. */
+    private static ItemStack pokemonIcon(MonSpec m, ItemStack fallback) {
+        try {
+            var sp = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve(m.species);
+            if (sp == null) return fallback;
+            List<String> aspects = new ArrayList<>();
+            if (m.shiny) aspects.add("shiny");
+            if (!m.form.isBlank()) {
+                for (var f : sp.getForms()) {
+                    if (f.formOnlyShowdownId().equalsIgnoreCase(m.form.replace("-", "").replace("_", "")) || f.getName().equalsIgnoreCase(m.form)) aspects.addAll(f.getAspects());
+                }
+            }
+            ItemStack st = com.cobblemon.mod.common.item.PokemonItem.Companion.from(sp, aspects.toArray(new String[0]));
+            net.minecraft.network.chat.MutableComponent name = sp.getTranslatedName().copy().withStyle(s -> s.withItalic(false).withColor(m.shiny ? 0xFFD24A : 0xFFFFFF));
+            if (m.shiny) name.append(" ★");
+            st.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, name);
+            return st;
+        } catch (Throwable t) {
+            return fallback;
+        }
     }
 
     private static List<String> monLore(MonSpec m) {

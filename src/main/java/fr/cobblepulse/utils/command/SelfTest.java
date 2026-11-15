@@ -950,17 +950,17 @@ public final class SelfTest {
         fr.cobblepulse.utils.core.Loc ns = Worlds.spawnOf(nether);
         fr.cobblepulse.utils.core.Loc es = Worlds.spawnOf(end);
         check("mondes_spawn_calcule", ns.level() == nether && es.level() == end && Math.abs(es.x - 100.5) < 0.01, ns.coords() + " / " + es.coords());
-        // homes : regle par monde
-        Teleports.perform(a, ns, null, null);
+        // homes : regle par monde (TestStaff n'a pas encore de home)
+        Teleports.perform(staff, ns, null, null);
         var wn = Cfg.worlds.worlds.get("minecraft:the_nether");
         String oldHomes = wn.homes;
         wn.homes = "NONE";
-        boolean denied = !HomeLimits.setHome(a, "enfer");
+        boolean denied = !HomeLimits.setHome(staff, "enfer");
         wn.homes = "ALL";
-        boolean allowed = HomeLimits.setHome(a, "enfer");
+        boolean allowed = HomeLimits.setHome(staff, "enfer");
         wn.homes = oldHomes;
-        PlayerStore.get(a).homes.remove("enfer");
-        check("mondes_homes_par_monde", denied && allowed, null);
+        PlayerStore.get(staff).homes.remove("enfer");
+        check("mondes_homes_par_monde", denied && allowed, staff.level().dimension().location() + " " + PlayerStore.get(staff).homes.keySet());
         // spawn par monde : /setspawn dans le Nether ne touche pas au spawn global
         fr.cobblepulse.utils.core.Loc global = Teleports.spawn().copy();
         staff.teleportTo(nether, ns.x, ns.y, ns.z, 0, 0);

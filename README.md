@@ -65,6 +65,8 @@ config/cobblepulse/utils/
   dexrewards.json   paliers du Pokédex
   shop.json + shop/<catégorie>.json   Shop Admin (une catégorie par fichier)
   gts.json  sts.json  wondertrade.json  alerts.json  boss.json
+  worlds.json            mondes et dimensions (noms, spawns, règles par monde)
+  playtimerewards.json   récompenses de temps de jeu
   data/             base SQLite, historique des spawns
 ```
 
@@ -92,10 +94,31 @@ par leur API, sans commande intermédiaire. Les montants sont entiers.
 
 ## Modules
 
+**Mondes et dimensions** : chaque monde chargé par le serveur est ajouté automatiquement à `worlds.json`. C'est le cas
+des dimensions vanilla, de celles des mods et des mondes créés à chaud par un mod multimonde. Pour chaque monde :
+- nom et icône affichés partout (homes, warps, alertes, Wiki) ;
+- visibilité dans le menu **Mondes** (`/mondes`, bouton du menu Téléportation), éventuellement réservée par le nœud
+  `cobblepulse.world.<namespace>.<monde>` ;
+- homes autorisés pour tous, sur permission (`cobblepulse.home.multidimension`) ou interdits ;
+- `/rtp` autorisé ou non, avec son propre rayon et son propre centre ;
+- arrivées par `/tpa` autorisées ou non ;
+- Boss naturels et alertes de spawns rares activés ou non ;
+- point d'apparition propre : `/setspawn` dans ce monde (dans le monde principal, c'est aussi le spawn global).
+
+`/spawn` mène au monde principal, ou au spawn du monde actuel si l'option est activée. `/spawn <monde>` et
+`/mondes <monde>` mènent au spawn d'un monde, calculé s'il n'est pas défini (plate-forme de l'End, sol sûr dans le
+Nether). Tout se règle en jeu : panneau Staff → Mondes & dimensions.
+
 **Téléportation** : compte à rebours de 3 s, annulé si le joueur bouge. Interdit pendant un combat Pokémon.
 `/back` revient à la position avant la téléportation ou au lieu de la mort. `/rtp` cherche un endroit sûr (sol solide,
 sans liquide), dans les mondes listés. Les warps sont multi-mondes, avec un emblème et une case au choix.
 Un warp privé n'est visible qu'avec `cobblepulse.warp.<nom>`.
+
+**Méga-Évolutions** : dans le Wiki, le bouton « M » ne garde que les espèces qui ont une Méga-Évolution, signalées
+dans la liste. Les formes Méga, Primo et Originelle sont nommées comme dans les jeux (Méga-Dracaufeu X), avec la
+Méga-Gemme, l'Orbe ou l'objet requis. L'onglet Évolutions a une section Méga-Évolution (types, total des statistiques,
+objet ; clic pour afficher la forme). Avec Mega Showdown, les Méga-Gemmes sont identifiées dans son registre d'objets.
+Les Boss peuvent apparaître en Méga, Primo ou Originelle (voir Boss).
 
 **Wiki** : recherche par nom ou numéro, modèle 3D (glisser pour tourner, normal / chromatique, formes), statistiques,
 talents (dont le talent caché), évolutions avec leurs conditions, capacités (niveau, CT, œuf, tuteur).
@@ -119,15 +142,40 @@ Articles : objets (NBT complet), commandes, Pokémon personnalisés (IV, EV, nat
 chromatique, forme, Ball, Téra).
 
 **GTS / STS / Échange Miracle** : prix planchers par catégorie (objets, Pokémon, chromatiques, légendaires…).
-Les annonces expirées reviennent dans la boîte de réception. Le panneau Staff écrit directement dans LuckPerms,
+Les annonces expirées reviennent dans la boîte de réception.
+À la mise en vente, le joueur choisit la durée de l'annonce (24 h, 48 h, 3 j, 7 j, 14 j par défaut). Jusqu'à la durée
+incluse dans son grade (`cobblepulse.gts.duration.N`), il paie la taxe normale. Au-delà, chaque durée ajoute sa taxe
+(+2 %, +5 %, +10 % par défaut ; plafond `max_tax`). L'écran affiche la taxe et le montant net pour chaque durée.
+En commande : `/gts sell <prix> [durée]` et `/gts sellpoke <case> <prix> [durée]` (ex. `7j`). Le panneau Staff écrit directement dans LuckPerms,
 grade par grade, les taxes et quotas GTS/STS (`cobblepulse.gts.tax.N`, etc.). Le réservoir miracle est rempli
 automatiquement (72 Pokémon par défaut), avec filtres (niveau, chromatiques, légendaires, liste noire) et statistiques.
+Le délai avant le prochain échange s'affiche en direct dans l'écran (barre de progression), sur chaque Pokémon de
+l'équipe et sur la tuile du Hub.
+
+**Éditeur de boutique** : rien à avoir en main ni dans l'équipe.
+- *Objet* : choisi dans un sélecteur qui liste tous les objets du jeu et des mods (recherche, filtre par mod), puis la
+  quantité par lot et les prix. Le clic droit garde l'ancienne méthode : l'objet en main, avec tout son NBT.
+- *Pokémon* : un créateur permet de choisir l'espèce (fakemons compris), la forme (Méga comprises), le niveau,
+  chromatique ou non, les IV, la nature, le talent (caché compris), le genre, la Ball, l'objet tenu, le type Tera, le
+  surnom et les capacités, avec un aperçu 3D. Le clic droit copie un Pokémon de l'équipe.
+- *Commande* : le texte de la commande, puis une icône choisie dans le sélecteur, puis les prix.
+
+Les mêmes sélecteurs servent pour les icônes (catégories, mondes, paliers) et les récompenses (temps de jeu).
+Sans le mod côté client, l'identifiant ou la fiche se saisit dans le chat.
 
 **Kits** : contenu édité en jeu en déposant les objets dans un coffre. Délai, usage unique, accès libre ou
 `cobblepulse.kit.<nom>`, commandes bonus.
 
 **Enderchest** : 1 à 6 lignes et 1 à 5 pages selon le grade. Le clic sur un coffre de l'Ender l'ouvre, et le contenu
 vanilla est importé une fois. `/ec <joueur>` et `/endersee` pour le staff.
+
+**Récompenses de temps de jeu** (`/ptr`, tuile du Hub) : paliers de temps de jeu actif cumulé (1 h, 5 h, 10 h, 24 h,
+50 h, 100 h par défaut) et un bonus répétable (toutes les 60 min). Le temps passé AFK ne compte pas : un joueur qui ne
+bouge pas, ne tourne pas la caméra et n'écrit pas pendant 5 min (réglable) est AFK. Le temps déjà joué avant
+l'installation est repris de la statistique du jeu. Les paliers sont à réclamer dans le menu, ou remis automatiquement
+selon l'option choisie. Un palier peut être réservé à un grade (nœud LuckPerms). Côté staff : éditeur en jeu,
+`/ptr ajouter <joueur> <durée>` et `/ptr reinitialiser <joueur>` (`cobblepulse.admin.playtime`). `/playtime` affiche
+aussi le temps actif et le prochain palier.
 
 **Dex Rewards** : paliers en pourcentage ou en nombre d'espèces capturées, récompenses éditables en jeu.
 
@@ -148,15 +196,16 @@ elle est **fusionnée** : la forme sans argument est celle de CobblePulse, et le
 |---|---|
 | `cobblepulse.command.<commande>` | commandes joueurs (`menu`, `wiki`, `warp`, `home`, `gts`, `fly`…) |
 | `cobblepulse.command.gts.sell`, `.gts.sellpoke`, `.sts.sell` | sous-commandes de vente |
-| `cobblepulse.admin.<nœud>` | staff : `menu`, `reload`, `setspawn`, `warps`, `shop`, `kits`, `boss`, `boss.toggle`, `boss.spawn`, `boss.clear`, `gts`, `gts.toggle`, `sts.toggle`, `shop.toggle`, `dexrewards`, `invsee`, `endersee`, `tp`, `tphere`, `tpall`, `vanish`, `vanish.see`, `god`, `gamemode`, `speed`, `broadcast`, `sudo`, `mute`, `mute.bypass`, `sanctions` |
+| `cobblepulse.admin.<nœud>` | staff : `menu`, `reload`, `setspawn`, `warps`, `shop`, `kits`, `boss`, `boss.toggle`, `boss.spawn`, `boss.clear`, `gts`, `gts.toggle`, `sts.toggle`, `shop.toggle`, `dexrewards`, `invsee`, `endersee`, `tp`, `tphere`, `tpall`, `vanish`, `vanish.see`, `god`, `gamemode`, `speed`, `broadcast`, `sudo`, `mute`, `mute.bypass`, `sanctions`, `worlds`, `playtime` |
 | `cobblepulse.warp.<nom>` / `cobblepulse.warp.*` | warps privés |
+| `cobblepulse.world.<namespace>.<monde>` / `cobblepulse.world.*` | mondes réservés (menu Mondes, `/mondes`, `/spawn <monde>`) |
 | `cobblepulse.home.limit.<n>` | nombre de homes |
 | `cobblepulse.home.multidimension` | homes hors Overworld |
 | `cobblepulse.teleport.bypassdelay` / `.bypasscooldown` | pas de compte à rebours / délai |
 | `cobblepulse.back.ondeath` | `/back` vers le lieu de mort |
 | `cobblepulse.ec.rows.<1-6>` / `cobblepulse.ec.pages.<1-5>` | taille de l'Enderchest |
 | `cobblepulse.kit.<nom>` / `cobblepulse.kit.bypasscooldown` | kits |
-| `cobblepulse.gts.tax.<%>` / `.gts.limit.<n>` / `.gts.duration.<h>` | GTS par grade (la plus petite taxe et les plus grands quotas s'appliquent) |
+| `cobblepulse.gts.tax.<%>` / `.gts.limit.<n>` / `.gts.duration.<h>` | GTS par grade : taxe, annonces, durée incluse sans supplément (la plus petite taxe et les plus grands quotas s'appliquent) |
 | `cobblepulse.sts.limit.<n>` | Pokémon revendables par 24 h |
 | `cobblepulse.shop.discount.<%>` | réduction personnelle |
 | `cobblepulse.wondertrade.bypasscooldown` | Échange Miracle sans délai |

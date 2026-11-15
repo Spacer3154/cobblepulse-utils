@@ -107,9 +107,9 @@ public final class DexRewards {
             boolean claimed = d.dexClaimed.contains(t.id);
             ItemBuilder b = ItemBuilder.of(claimed ? new ItemStack(Items.LIME_STAINED_GLASS_PANE) : Reg.stack(t.icon)).name(t.name).lore(t.lore);
             b.lore(Msg.format("dex.tier_need", "need", need(t)));
+            b.lore(Msg.format(claimed ? "dex.status_claimed" : ok ? "dex.status_ready" : "dex.status_locked"));
             b.lore(Msg.format("dex.tier_rewards"));
             for (Reward r : t.rewards) b.lore("  &8• " + Rewards.describe(r) + (r.chance < 100 ? " &8(" + fmt(r.chance) + " %)" : ""));
-            b.lore("", Msg.format(claimed ? "dex.status_claimed" : ok ? "dex.status_ready" : "dex.status_locked"));
             b.glow(ok && !claimed);
             entries.add(new Paged.Entry(b.hideExtra().build(), (pl, c) -> {
                 if (claim(pl, t)) open(pl);

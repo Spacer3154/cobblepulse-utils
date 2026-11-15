@@ -304,9 +304,7 @@ final class ClientSelfTest {
             shot(mc, "live_52_mondes");
             if (m != null) m.clickNamed("Nether", "left");
         });
-        STEPS.add(mc -> {
-        });
-        STEPS.add(mc -> {
+        for (int k = 0; k < 4; k++) STEPS.add(mc -> {
         });
         STEPS.add(mc -> {
             boolean nether = mc.level != null && mc.level.dimension() == net.minecraft.world.level.Level.NETHER;

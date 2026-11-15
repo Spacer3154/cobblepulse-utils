@@ -25,7 +25,6 @@ import fr.cobblepulse.utils.hub.Hub;
 import fr.cobblepulse.utils.integration.LuckPermsBridge;
 import fr.cobblepulse.utils.staff.StaffPanel;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -224,14 +223,14 @@ public final class PlaytimeRewards {
         boolean perm = allowed(p, t);
         ItemBuilder b = ItemBuilder.of(claimed ? new ItemStack(Items.LIME_STAINED_GLASS_PANE) : Reg.stack(t.icon)).name(t.name).lore(t.lore);
         b.lore(Msg.format("playtime.tier_need", "time", minutes(t.minutes)));
-        b.lore(Msg.format("dex.tier_rewards"));
-        for (Reward r : t.rewards) b.lore("  &8• " + Rewards.describe(r) + (r.chance < 100 ? " &8(" + fmt(r.chance) + " %)" : ""));
         String status;
         if (claimed) status = Msg.format("dex.status_claimed");
         else if (!perm) status = Msg.format("playtime.status_rank");
         else if (ok) status = Msg.format("dex.status_ready");
         else status = Msg.format("playtime.status_left", "time", TimeFmt.duration((t.minutes * 60 - d.activeSeconds) * 1000L));
-        b.lore("", status);
+        b.lore(status);
+        b.lore(Msg.format("dex.tier_rewards"));
+        for (Reward r : t.rewards) b.lore("  &8• " + Rewards.describe(r) + (r.chance < 100 ? " &8(" + fmt(r.chance) + " %)" : ""));
         b.glow(ok && perm && !claimed);
         return b.hideExtra().build();
     }
@@ -252,8 +251,8 @@ public final class PlaytimeRewards {
         if (rep.enabled && !rep.rewards.isEmpty()) {
             ItemBuilder b = ItemBuilder.of(Reg.stack(rep.icon)).name(rep.name);
             b.lore(Msg.format("playtime.repeat_every", "time", minutes(rep.everyMinutes)));
+            b.lore(Msg.format("playtime.repeat_next", "time", TimeFmt.duration((rep.everyMinutes * 60 - d.repeatSeconds) * 1000L)));
             for (Reward r : rep.rewards) b.lore("  &8• " + Rewards.describe(r) + (r.chance < 100 ? " &8(" + fmt(r.chance) + " %)" : ""));
-            b.lore("", Msg.format("playtime.repeat_next", "time", TimeFmt.duration((rep.everyMinutes * 60 - d.repeatSeconds) * 1000L)));
             entries.add(new Paged.Entry(b.hideExtra().build(), null));
         }
         for (PlaytimeConfig.Tier t : cfg().tiers) {
@@ -414,12 +413,19 @@ public final class PlaytimeRewards {
 
     // ------------------------------------------------------------------ commandes
 
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> ONLINE = (ctx, b) ->
+            net.minecraft.commands.SharedSuggestionProvider.suggest(ctx.getSource().getServer().getPlayerNames(), b);
+
     public static void register(CommandDispatcher<CommandSourceStack> d) {
         Cmd.player(d, "playtimerewards", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, PlaytimeRewards::open))
                 .then(literal("reclamer").executes(ctx -> Cmd.asPlayer(ctx, PlaytimeRewards::claimAll)))
                 .then(literal("ajouter").requires(Perms.adminReq("playtime"))
-                        .then(argument("joueur", EntityArgument.player()).then(argument("duree", StringArgumentType.word()).executes(ctx -> {
-                            ServerPlayer t = EntityArgument.getPlayer(ctx, "joueur");
+                        .then(argument("joueur", StringArgumentType.word()).suggests(ONLINE).then(argument("duree", StringArgumentType.word()).executes(ctx -> {
+                            ServerPlayer t = Players.online(StringArgumentType.getString(ctx, "joueur"));
+                            if (t == null) {
+                                Msg.send(ctx.getSource(), "general.player_not_found", "player", StringArgumentType.getString(ctx, "joueur"));
+                                return 0;
+                            }
                             Long sec = ChatInput.parseDurationSeconds(StringArgumentType.getString(ctx, "duree"));
                             if (sec == null || sec <= 0) {
                                 Msg.send(ctx.getSource(), "general.bad_number");
@@ -430,8 +436,12 @@ public final class PlaytimeRewards {
                             return 1;
                         }))))
                 .then(literal("reinitialiser").requires(Perms.adminReq("playtime"))
-                        .then(argument("joueur", EntityArgument.player()).executes(ctx -> {
-                            ServerPlayer t = EntityArgument.getPlayer(ctx, "joueur");
+                        .then(argument("joueur", StringArgumentType.word()).suggests(ONLINE).executes(ctx -> {
+                            ServerPlayer t = Players.online(StringArgumentType.getString(ctx, "joueur"));
+                            if (t == null) {
+                                Msg.send(ctx.getSource(), "general.player_not_found", "player", StringArgumentType.getString(ctx, "joueur"));
+                                return 0;
+                            }
                             PlayerData pd = PlayerStore.get(t);
                             pd.playtimeClaimed.clear();
                             pd.playtimeNotified.clear();

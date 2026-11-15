@@ -68,6 +68,10 @@ public final class GtsMenus {
 
     /** Choix de la duree de l'annonce (plus longue = plus taxee), puis mise en vente. */
     public static void chooseDuration(ServerPlayer p, long price, String what, java.util.function.IntConsumer then) {
+        chooseDuration(p, price, ItemBuilder.of(Items.PAPER).name(Msg.format("gts.duration_item", "item", what)).build(), then);
+    }
+
+    public static void chooseDuration(ServerPlayer p, long price, net.minecraft.world.item.ItemStack icon, java.util.function.IntConsumer then) {
         List<Integer> choices = Gts.durationChoices(p);
         if (choices.size() <= 1) {
             then.accept(choices.isEmpty() ? Gts.durationHours(p) : choices.get(0));
@@ -75,7 +79,7 @@ public final class GtsMenus {
         }
         Gui g = new Gui(3, Msg.format("gts.duration_title", "money", Economy.format(price)));
         g.fill(Gui.pane());
-        g.set(4, ItemBuilder.of(Items.PAPER).name(Msg.format("gts.duration_item", "item", what)).lore(Msg.format("gts.duration_price", "money", Economy.format(price))).build());
+        g.set(4, ItemBuilder.of(icon.copy()).lore(Msg.format("gts.duration_price", "money", Economy.format(price))).build());
         int base = Gts.durationHours(p);
         int slot = choices.size() <= 7 ? 9 + (9 - choices.size()) / 2 : 9;
         for (int h : choices) {
@@ -84,7 +88,7 @@ public final class GtsMenus {
             int extra = tax - Gts.tax(p);
             long net = price - price * tax / 100;
             ItemBuilder b = ItemBuilder.of(h <= base ? Items.LIME_DYE : extra >= 10 ? Items.ORANGE_DYE : Items.YELLOW_DYE)
-                    .name(Msg.format("gts.duration_option", "duration", Gts.durationText(h)))
+                    .name(Msg.format("gts.duration_option", "duration", Gts.durationText(h), "tax", tax))
                     .lore(Msg.format("gts.duration_tax", "tax", tax, "extra", extra > 0 ? Msg.format("gts.duration_extra", "extra", extra) : Msg.format("gts.duration_included")),
                             Msg.format("gts.duration_net", "money", Economy.format(net)), "", Msg.format("gts.duration_click"));
             g.button(slot++, b.build(), pl -> then.accept(h));
@@ -186,8 +190,7 @@ public final class GtsMenus {
                 Msg.send(p, "gts.bad_price");
                 return;
             }
-            String what = p.getMainHandItem().getCount() + " × " + p.getMainHandItem().getHoverName().getString();
-            chooseDuration(p, v, what, h -> {
+            chooseDuration(p, v, p.getMainHandItem().copy(), h -> {
                 Gui.close(p);
                 Gts.listHand(p, v, h, ok -> {
                     if (ok) mine(p);
@@ -219,7 +222,7 @@ public final class GtsMenus {
                             Msg.send(pl, "gts.bad_price");
                             return;
                         }
-                        chooseDuration(pl, v, PokemonText.title(pk).getString(), h -> {
+                        chooseDuration(pl, v, PokemonText.icon(pk), h -> {
                             Gui.close(pl);
                             Gts.listPokemon(pl, slot, v, h, ok -> {
                                 if (ok) mine(pl);

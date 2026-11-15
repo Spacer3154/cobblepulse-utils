@@ -108,7 +108,9 @@ final class SpeciesInfo {
         }
         o.add("stats", stats);
         JsonArray abilities = new JsonArray();
+        java.util.Set<String> seenAbilities = new java.util.HashSet<>();
         for (PotentialAbility a : f.getAbilities()) {
+            if (!seenAbilities.add(a.getTemplate().getName())) continue;
             JsonObject ab = new JsonObject();
             ab.addProperty("key", a.getTemplate().getDisplayName());
             ab.addProperty("desc", a.getTemplate().getDescription());

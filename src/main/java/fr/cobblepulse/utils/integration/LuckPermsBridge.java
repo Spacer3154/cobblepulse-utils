@@ -122,6 +122,16 @@ public final class LuckPermsBridge {
         }
     }
 
+    /** Charge l'utilisateur LuckPerms (joueurs factices de l'auto-test). */
+    public static void ensureLoaded(UUID uuid, String name) {
+        if (!PRESENT) return;
+        try {
+            LuckPermsHook.ensureLoaded(uuid, name);
+        } catch (Throwable t) {
+            warn(t);
+        }
+    }
+
     public static boolean setUserNode(UUID uuid, String node, boolean value) {
         if (!PRESENT) return false;
         try {

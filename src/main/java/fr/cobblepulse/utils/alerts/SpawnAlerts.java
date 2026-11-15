@@ -224,6 +224,11 @@ public final class SpawnAlerts {
         return out;
     }
 
+    /** Auto-test : capture simulee. */
+    public static void testCapture(Pokemon pk, ServerPlayer player) {
+        onCapture(pk, player);
+    }
+
     private static void onCapture(Pokemon pk, ServerPlayer player) {
         String id = pk.getUuid().toString();
         for (Deque<Entry> dq : HISTORY.values()) {

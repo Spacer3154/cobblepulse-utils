@@ -119,7 +119,9 @@ public final class WikiService {
     public static void sendSpecies(ServerPlayer p, String speciesId) {
         Species s = SpeciesLookup.resolve(speciesId);
         if (s == null) return;
-        Net.send(p, "wiki_species", spawnData(s).toString());
+        JsonObject o = spawnData(s);
+        o.add("info", SpeciesInfo.build(s));
+        Net.send(p, "wiki_species", o.toString());
     }
 
     public static JsonObject spawnData(Species s) {

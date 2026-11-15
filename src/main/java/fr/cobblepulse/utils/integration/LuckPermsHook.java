@@ -92,10 +92,16 @@ final class LuckPermsHook {
         });
     }
 
+    static void ensureLoaded(UUID uuid, String name) {
+        LuckPermsProvider.get().getUserManager().loadUser(uuid, name).join();
+    }
+
     static void setUserNode(UUID uuid, String node, boolean value) {
-        LuckPermsProvider.get().getUserManager().modifyUser(uuid, u -> {
-            u.data().clear(n -> n.getKey().equals(node));
-            u.data().add(Node.builder(node).value(value).build());
-        });
+        var um = LuckPermsProvider.get().getUserManager();
+        User u = um.loadUser(uuid).join();
+        u.data().clear(n -> n.getKey().equals(node));
+        u.data().add(Node.builder(node).value(value).build());
+        um.saveUser(u).join();
+        u.getCachedData().invalidate();
     }
 }

@@ -77,10 +77,10 @@ jobs:
           CPU_MYSQL: '1'
         run: python3 ci/smoke.py out || true
 
-      - name: Client screenshots
-        if: steps.build.outputs.status == '0' && hashFiles('ci/client.py') != '' && hashFiles('ci/QUICK') == ''
-        timeout-minutes: 30
-        run: python3 ci/client.py out || true
+      - name: Live test (vrai client connecte au serveur)
+        if: steps.build.outputs.status == '0' && hashFiles('ci/live.py') != '' && hashFiles('ci/QUICK') == ''
+        timeout-minutes: 40
+        run: python3 ci/live.py out || true
 
       - name: Publish CI outputs to branch ci-output
         if: always()

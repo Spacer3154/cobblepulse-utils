@@ -277,6 +277,14 @@ public final class Enderchests {
         if (moved > 0) Msg.send(p, "enderchest.imported", "count", moved);
     }
 
+    /** Auto-test : depot d'un objet dans une page puis fermeture (sauvegarde). */
+    public static void testPut(UUID owner, int page, int slot, ItemStack stack) {
+        Session s = session(owner, page);
+        s.viewers++;
+        s.box.setItem(slot, stack);
+        close(s);
+    }
+
     /** Auto-test : contenu d'une page (lecture directe). */
     public static List<ItemStack> peek(UUID owner, int page) {
         Session s = SESSIONS.get(key(owner, page));

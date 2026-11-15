@@ -30,8 +30,10 @@ import java.util.function.Predicate;
  * Un noeud existant du meme nom (vanilla, Cobblemon, autre mod) est remplace et journalise.
  */
 public final class Cmd {
-    /** Noeuds remplaces sans avertissement (vanilla / Cobblemon, remplacement voulu). */
+    /** Noeuds remplaces entierement (vanilla / Cobblemon, remplacement voulu : /reply, /ignore, /list par grade, /pc permissionne). */
     private static final Set<String> EXPECTED = Set.of("msg", "tell", "w", "list", "pc");
+    /** Commandes vanilla conservees telles quelles (seuls nos alias sont ajoutes, ex. /gm). */
+    private static final Set<String> KEEP_VANILLA = Set.of("gamemode", "tp", "teleport", "kick", "ban", "pardon");
     private static final List<String> REPLACED = new ArrayList<>();
 
     private Cmd() {}
@@ -65,8 +67,21 @@ public final class Cmd {
             if (!al.isEmpty() && !labels.contains(al)) labels.add(al);
         }
         for (String label : labels) {
-            removeExisting(d, label);
-            d.register(tree.apply(label).requires(req));
+            CommandNode<CommandSourceStack> existing = d.getRoot().getChild(label);
+            if (existing == null) {
+                d.register(tree.apply(label).requires(req));
+            } else if (KEEP_VANILLA.contains(label)) {
+                CobbleUtils.LOG.debug("[CobblePulse-Utils] /{} vanilla conservee", label);
+            } else if (EXPECTED.contains(label)) {
+                removeChild(d.getRoot(), label);
+                d.register(tree.apply(label).requires(req));
+            } else {
+                // commande d'un autre mod (ex. /pokedex, /pokeheal, /pokebox de Cobblemon) : fusion,
+                // notre commande gere la forme sans argument, ses sous-commandes restent disponibles
+                REPLACED.add(label);
+                mergeInto(d, label, tree.apply(label).requires(req));
+                CobbleUtils.LOG.info("[CobblePulse-Utils] /{} existait deja : fusion (ses sous-commandes restent disponibles)", label);
+            }
         }
     }
 

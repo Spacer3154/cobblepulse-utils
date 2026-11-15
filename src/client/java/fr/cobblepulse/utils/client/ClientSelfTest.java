@@ -21,8 +21,46 @@ final class ClientSelfTest {
 
     private ClientSelfTest() {}
 
+    /** Messages recus (verification du butin des Boss). */
+    private static final List<String> MESSAGES = new java.util.concurrent.CopyOnWriteArrayList<>();
+    private static boolean autoBattle;
+    private static int battleTurns;
+
     static void install() {
         ClientTickEvents.END_CLIENT_TICK.register(ClientSelfTest::tick);
+        ClientTickEvents.END_CLIENT_TICK.register(ClientSelfTest::battleTick);
+        net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents.GAME.register((m, overlay) -> {
+            if (!overlay) MESSAGES.add(m.getString());
+        });
+    }
+
+    /** Combat reel : quand le client doit choisir, il joue la premiere capacite utilisable sur le Pokemon adverse. */
+    private static void battleTick(Minecraft mc) {
+        if (!autoBattle) return;
+        var battle = com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle();
+        if (battle == null || !battle.getMustChoose() || mc.player == null) return;
+        var me = battle.getParticipatingActor(mc.player.getUUID());
+        String target = null;
+        for (var side : battle.getSides()) {
+            for (var actor : side.getActors()) {
+                if (actor == me) continue;
+                if (!actor.getActivePokemon().isEmpty()) target = actor.getActivePokemon().get(0).getPNX();
+            }
+        }
+        List<com.cobblemon.mod.common.battles.ShowdownActionResponse> responses = new java.util.ArrayList<>();
+        for (var req : battle.getPendingActionRequests()) {
+            String move = null;
+            if (req.getMoveSet() != null) for (var mv : req.getMoveSet().getMoves()) if (mv.canBeUsed()) {
+                move = mv.getId();
+                break;
+            }
+            responses.add(move == null ? com.cobblemon.mod.common.battles.PassActionResponse.INSTANCE : new com.cobblemon.mod.common.battles.MoveActionResponse(move, target, null));
+        }
+        if (responses.isEmpty()) return;
+        battle.setMustChoose(false);
+        battleTurns++;
+        CobbleUtils.LOG.info("[CobblePulse-Utils][livetest] tour {} : {}", battleTurns, responses);
+        new com.cobblemon.mod.common.net.messages.server.battle.BattleSelectActionsPacket(battle.getBattleId(), responses).sendToServer();
     }
 
     private static void shot(Minecraft mc, String name) {
@@ -279,6 +317,34 @@ final class ClientSelfTest {
             check("article_pokemon_cree", menu(mc) != null && titled(mc, "Article"), screenName(mc));
             shot(mc, "live_49_article_pokemon");
         });
+        // ---------------------------------------------------------------- vrai combat contre un Boss : le butin doit etre remis
+        STEPS.add(mc -> {
+            if (mc.screen != null) mc.setScreen(null);
+            mc.player.connection.sendCommand("pokegive mewtwo level=100");
+        });
+        STEPS.add(mc -> {
+            MESSAGES.clear();
+            autoBattle = true;
+            mc.player.connection.sendCommand("cp boss combat commun magikarp base");
+        });
+        STEPS.add(mc -> {
+        });
+        STEPS.add(mc -> {
+            check("combat_boss_reel_demarre", com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() != null, String.valueOf(MESSAGES));
+            shot(mc, "live_57_combat_boss");
+        });
+        for (int k = 0; k < 14; k++) STEPS.add(mc -> {
+        });
+        STEPS.add(mc -> {
+            autoBattle = false;
+            boolean ended = com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() == null;
+            String loot = MESSAGES.stream().filter(x -> x.contains("vaincu")).findFirst().orElse("");
+            check("combat_boss_reel_termine", ended, battleTurns + " tour(s)");
+            check("combat_boss_reel_butin", loot.contains("Butin") && !loot.endsWith(": -"), loot.isEmpty() ? String.valueOf(MESSAGES) : loot);
+            if (mc.screen != null) mc.setScreen(null);
+            shot(mc, "live_58_butin_boss");
+        });
+
         // ---------------------------------------------------------------- outils de test du staff (alerte, Boss Mega)
         STEPS.add(mc -> {
             if (mc.screen != null) mc.setScreen(null);

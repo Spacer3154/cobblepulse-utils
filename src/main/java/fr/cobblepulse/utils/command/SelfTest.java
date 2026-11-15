@@ -1269,48 +1269,35 @@ public final class SelfTest {
             finish();
             return;
         }
-        long start = System.currentTimeMillis();
-        Scheduler.Task[] driver = new Scheduler.Task[1];
-        int[] ticks = {0};
-        int[] errors = {0};
-        driver[0] = Scheduler.repeat(10, 10, () -> {
+        // Un joueur factice ne peut pas jouer les tours (le vrai combat est joue par le client du test de bout en bout).
+        // On reproduit ici la fin de combat telle que Cobblemon l'emet : Boss K.O. deja retire du monde, puis victoire.
+        Scheduler.later(60, () -> safe("combat_boss_victoire", () -> {
             var battle = com.cobblemon.mod.common.battles.BattleRegistry.getBattleByParticipatingPlayer(a);
-            boolean timeout = System.currentTimeMillis() - start > 120_000;
-            ticks[0]++;
-            if (battle != null && !timeout) {
-                for (var actor : battle.getActors()) {
-                    boolean mine = false;
-                    for (UUID u : actor.getPlayerUUIDs()) if (u.equals(a.getUUID())) mine = true;
-                    if (ticks[0] % 10 == 1) {
-                        StringBuilder d = new StringBuilder();
-                        for (var ap : actor.getActivePokemon()) d.append(ap.getPNX()).append(' ');
-                        info("combat t=" + ticks[0] + " " + actor.getType() + " doit_choisir=" + actor.getMustChoose() + " demande=" + (actor.getRequest() != null)
-                                + " reponses=" + actor.getResponses().size() + " actifs=" + d + " termine=" + battle.getEnded());
-                    }
-                    if (!mine || actor.getRequest() == null || !actor.getResponses().isEmpty()) continue;
-                    if (!actor.getMustChoose() && ticks[0] < 6) continue;
-                    String target = null;
-                    for (var o : battle.getActors()) if (o != actor && !o.getActivePokemon().isEmpty()) target = o.getActivePokemon().get(0).getPNX();
-                    try {
-                        actor.setActionResponses(List.of(new com.cobblemon.mod.common.battles.MoveActionResponse("psychic", target, null)));
-                    } catch (Throwable ex) {
-                        if (errors[0]++ < 5) info("choix refuse : " + ex);
-                    }
-                }
+            check("boss_combat_en_cours", battle != null, null);
+            if (battle == null) {
+                finish();
                 return;
             }
-            if (battle != null) battle.stop();
-            driver[0].cancel();
-            // fin du combat : butin remis (argent du palier, Super Balls), Boss retire
+            List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> winners = new ArrayList<>();
+            List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> losers = new ArrayList<>();
+            for (var actor : battle.getActors()) {
+                if (actor instanceof com.cobblemon.mod.common.battles.actor.PlayerBattleActor) winners.add(actor);
+                else losers.add(actor);
+            }
+            boss.discard();
+            boolean entityGone = losers.stream().allMatch(x -> !(x instanceof com.cobblemon.mod.common.battles.actor.PokemonBattleActor pa) || pa.getEntity() == null);
+            info("entite du Boss apres retrait : " + (entityGone ? "plus accessible (cas qui privait de butin)" : "encore accessible"));
+            com.cobblemon.mod.common.api.events.CobblemonEvents.BATTLE_VICTORY.emit(
+                    new com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent(battle, winners, losers, false));
+            battle.stop();
             Scheduler.later(60, () -> safe("combat_boss_fin", () -> {
                 long gained = Economy.balance(a.getUUID()) - money;
                 int balls = count(a, net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.parse("cobblemon:great_ball")));
-                check("boss_combat_victoire_detectee", Bosses.victoriesHandled == handled + 1, (System.currentTimeMillis() - start) / 1000 + " s");
+                check("boss_combat_victoire_detectee", Bosses.victoriesHandled == handled + 1, null);
                 check("boss_combat_butin_remis", gained >= 500 && balls >= 3, gained + " ₽, " + balls + " Super Balls");
-                check("boss_combat_boss_retire", boss.isRemoved(), null);
                 finish();
             }));
-        });
+        }));
     }
 
     private static void megaPhase() {

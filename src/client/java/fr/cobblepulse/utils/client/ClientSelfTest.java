@@ -49,10 +49,17 @@ final class ClientSelfTest {
         }
         List<com.cobblemon.mod.common.battles.ShowdownActionResponse> responses = new java.util.ArrayList<>();
         for (var req : battle.getPendingActionRequests()) {
+            // capacite offensive la plus puissante (une capacite de statut ne ferait jamais finir le combat)
             String move = null;
-            if (req.getMoveSet() != null) for (var mv : req.getMoveSet().getMoves()) if (mv.canBeUsed()) {
-                move = mv.getId();
-                break;
+            double best = -1;
+            if (req.getMoveSet() != null) for (var mv : req.getMoveSet().getMoves()) {
+                if (!mv.canBeUsed()) continue;
+                var tpl = com.cobblemon.mod.common.api.moves.Moves.getByName(mv.getId());
+                double power = tpl == null ? 0 : tpl.getDamageCategory() == com.cobblemon.mod.common.api.moves.categories.DamageCategories.INSTANCE.getSTATUS() ? 0 : tpl.getPower();
+                if (move == null || power > best) {
+                    move = mv.getId();
+                    best = power;
+                }
             }
             responses.add(move == null ? com.cobblemon.mod.common.battles.PassActionResponse.INSTANCE : new com.cobblemon.mod.common.battles.MoveActionResponse(move, target, null));
         }

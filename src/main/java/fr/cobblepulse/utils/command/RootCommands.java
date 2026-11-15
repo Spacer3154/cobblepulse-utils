@@ -198,7 +198,7 @@ public final class RootCommands {
             return 0;
         }
         var t = Cfg.boss.tiers.get(tier);
-        String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + e.getPokemon().getForm().getName() + ")";
+        String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + fr.cobblepulse.utils.boss.Bosses.formLabel(e.getPokemon().getForm().getName()) + ")";
         src.sendSystemMessage(Msg.withComponent("boss.spawned", "pokemon", e.getPokemon().getSpecies().getTranslatedName().copy()
                 .append(fr.cobblepulse.utils.core.TextUtil.legacy(formName)), "tier", t.color + t.name, "level", e.getPokemon().getLevel()));
         if (!f.equals("auto") && !f.equals("base") && formName.isEmpty()) Msg.send(src, "boss.form_unavailable", "form", f);

@@ -368,7 +368,11 @@ final class ClientSelfTest {
         STEPS.add(mc -> mc.player.connection.sendCommand("cp boss spawn ultime charizard mega"));
         STEPS.add(mc -> {
         });
-        STEPS.add(mc -> shot(mc, "live_55_boss_mega_test"));
+        STEPS.add(mc -> {
+            String spawned = MESSAGES.stream().filter(x -> x.contains("Boss Ultime apparu")).reduce((x, y) -> y).orElse("");
+            check("boss_mega_nomme", spawned.contains("Dracaufeu (Méga-"), spawned.isEmpty() ? String.valueOf(MESSAGES) : spawned);
+            shot(mc, "live_55_boss_mega_test");
+        });
         STEPS.add(mc -> command(mc, "cp admin"));
         STEPS.add(mc -> {
             MenuScreen m = menu(mc);

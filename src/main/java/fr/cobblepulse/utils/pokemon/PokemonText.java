@@ -54,7 +54,7 @@ public final class PokemonText {
 
     public static String formName(Pokemon pk) {
         String f = pk.getForm().getName();
-        return f == null || f.equalsIgnoreCase("normal") || f.isBlank() ? "" : f;
+        return f == null || f.equalsIgnoreCase("normal") || f.isBlank() ? "" : fr.cobblepulse.utils.boss.Bosses.formLabel(f);
     }
 
     public static MutableComponent speciesName(Pokemon pk) {

@@ -274,6 +274,17 @@ public final class Bosses {
         return l.startsWith("mega") ? "mega" : l;
     }
 
+    /** Nom de forme en francais pour le chat : Mega-X → Méga-X, Primal → Primo, Origin → Originelle. */
+    public static String formLabel(String form) {
+        if (form == null) return "";
+        String f = form.replace('_', '-');
+        String low = f.toLowerCase(java.util.Locale.ROOT);
+        if (low.startsWith("mega")) return "Méga" + f.substring(4);
+        if (low.equals("primal")) return "Primo";
+        if (low.equals("origin")) return "Originelle";
+        return f;
+    }
+
     /** Objet de forme d'une espece et d'un nom de forme (Mega-Gemme, Orbe, Globe...), ou null. */
     public static String formItemFor(Species s, String formName) {
         return formItem(s.getResourceIdentifier().getPath() + ":" + formKey(formName));

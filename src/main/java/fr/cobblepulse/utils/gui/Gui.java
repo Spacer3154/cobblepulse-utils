@@ -50,6 +50,9 @@ public class Gui {
     /** Joueur dont l'ecran client affiche ce menu (rafraichi a chaque modification). */
     ServerPlayer shownTo;
     boolean resendQueued;
+    private int tickEvery;
+    private Consumer<Gui> ticker;
+    private Scheduler.Task tickTask;
 
     public Gui(int rows, String legacyTitle) {
         this(rows, TextUtil.legacy(legacyTitle));
@@ -102,6 +105,10 @@ public class Gui {
         return set(slot, item, handler);
     }
 
+    public Handler handler(int slot) {
+        return handlers.get(slot);
+    }
+
     public ItemStack get(int slot) {
         return container.getItem(slot);
     }
@@ -121,6 +128,26 @@ public class Gui {
             if ((r == 0 || r == rows - 1 || c == 0 || c == 8) && container.getItem(i).isEmpty()) container.setItem(i, pane.copy());
         }
         return this;
+    }
+
+    /** Mise a jour periodique tant que le menu est affiche (compte a rebours, progression...). */
+    public Gui every(int ticks, Consumer<Gui> update) {
+        this.tickEvery = Math.max(1, ticks);
+        this.ticker = update;
+        return this;
+    }
+
+    private void startTicker(ServerPlayer p) {
+        if (ticker == null || tickTask != null) return;
+        tickTask = Scheduler.repeat(tickEvery, tickEvery, () -> {
+            boolean visible = shownTo == p || p.containerMenu instanceof LockedMenu lm && lm.gui() == this;
+            if (!visible || p.hasDisconnected()) {
+                if (tickTask != null) tickTask.cancel();
+                tickTask = null;
+                return;
+            }
+            ticker.accept(this);
+        });
     }
 
     public Gui onClose(Consumer<ServerPlayer> c) {
@@ -144,6 +171,7 @@ public class Gui {
     public void open(ServerPlayer player) {
         if (Screens.enabled(player)) {
             Screens.show(player, this);
+            startTicker(player);
             return;
         }
         Screens.forget(player);
@@ -153,6 +181,7 @@ public class Gui {
             container = c;
         }
         player.openMenu(new SimpleMenuProvider((id, inv, p) -> new LockedMenu(id, inv, this), title));
+        startTicker(player);
     }
 
     /** Ferme le menu du joueur (coffre ou ecran client). */

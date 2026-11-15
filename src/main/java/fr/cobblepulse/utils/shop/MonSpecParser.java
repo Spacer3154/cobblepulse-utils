@@ -51,6 +51,66 @@ public final class MonSpecParser {
         return m;
     }
 
+    /** Fiche texte d'un MonSpec (inverse de {@link #parse}). */
+    public static String format(MonSpec m) {
+        if (m == null) return "";
+        StringBuilder b = new StringBuilder(m.species);
+        b.append(" niveau=").append(m.level);
+        if (m.shiny) b.append(" shiny");
+        add(b, "forme", m.form.replace(' ', '-'));
+        if (m.ivs.values().stream().anyMatch(v -> v >= 0)) {
+            b.append(" ivs=");
+            for (int i = 0; i < MonSpec.STATS.size(); i++) b.append(i > 0 ? "," : "").append(m.iv(MonSpec.STATS.get(i)) < 0 ? 0 : m.iv(MonSpec.STATS.get(i)));
+        }
+        if (m.evs.values().stream().anyMatch(v -> v > 0)) {
+            b.append(" evs=");
+            for (int i = 0; i < MonSpec.STATS.size(); i++) b.append(i > 0 ? "," : "").append(m.ev(MonSpec.STATS.get(i)));
+        }
+        add(b, "nature", m.nature);
+        add(b, "talent", m.ability);
+        add(b, "genre", m.gender);
+        add(b, "ball", m.ball);
+        add(b, "objet", m.heldItem);
+        add(b, "tera", m.teraType);
+        add(b, "surnom", m.nickname.replace(' ', '_'));
+        if (!m.moves.isEmpty()) add(b, "capacites", String.join(",", m.moves));
+        return b.toString();
+    }
+
+    private static void add(StringBuilder b, String k, String v) {
+        if (v != null && !v.isBlank()) b.append(' ').append(k).append('=').append(v.trim());
+    }
+
+    /** Copie d'un Pokemon de l'equipe (espece, forme, niveau, chromatique, IV/EV, nature, talent, capacites...). */
+    public static MonSpec of(com.cobblemon.mod.common.pokemon.Pokemon pk) {
+        MonSpec m = new MonSpec();
+        var id = pk.getSpecies().getResourceIdentifier();
+        m.species = id.getNamespace().equals("cobblemon") ? id.getPath() : id.toString();
+        m.level = pk.getLevel();
+        m.shiny = pk.getShiny();
+        if (pk.getForm() != pk.getSpecies().getStandardForm()) m.form = pk.getForm().formOnlyShowdownId();
+        m.nature = pk.getNature().getName().getPath();
+        m.ability = pk.getAbility().getName();
+        m.gender = pk.getGender().name().toLowerCase(Locale.ROOT);
+        m.ball = pk.getCaughtBall().getName().getPath();
+        if (!pk.heldItem().isEmpty()) m.heldItem = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(pk.heldItem().getItem()).toString();
+        com.cobblemon.mod.common.api.pokemon.stats.Stat[] stats = fr.cobblepulse.utils.pokemon.PokemonText.STATS;
+        for (int i = 0; i < stats.length && i < MonSpec.STATS.size(); i++) {
+            Integer iv = pk.getIvs().get(stats[i]);
+            Integer ev = pk.getEvs().get(stats[i]);
+            m.ivs.put(MonSpec.STATS.get(i), iv == null ? -1 : iv);
+            m.evs.put(MonSpec.STATS.get(i), ev == null ? 0 : ev);
+        }
+        for (var mv : pk.getMoveSet().getMoves()) m.moves.add(mv.getTemplate().getName());
+        if (pk.getNickname() != null) m.nickname = pk.getNickname().getString();
+        try {
+            m.teraType = pk.getTeraType().showdownId();
+        } catch (Throwable ignored) {
+        }
+        m.normalize();
+        return m;
+    }
+
     private static void stats(java.util.Map<String, Integer> map, String v, int max) {
         String[] parts = v.split(",");
         for (int i = 0; i < parts.length && i < MonSpec.STATS.size(); i++) {

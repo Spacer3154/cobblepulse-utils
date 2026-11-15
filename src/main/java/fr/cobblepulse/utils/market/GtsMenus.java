@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import fr.cobblepulse.utils.command.Cmd;
 import fr.cobblepulse.utils.config.Cfg;
 import fr.cobblepulse.utils.core.ItemBuilder;
@@ -34,15 +35,62 @@ public final class GtsMenus {
         Cmd.player(d, "gts", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, GtsMenus::open))
                 .then(Cmd.lit("sell").requires(src -> !src.isPlayer() || Perms.sub(src.getPlayer(), "gts", "sell"))
                         .then(argument("prix", LongArgumentType.longArg(1)).executes(ctx -> Cmd.run(ctx, p ->
-                                Gts.listHand(p, LongArgumentType.getLong(ctx, "prix"), ok -> {
-                                })))))
+                                        Gts.listHand(p, LongArgumentType.getLong(ctx, "prix"), ok -> {
+                                        })))
+                                .then(argument("duree", StringArgumentType.word()).suggests(DURATIONS).executes(ctx -> Cmd.run(ctx, p ->
+                                        Gts.listHand(p, LongArgumentType.getLong(ctx, "prix"), hours(StringArgumentType.getString(ctx, "duree")), ok -> {
+                                        }))))))
                 .then(Cmd.lit("sellpoke").requires(src -> !src.isPlayer() || Perms.sub(src.getPlayer(), "gts", "sellpoke"))
                         .then(argument("slot", IntegerArgumentType.integer(1, 6)).then(argument("prix", LongArgumentType.longArg(1))
                                 .executes(ctx -> Cmd.run(ctx, p -> Gts.listPokemon(p, IntegerArgumentType.getInteger(ctx, "slot") - 1,
                                         LongArgumentType.getLong(ctx, "prix"), ok -> {
-                                        }))))))
+                                        })))
+                                .then(argument("duree", StringArgumentType.word()).suggests(DURATIONS).executes(ctx -> Cmd.run(ctx, p ->
+                                        Gts.listPokemon(p, IntegerArgumentType.getInteger(ctx, "slot") - 1, LongArgumentType.getLong(ctx, "prix"),
+                                                hours(StringArgumentType.getString(ctx, "duree")), ok -> {
+                                                })))))))
                 .then(Cmd.lit("listings").executes(ctx -> Cmd.run(ctx, GtsMenus::mine)))
                 .then(Cmd.lit("collect").executes(ctx -> Cmd.run(ctx, GtsMenus::mailbox))));
+    }
+
+    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> DURATIONS = (ctx, b) -> {
+        ServerPlayer p = ctx.getSource().getPlayer();
+        List<String> out = new ArrayList<>();
+        if (p != null) for (int h : Gts.durationChoices(p)) out.add(h % 24 == 0 && h >= 48 ? (h / 24) + "j" : h + "h");
+        return net.minecraft.commands.SharedSuggestionProvider.suggest(out, b);
+    };
+
+    /** « 72h », « 7j », « 3d » ou un nombre d'heures. */
+    static int hours(String s) {
+        Long sec = ChatInput.parseDurationSeconds(s.matches("\\d+") ? s + "h" : s);
+        return sec == null ? -1 : (int) (sec / 3600);
+    }
+
+    /** Choix de la duree de l'annonce (plus longue = plus taxee), puis mise en vente. */
+    public static void chooseDuration(ServerPlayer p, long price, String what, java.util.function.IntConsumer then) {
+        List<Integer> choices = Gts.durationChoices(p);
+        if (choices.size() <= 1) {
+            then.accept(choices.isEmpty() ? Gts.durationHours(p) : choices.get(0));
+            return;
+        }
+        Gui g = new Gui(3, Msg.format("gts.duration_title", "money", Economy.format(price)));
+        g.fill(Gui.pane());
+        g.set(4, ItemBuilder.of(Items.PAPER).name(Msg.format("gts.duration_item", "item", what)).lore(Msg.format("gts.duration_price", "money", Economy.format(price))).build());
+        int base = Gts.durationHours(p);
+        int slot = choices.size() <= 7 ? 9 + (9 - choices.size()) / 2 : 9;
+        for (int h : choices) {
+            if (slot > 17) break;
+            int tax = Gts.taxFor(p, h);
+            int extra = tax - Gts.tax(p);
+            long net = price - price * tax / 100;
+            ItemBuilder b = ItemBuilder.of(h <= base ? Items.LIME_DYE : extra >= 10 ? Items.ORANGE_DYE : Items.YELLOW_DYE)
+                    .name(Msg.format("gts.duration_option", "duration", Gts.durationText(h)))
+                    .lore(Msg.format("gts.duration_tax", "tax", tax, "extra", extra > 0 ? Msg.format("gts.duration_extra", "extra", extra) : Msg.format("gts.duration_included")),
+                            Msg.format("gts.duration_net", "money", Economy.format(net)), "", Msg.format("gts.duration_click"));
+            g.button(slot++, b.build(), pl -> then.accept(h));
+        }
+        g.button(22, ItemBuilder.of(Items.RED_CONCRETE).name(Msg.format("general.cancel")).build(), GtsMenus::open);
+        g.open(p);
     }
 
     /** filtre : 0 tout, 1 objets, 2 Pokemon. */
@@ -138,7 +186,12 @@ public final class GtsMenus {
                 Msg.send(p, "gts.bad_price");
                 return;
             }
-            Gts.listHand(p, v, ok -> {
+            String what = p.getMainHandItem().getCount() + " × " + p.getMainHandItem().getHoverName().getString();
+            chooseDuration(p, v, what, h -> {
+                Gui.close(p);
+                Gts.listHand(p, v, h, ok -> {
+                    if (ok) mine(p);
+                });
             });
         }, "item", p.getMainHandItem().getCount() + " × " + p.getMainHandItem().getHoverName().getString());
     }
@@ -166,7 +219,11 @@ public final class GtsMenus {
                             Msg.send(pl, "gts.bad_price");
                             return;
                         }
-                        Gts.listPokemon(pl, slot, v, ok -> {
+                        chooseDuration(pl, v, PokemonText.title(pk).getString(), h -> {
+                            Gui.close(pl);
+                            Gts.listPokemon(pl, slot, v, h, ok -> {
+                                if (ok) mine(pl);
+                            });
                         });
                     }, "item", PokemonText.title(pk).getString()));
         }

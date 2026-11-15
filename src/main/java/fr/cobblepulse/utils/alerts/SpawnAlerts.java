@@ -129,6 +129,7 @@ public final class SpawnAlerts {
 
     private static void onSpawn(PokemonEntity entity) {
         if (!Cfg.alerts.enabled || entity == null) return;
+        if (entity.level() instanceof ServerLevel sl && !fr.cobblepulse.utils.teleport.Worlds.alerts(sl)) return;
         Pokemon pk = entity.getPokemon();
         if (pk == null || !pk.isWild()) return;
         List<String> cats = categories(pk);
@@ -190,14 +191,17 @@ public final class SpawnAlerts {
     private static void broadcast(Pokemon pk, List<String> cats, Entry en) {
         AlertsConfig.Category first = Cfg.alerts.categories.get(cats.get(0));
         MutableComponent name = pk.getSpecies().getTranslatedName().copy();
+        String world = fr.cobblepulse.utils.teleport.Worlds.isMain(en.loc.world) ? ""
+                : Msg.format("alerts.world_suffix", "world", fr.cobblepulse.utils.teleport.Worlds.plainName(en.loc.world));
         String text = Msg.format(en.nearest.isEmpty() ? "alerts.broadcast_nobody" : "alerts.broadcast",
-                "categories", label(cats), "player", en.nearest, "color", first.color);
+                "categories", label(cats), "player", en.nearest, "color", first.color, "world", world);
         MutableComponent base = Msg.splice(text, "pokemon", name.withStyle(TextUtil.styleOf(first.color)));
         MutableComponent normal = spliceBiome(base, en);
         MutableComponent staff = normal.copy().withStyle(s -> s
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextUtil.legacy(Msg.format("alerts.hover_coords",
                         "world", en.loc.shortWorld(), "coords", en.loc.coords()).replace("|", "\n"))))
-                .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp " + (int) en.loc.x + " " + (int) en.loc.y + " " + (int) en.loc.z)));
+                .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/execute in " + en.loc.world + " run tp @s "
+                        + (int) en.loc.x + " " + (int) en.loc.y + " " + (int) en.loc.z)));
         for (ServerPlayer p : CobbleUtils.server().getPlayerList().getPlayers()) {
             if (!Msg.reachable(p) || !Perms.player(p, Perms.ALERTS_RECEIVE)) continue;
             p.sendSystemMessage(Perms.perkOrOp(p, Perms.ALERTS_COORDS) ? staff : normal);

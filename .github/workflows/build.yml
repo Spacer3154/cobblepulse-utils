@@ -75,6 +75,8 @@ jobs:
         timeout-minutes: 60
         env:
           CPU_MYSQL: '1'
+          # Mega Showdown (Mega-Gemmes, modeles Mega) et ses dependances
+          CPU_EXTRA_MODS: 'cobblemon-mega-showdown,architectury-api,accessories,owo-lib'
         run: python3 ci/smoke.py out || true
 
       - name: Live test (vrai client connecte au serveur)

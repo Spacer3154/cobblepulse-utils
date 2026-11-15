@@ -42,6 +42,7 @@ public final class CommandsConfig {
         m.put("kit", new Entry(true, "kits"));
         m.put("enderchest", new Entry(true, "ec"));
         m.put("spawns", new Entry(true, "radar", "history"));
+        m.put("playtimerewards", new Entry(true, "ptr", "ptrewards"));
         // 4.2 Teleportation
         m.put("spawn", new Entry(true));
         m.put("sethome", new Entry(true));
@@ -53,6 +54,7 @@ public final class CommandsConfig {
         m.put("tptoggle", new Entry(true));
         m.put("back", new Entry(true, "return"));
         m.put("rtp", new Entry(true, "wild"));
+        m.put("worlds", new Entry(true, "mondes", "monde"));
         m.put("top", new Entry(false));
         m.put("jump", new Entry(false, "j"));
         // 4.3 Confort & social

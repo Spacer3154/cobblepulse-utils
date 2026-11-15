@@ -80,7 +80,13 @@ public final class CobbleUtils implements ModInitializer {
             Economy.init();
             SpawnAlerts.load();
         });
+        // mondes ajoutes par d'autres mods (y compris crees a chaud) : ajoutes a worlds.json
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents.LOAD.register((s, level) -> {
+            if (Cfg.worlds != null && fr.cobblepulse.utils.teleport.Worlds.ensure(level) && s.isRunning()) Cfg.save("worlds.json", Cfg.worlds);
+        });
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
+            fr.cobblepulse.utils.teleport.Worlds.sync(s);
+            Scheduler.repeat(20, 20, fr.cobblepulse.utils.playtime.PlaytimeRewards::tick);
             Scheduler.repeat(1200, 1200, () -> {
                 PlayerStore.flushDirty();
                 Enderchests.periodicSave();
@@ -130,6 +136,8 @@ public final class CobbleUtils implements ModInitializer {
             Sts.register(d);
             WonderTrade.register(d);
             SpawnAlerts.register(d);
+            fr.cobblepulse.utils.teleport.Worlds.register(d);
+            fr.cobblepulse.utils.playtime.PlaytimeRewards.register(d);
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
@@ -151,11 +159,15 @@ public final class CobbleUtils implements ModInitializer {
             Tpa.clear(p.getUUID());
             ChatInput.clear(p.getUUID());
             fr.cobblepulse.utils.gui.Screens.forget(p.getUUID());
+            fr.cobblepulse.utils.playtime.PlaytimeRewards.forget(p.getUUID());
             Vanish.onLeave(p);
             ChatFeatures.onLeave(p);
             PlayerStore.onLeave(p);
         });
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> ChatFeatures.allowChat(sender, message.signedContent()));
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
+            fr.cobblepulse.utils.playtime.PlaytimeRewards.active(sender);
+            return ChatFeatures.allowChat(sender, message.signedContent());
+        });
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
             if (entity instanceof ServerPlayer p && EssentialsCommands.isGod(p)) return false;
             return Bosses.allowDamage(entity, source);

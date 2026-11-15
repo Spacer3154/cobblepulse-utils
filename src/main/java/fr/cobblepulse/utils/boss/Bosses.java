@@ -143,6 +143,7 @@ public final class Bosses {
     private static void maybePromote(PokemonEntity entity) {
         BossConfig c = Cfg.boss;
         if (!c.naturalSpawn || c.promotionChance <= 0 || entity == null) return;
+        if (entity.level() instanceof ServerLevel sl && !fr.cobblepulse.utils.teleport.Worlds.bosses(sl)) return;
         Pokemon pk = entity.getPokemon();
         if (pk == null || !pk.isWild()) return;
         if (RND.nextDouble() * 100 >= c.promotionChance) return;
@@ -250,7 +251,21 @@ public final class Bosses {
         return found.isEmpty() ? null : found.get(RND.nextInt(found.size()));
     }
 
-    static String formKey(String formName) {
+    /** Type de forme speciale : mega, primal, origin, ou "" (forme ordinaire). */
+    public static String specialKind(String formName) {
+        if (formName == null) return "";
+        String n = formName.trim();
+        if (!SPECIAL.matcher(n).matches()) return "";
+        String l = n.toLowerCase(Locale.ROOT);
+        return l.startsWith("mega") ? "mega" : l;
+    }
+
+    /** Objet de forme d'une espece et d'un nom de forme (Mega-Gemme, Orbe, Globe...), ou null. */
+    public static String formItemFor(Species s, String formName) {
+        return formItem(s.getResourceIdentifier().getPath() + ":" + formKey(formName));
+    }
+
+    public static String formKey(String formName) {
         return formName.trim().toLowerCase(Locale.ROOT).replaceAll("[ -]", "_");
     }
 

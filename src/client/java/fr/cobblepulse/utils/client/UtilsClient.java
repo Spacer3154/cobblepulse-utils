@@ -40,7 +40,7 @@ public final class UtilsClient implements ClientModInitializer {
             if (overlay) return;
             Minecraft mc = Minecraft.getInstance();
             if (mc.screen instanceof MenuScreen m) m.notice(message);
-            else if (mc.screen instanceof PromptScreen ps && ps.parent instanceof MenuScreen m) m.notice(message);
+            else if (mc.screen instanceof Overlay ov && ov.parentScreen() instanceof MenuScreen m) m.notice(message);
         });
         if ("true".equals(System.getProperty("cobblepulse_utils.livetest"))) ClientSelfTest.install();
         CobbleUtils.LOG.info("[CobblePulse-Utils] Client initialise");
@@ -59,13 +59,26 @@ public final class UtilsClient implements ClientModInitializer {
             case "hub" -> mc.setScreen(new HubScreen(o));
             case "menu" -> {
                 if (mc.screen instanceof MenuScreen m) m.update(o);
-                else if (mc.screen instanceof PromptScreen ps) {
-                    if (ps.parent instanceof MenuScreen m) m.update(o);
-                    else ps.parent = new MenuScreen(o);
+                else if (mc.screen instanceof Overlay ov) {
+                    if (ov.parentScreen() instanceof MenuScreen m) m.update(o);
+                    else ov.setParentScreen(new MenuScreen(o));
                 } else mc.setScreen(new MenuScreen(o));
             }
             case "menu_close" -> {
-                if (mc.screen instanceof MenuScreen || mc.screen instanceof PromptScreen) mc.setScreen(null);
+                if (mc.screen instanceof MenuScreen || mc.screen instanceof Overlay) mc.setScreen(null);
+            }
+            case "pick" -> {
+                Component title = Component.literal("");
+                try {
+                    var conn = mc.getConnection();
+                    var c = conn == null ? null : Component.Serializer.fromJson(Ui.str(o, "title", ""), conn.registryAccess());
+                    if (c != null) title = c;
+                } catch (Exception ignored) {
+                }
+                Screen parent = mc.screen instanceof MenuScreen ? mc.screen : null;
+                String value = Ui.str(o, "value", "");
+                if ("pokemon".equals(Ui.str(o, "kind", ""))) mc.setScreen(new PokemonBuilderScreen(parent, title, value));
+                else mc.setScreen(new ItemPickerScreen(parent, title, value));
             }
             case "prompt" -> {
                 Component text = Component.literal(Ui.str(o, "text", ""));

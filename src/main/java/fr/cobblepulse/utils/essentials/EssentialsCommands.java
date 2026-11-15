@@ -346,6 +346,11 @@ public final class EssentialsCommands {
         PlayerData d = PlayerStore.peek(u);
         Msg.send(src, "social.playtime", "player", Players.name(u), "time", TimeFmt.duration(ticks * 50L),
                 "first", d.firstJoin > 0 ? TimeFmt.date(d.firstJoin) : "-");
+        if (p != null && Cfg.playtime.enabled) {
+            Msg.send(src, "playtime.active_line", "time", TimeFmt.duration(fr.cobblepulse.utils.playtime.PlaytimeRewards.activeSeconds(p) * 1000L));
+            String next = fr.cobblepulse.utils.playtime.PlaytimeRewards.nextTierText(p);
+            if (!next.isEmpty()) src.sendSystemMessage(TextUtil.legacy(next));
+        }
         return 1;
     }
 

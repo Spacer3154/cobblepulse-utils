@@ -58,8 +58,12 @@ public final class WarpMenus {
         gui.button(1, ItemBuilder.of(Items.BEACON).name(Msg.format("warps.spawn_name")).lore(Msg.format("warps.spawn_lore")).build(),
                 pl -> {
                     fr.cobblepulse.utils.gui.Gui.close(pl);
-                    Teleports.teleport(pl, Teleports.spawn(), Msg.format("teleport.spawn_label"), null);
+                    Teleports.teleport(pl, Worlds.spawnFor(pl), Msg.format("teleport.spawn_label"), null);
                 });
+        if (Perms.command(p, "worlds") && !Worlds.listed(p).isEmpty()) {
+            gui.button(2, ItemBuilder.of(Items.FILLED_MAP).name(Msg.format("worlds.menu_name"))
+                    .lore(Msg.format("worlds.menu_lore", "count", Worlds.listed(p).size())).hideExtra().build(), Worlds::open);
+        }
         gui.button(4, ItemBuilder.of(Items.RED_BED).name(Msg.format("homes.menu_name"))
                 .lore(Msg.format("homes.menu_lore", "count", PlayerStore.get(p).homes.size(), "max", HomeLimits.limit(p))).build(), WarpMenus::homes);
         if (Perms.command(p, "rtp")) {

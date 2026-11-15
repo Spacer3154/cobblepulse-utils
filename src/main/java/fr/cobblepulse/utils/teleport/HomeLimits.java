@@ -24,8 +24,9 @@ public final class HomeLimits {
             return false;
         }
         Loc here = Loc.of(p);
-        if (!here.isOverworld() && !Perms.perkOrOp(p, Perms.HOME_MULTIDIM)) {
-            Msg.send(p, "homes.no_multidim");
+        if (!Worlds.homesAllowed(p, here.world)) {
+            Msg.send(p, "NONE".equals(Worlds.get(here.world).homes) ? "homes.world_forbidden" : "homes.no_multidim",
+                    "world", Worlds.plainName(here.world));
             return false;
         }
         PlayerData d = PlayerStore.get(p);

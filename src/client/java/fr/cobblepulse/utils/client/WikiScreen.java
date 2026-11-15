@@ -61,6 +61,10 @@ public final class WikiScreen extends Screen {
     private final List<Runnable> clickables = new ArrayList<>();
     private final List<int[]> clickBoxes = new ArrayList<>();
     private String pendingSelect;
+    /** Filtre : seulement les especes avec Mega-Evolution. */
+    private boolean megaOnly;
+    private static final java.util.regex.Pattern MEGA = java.util.regex.Pattern.compile("(?i)^mega([ _-]?[xyz])?$");
+    private final java.util.Map<Species, Boolean> megaCache = new java.util.HashMap<>();
 
     public WikiScreen(String speciesId) {
         super(Component.literal("Wiki Cobblemon"));
@@ -81,7 +85,7 @@ public final class WikiScreen extends Screen {
         }
         all.sort(Comparator.comparingInt(Species::getNationalPokedexNumber).thenComparing(s -> s.getResourceIdentifier().toString()));
         String prev = search == null ? "" : search.getValue();
-        search = new EditBox(font, 10, 26, listW() - 4, 16, Component.literal("Rechercher"));
+        search = new EditBox(font, 10, 26, listW() - 26, 16, Component.literal("Rechercher"));
         search.setHint(Component.literal("Nom ou n° de Pokédex").withStyle(ChatFormatting.DARK_GRAY));
         search.setValue(prev);
         search.setResponder(v -> {
@@ -111,10 +115,25 @@ public final class WikiScreen extends Screen {
         return rl == null ? null : PokemonSpecies.getByIdentifier(rl);
     }
 
+    /** L'espece possede une forme Mega (donnees de Cobblemon / Mega Showdown synchronisees). */
+    boolean hasMega(Species s) {
+        return megaCache.computeIfAbsent(s, sp -> {
+            for (var f : sp.getForms()) if (f.getName() != null && MEGA.matcher(f.getName().trim()).matches()) return true;
+            return false;
+        });
+    }
+
+    public void setMegaOnly(boolean v) {
+        megaOnly = v;
+        listScroll = 0;
+        refilter();
+    }
+
     private void refilter() {
         String q = search == null ? "" : search.getValue().trim().toLowerCase(Locale.ROOT);
         filtered.clear();
         for (Species s : all) {
+            if (megaOnly && !hasMega(s)) continue;
             if (q.isEmpty()) {
                 filtered.add(s);
                 continue;
@@ -185,6 +204,88 @@ public final class WikiScreen extends Screen {
         return Ui.obj(info, "base");
     }
 
+    /** « Méga-Dracaufeu X », « Primo-Groudon », « Forme Originelle »... */
+    String formLabel(JsonObject f) {
+        String name = Ui.str(f, "name", "?");
+        String kind = Ui.str(f, "special", "");
+        String sp = selected == null ? "" : selected.getTranslatedName().getString();
+        return switch (kind) {
+            case "mega" -> {
+                String sfx = name.trim().length() > 4 ? name.trim().substring(name.trim().length() - 1).toUpperCase(Locale.ROOT) : "";
+                yield "Méga-" + sp + (sfx.matches("[XYZ]") ? " " + sfx : "");
+            }
+            case "primal" -> "Primo-" + sp;
+            case "origin" -> "Forme Originelle";
+            default -> name;
+        };
+    }
+
+    /** Nom de l'objet de forme (Méga-Gemme, Orbe...) : objet du registre, sinon nom deduit de Cobblemon. */
+    private Component stoneName(JsonObject f) {
+        String id = Ui.str(f, "stone", "");
+        if (!id.isEmpty()) {
+            ResourceLocation rl = ResourceLocation.tryParse(id);
+            if (rl != null && net.minecraft.core.registries.BuiltInRegistries.ITEM.containsKey(rl)) {
+                return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(rl).getDescription();
+            }
+        }
+        String hint = Ui.str(f, "stone_hint", "");
+        if (hint.isEmpty()) return Component.literal("?");
+        String h = hint.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
+        if (h.matches(".*ite[xyz]$")) h = h.substring(0, h.length() - 1) + "_" + h.charAt(h.length() - 1);
+        return Component.literal(Ui.pretty(h).replaceAll(" ([xyz])$", " $1").replaceAll(" X$", " X"));
+    }
+
+    private ItemStack stoneIcon(JsonObject f) {
+        String id = Ui.str(f, "stone", "");
+        ItemStack st = id.isEmpty() ? ItemStack.EMPTY : Ui.item(id);
+        return st.isEmpty() || st.is(net.minecraft.world.item.Items.PAPER) ? new ItemStack(net.minecraft.world.item.Items.AMETHYST_SHARD) : st;
+    }
+
+    /** Explication de la forme speciale affichee (Infos). */
+    private int specialBanner(GuiGraphics g, int x, int y, int w, JsonObject f, JsonObject info) {
+        String kind = Ui.str(f, "special", "");
+        if (kind.isEmpty()) return y;
+        Component stone = stoneName(f);
+        String text = switch (kind) {
+            case "mega" -> "Méga-Évolution : en combat, si le Pokémon tient ";
+            case "primal" -> "Primo-Résurgence : au début du combat, si le Pokémon tient ";
+            default -> "Forme Originelle : quand le Pokémon tient ";
+        };
+        MutableComponent c = Component.literal(text).withStyle(ChatFormatting.GRAY).append(stone.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+        if (kind.equals("mega")) c.append(Component.literal(" et que le dresseur porte un Méga-Anneau.").withStyle(ChatFormatting.GRAY));
+        else c.append(Component.literal(".").withStyle(ChatFormatting.GRAY));
+        List<FormattedCharSequence> lines = font.split(c, w - 30);
+        boolean noMod = !Ui.bool(info, "mega_showdown", false);
+        int h = 8 + lines.size() * 10 + (noMod ? 10 : 0);
+        Ui.panel(g, x, y, w, h, 0xFF2A1E36, Ui.PURPLE);
+        g.renderItem(stoneIcon(f), x + 5, y + (h - 16) / 2);
+        for (int i = 0; i < lines.size(); i++) g.drawString(font, lines.get(i), x + 26, y + 5 + i * 10, Ui.TEXT, false);
+        if (noMod) g.drawString(font, "Nécessite le mod Mega Showdown sur le serveur.", x + 26, y + 5 + lines.size() * 10, Ui.MUTED, false);
+        return y + h + 6;
+    }
+
+    private int formIndexOf(String name) {
+        JsonArray forms = Ui.arr(Ui.obj(data, "info"), "forms");
+        for (int i = 0; i < forms.size(); i++) if (Ui.str(forms.get(i).getAsJsonObject(), "name", "").equals(name)) return i + 1;
+        return 0;
+    }
+
+    public void setForm(String name) {
+        formIndex = formIndexOf(name);
+        buildModel();
+    }
+
+    public List<String> megaNames() {
+        List<String> out = new ArrayList<>();
+        if (data != null) for (JsonElement e : Ui.arr(Ui.obj(data, "info"), "megas")) out.add(e.getAsString());
+        return out;
+    }
+
+    public int formIndex() {
+        return formIndex;
+    }
+
     private int formCount() {
         return data == null ? 0 : Ui.arr(Ui.obj(data, "info"), "forms").size();
     }
@@ -234,6 +335,12 @@ public final class WikiScreen extends Screen {
     }
 
     private void renderList(GuiGraphics g, int mx, int my) {
+        int mbx = 10 + listW() - 22;
+        boolean mh = Ui.in(mx, my, mbx, 26, 20, 16);
+        Ui.panel(g, mbx, 26, 20, 16, megaOnly ? 0xFF4A2A63 : mh ? Ui.CARD_ON : Ui.PANEL2, megaOnly || mh ? Ui.PURPLE : Ui.BORDER);
+        g.drawCenteredString(font, "M", mbx + 10, 30, megaOnly ? Ui.PURPLE : Ui.TEXT);
+        click(mbx, 26, 20, 16, () -> setMegaOnly(!megaOnly));
+        if (mh) megaHint = true;
         int x = 8;
         int y = 46;
         int w = listW();
@@ -254,7 +361,9 @@ public final class WikiScreen extends Screen {
             String num = String.format("#%04d", s.getNationalPokedexNumber());
             g.drawString(font, num, x + 22, ry + 5, Ui.MUTED, false);
             Component n = s.getTranslatedName();
-            g.drawString(font, font.plainSubstrByWidth(n.getString(), w - 54 - 4), x + 22 + font.width(num) + 4, ry + 5, sel ? Ui.GOLD : Ui.TEXT, false);
+            boolean mega = hasMega(s);
+            g.drawString(font, font.plainSubstrByWidth(n.getString(), w - 54 - 4 - (mega ? 10 : 0)), x + 22 + font.width(num) + 4, ry + 5, sel ? Ui.GOLD : Ui.TEXT, false);
+            if (mega) g.drawString(font, "M", x + w - 12, ry + 5, Ui.PURPLE, false);
             final Species fs = s;
             click(x, ry, w, 18, () -> select(fs));
         }
@@ -317,7 +426,7 @@ public final class WikiScreen extends Screen {
         int by = m[1] + m[3] + 4;
         button(g, mx, my, m[0], by, 58, 16, shiny ? "§e★ Chromatique" : "☆ Normal", () -> setShiny(!shiny));
         int forms = formCount();
-        String formLabel = formIndex == 0 ? "Forme de base" : Ui.str(currentForm(), "name", "?");
+        String formLabel = formIndex == 0 ? "Forme de base" : formLabel(currentForm());
         button(g, mx, my, m[0] + 62, by, 58, 16, forms == 0 ? "—" : "◀ ▶", () -> {
             if (forms > 0) {
                 formIndex = (formIndex + 1) % (forms + 1);
@@ -404,6 +513,7 @@ public final class WikiScreen extends Screen {
     }
 
     private int renderInfos(GuiGraphics g, int x, int y, int w, JsonObject info, JsonObject form) {
+        y = specialBanner(g, x, y, w, form, info);
         y = heading(g, "Statistiques de base", x, y, w);
         String[] keys = {"hp", "atk", "def", "spa", "spd", "spe"};
         String[] labels = {"PV", "Attaque", "Défense", "Atq. Spé.", "Déf. Spé.", "Vitesse"};
@@ -497,6 +607,43 @@ public final class WikiScreen extends Screen {
         for (JsonElement el : evos) {
             JsonObject e = el.getAsJsonObject();
             y = evoLine(g, x, y, w, Ui.str(e, "species", ""), Ui.str(e, "name_key", ""), evoMethod(e));
+        }
+        // Mega-Evolutions, Primo-Resurgence, formes Originelles
+        List<JsonObject> specials = new ArrayList<>();
+        for (JsonElement el : Ui.arr(info, "forms")) {
+            JsonObject f = el.getAsJsonObject();
+            if (!Ui.str(f, "special", "").isEmpty()) specials.add(f);
+        }
+        if (!specials.isEmpty()) {
+            y += 6;
+            boolean megas = specials.stream().anyMatch(f -> "mega".equals(Ui.str(f, "special", "")));
+            y = heading(g, megas ? "Méga-Évolution" : "Formes spéciales", x, y, w);
+            for (JsonObject f : specials) {
+                Ui.panel(g, x, y, w, 32, 0xFF2A1E36, Ui.PURPLE);
+                g.renderItem(stoneIcon(f), x + 3, y + 3);
+                g.drawString(font, formLabel(f), x + 24, y + 4, Ui.PURPLE, false);
+                int total = 0;
+                for (var st : Ui.obj(f, "stats").entrySet()) total += st.getValue().getAsInt();
+                List<String> types = new ArrayList<>();
+                for (JsonElement t : Ui.arr(f, "types")) {
+                    ElementalType et = ElementalTypes.get(t.getAsString());
+                    types.add(et == null ? t.getAsString() : et.getDisplayName().getString());
+                }
+                MutableComponent line = Component.literal("Tient : ").withStyle(ChatFormatting.GRAY).append(stoneName(f).copy().withStyle(ChatFormatting.WHITE))
+                        .append(Component.literal("  •  " + String.join(" / ", types) + "  •  Total " + total).withStyle(ChatFormatting.GRAY));
+                g.drawString(font, font.substrByWidth(line, w - 30).getString(), x + 24, y + 16, Ui.TEXT, false);
+                String fname = Ui.str(f, "name", "");
+                click(x, y, w, 32, () -> {
+                    setForm(fname);
+                    tab = 0;
+                    contentScroll = 0;
+                });
+                y += 36;
+            }
+            if (!Ui.bool(info, "mega_showdown", false)) {
+                g.drawString(font, "Nécessite le mod Mega Showdown sur le serveur.", x, y, Ui.MUTED, false);
+                y += 12;
+            }
         }
         return y + 6;
     }
@@ -651,6 +798,10 @@ public final class WikiScreen extends Screen {
 
     private List<Component> conditions(JsonObject c) {
         List<Component> out = new ArrayList<>();
+        List<String> dims = new ArrayList<>();
+        for (JsonElement e : Ui.arr(c, "dimensions")) dims.add(e.getAsString());
+        if (!dims.isEmpty()) out.add(Component.literal(dims.size() > 1 ? "Mondes : " : "Monde : ").withStyle(ChatFormatting.GRAY)
+                .append(Component.literal(String.join(", ", dims)).withStyle(ChatFormatting.WHITE)));
         List<String> times = new ArrayList<>();
         for (JsonElement e : Ui.arr(c, "time")) times.add(time(e.getAsString()));
         if (!times.isEmpty()) out.add(Component.literal("Moment : ").withStyle(ChatFormatting.GRAY).append(Component.literal(String.join(", ", times)).withStyle(ChatFormatting.WHITE)));
@@ -723,7 +874,14 @@ public final class WikiScreen extends Screen {
         return y;
     }
 
+    private boolean megaHint;
+
     private void renderTooltips(GuiGraphics g, int mx, int my) {
+        if (megaHint) {
+            megaHint = false;
+            g.renderTooltip(font, Component.literal(megaOnly ? "Afficher toutes les espèces" : "Seulement les Pokémon avec Méga-Évolution"), mx, my);
+            return;
+        }
         int[] m = modelBox();
         if (Ui.in(mx, my, m[0], m[1], m[2], m[3]) && selected != null) {
             g.renderTooltip(font, Component.literal("Glissez pour faire tourner").withStyle(ChatFormatting.GRAY), mx, my);

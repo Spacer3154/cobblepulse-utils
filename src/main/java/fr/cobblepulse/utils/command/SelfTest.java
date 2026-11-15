@@ -35,6 +35,9 @@ import fr.cobblepulse.utils.essentials.ChatFeatures;
 import fr.cobblepulse.utils.essentials.EssentialsCommands;
 import fr.cobblepulse.utils.essentials.Vanish;
 import fr.cobblepulse.utils.gui.Screens;
+import fr.cobblepulse.utils.teleport.Worlds;
+import fr.cobblepulse.utils.shop.MonSpecParser;
+import fr.cobblepulse.utils.core.TextUtil;
 import fr.cobblepulse.utils.staff.StaffPanel;
 import fr.cobblepulse.utils.boss.BossEditor;
 import fr.cobblepulse.utils.shop.ShopMenus;
@@ -929,8 +932,275 @@ public final class SelfTest {
             // sans le mod cote client (joueur factice ordinaire) : menu coffre classique
             ShopMenus.open(b);
             check("coffre_pour_client_sans_mod", !Screens.enabled(b) && !Screens.hasSession(b.getUUID()), null);
-            finish();
+            safe("mondes", SelfTest::worldsPhase);
         }));
+    }
+
+    // ================================================================== ameliorations : mondes, temps de jeu, GTS, boutique, Mega
+
+    private static void worldsPhase() {
+        MinecraftServer s = a.getServer();
+        // chaque monde charge est decrit dans worlds.json
+        List<String> missing = new ArrayList<>();
+        for (ServerLevel l : s.getAllLevels()) if (!Cfg.worlds.worlds.containsKey(Worlds.id(l))) missing.add(Worlds.id(l));
+        check("mondes_detectes", missing.isEmpty() && Cfg.worlds.worlds.size() >= 3, missing.isEmpty() ? Cfg.worlds.worlds.keySet() : missing);
+        check("mondes_noms", new fr.cobblepulse.utils.core.Loc("minecraft:the_nether", 0, 64, 0, 0, 0).shortWorld().equals("Nether"), null);
+        ServerLevel nether = s.getLevel(net.minecraft.world.level.Level.NETHER);
+        ServerLevel end = s.getLevel(net.minecraft.world.level.Level.END);
+        fr.cobblepulse.utils.core.Loc ns = Worlds.spawnOf(nether);
+        fr.cobblepulse.utils.core.Loc es = Worlds.spawnOf(end);
+        check("mondes_spawn_calcule", ns.level() == nether && es.level() == end && Math.abs(es.x - 100.5) < 0.01, ns.coords() + " / " + es.coords());
+        // homes : regle par monde
+        Teleports.perform(a, ns, null, null);
+        var wn = Cfg.worlds.worlds.get("minecraft:the_nether");
+        String oldHomes = wn.homes;
+        wn.homes = "NONE";
+        boolean denied = !HomeLimits.setHome(a, "enfer");
+        wn.homes = "ALL";
+        boolean allowed = HomeLimits.setHome(a, "enfer");
+        wn.homes = oldHomes;
+        PlayerStore.get(a).homes.remove("enfer");
+        check("mondes_homes_par_monde", denied && allowed, null);
+        // spawn par monde : /setspawn dans le Nether ne touche pas au spawn global
+        fr.cobblepulse.utils.core.Loc global = Teleports.spawn().copy();
+        staff.teleportTo(nether, ns.x, ns.y, ns.z, 0, 0);
+        Worlds.setSpawn(staff);
+        check("mondes_setspawn_par_monde", wn.spawn != null && "minecraft:the_nether".equals(wn.spawn.world) && Teleports.spawn().world.equals(global.world), null);
+        // acces reserve
+        wn.restricted = true;
+        wn.listed = true;
+        boolean blocked = !Worlds.canAccess(b, "minecraft:the_nether");
+        LuckPermsBridge.setUserNode(b.getUUID(), Worlds.node("minecraft:the_nether"), true);
+        boolean granted = Worlds.canAccess(b, "minecraft:the_nether");
+        check("mondes_acces_reserve", blocked && granted, Worlds.node("minecraft:the_nether"));
+        // TPA bloquee vers un monde
+        wn.tpa = false;
+        b.teleportTo(nether, ns.x, ns.y, ns.z, 0, 0);
+        c.teleportTo(s.overworld(), 0.5, 100, 0.5, 0, 0);
+        Tpa.request(c, b, false);
+        check("mondes_tpa_bloquee", Tpa.accept(b, "TestC") == 0, null);
+        wn.tpa = true;
+        // RTP : rayon propre au monde
+        var wo = Cfg.worlds.worlds.get("minecraft:overworld");
+        int oldMin = wo.rtpMinRadius, oldMax = wo.rtpMaxRadius;
+        wo.rtpMinRadius = 8;
+        wo.rtpMaxRadius = 24;
+        fr.cobblepulse.utils.core.Loc r = null;
+        for (int k = 0; k < 30 && r == null; k++) r = fr.cobblepulse.utils.teleport.Rtp.tryOnce(s.overworld(), s.overworld().getRandom());
+        var sp = s.overworld().getSharedSpawnPos();
+        double dist = r == null ? -1 : Math.hypot(r.x - sp.getX(), r.z - sp.getZ());
+        check("mondes_rtp_rayon", r != null && dist <= 26, dist);
+        wo.rtpMinRadius = oldMin;
+        wo.rtpMaxRadius = oldMax;
+        // menu Mondes et commande /mondes <monde>
+        Screens.capture(b.getUUID(), true);
+        Worlds.open(b);
+        check("mondes_menu", Screens.names(b.getUUID()).stream().anyMatch(n -> n.contains("Nether")), Screens.names(b.getUUID()));
+        Screens.capture(b.getUUID(), false);
+        b.teleportTo(s.overworld(), 0.5, 100, 0.5, 0, 0);
+        LuckPermsBridge.setUserNode(b.getUUID(), "cobblepulse.teleport.bypassdelay", true);
+        cmd(s, b.createCommandSourceStack(), "mondes minecraft:the_nether");
+        check("mondes_commande_teleporte", b.level() == nether, b.level().dimension().location());
+        wn.restricted = false;
+        wn.listed = false;
+        Cfg.save("worlds.json", Cfg.worlds);
+        check("mondes_regles_boss_alertes", Worlds.bosses(s.overworld()) && Worlds.alerts(s.overworld()), null);
+        a.teleportTo(s.overworld(), 0.5, 100, 0.5, 0, 0);
+        b.teleportTo(s.overworld(), 0.5, 100, 0.5, 0, 0);
+        staff.teleportTo(s.overworld(), 4.5, 100, 4.5, 0, 0);
+        safe("temps_de_jeu", SelfTest::playtimePhase);
+    }
+
+    private static void playtimePhase() {
+        var cfg = Cfg.playtime;
+        cfg.autoClaim = false;
+        PlayerData da = PlayerStore.get(a);
+        check("temps_de_jeu_initialise", fr.cobblepulse.utils.playtime.PlaytimeRewards.activeSeconds(a) >= PlayerStore.playtimeTicks(a) / 20, da.activeSeconds);
+        long before = Economy.balance(a.getUUID());
+        fr.cobblepulse.utils.playtime.PlaytimeRewards.addActive(a, 3600);
+        int avail = fr.cobblepulse.utils.playtime.PlaytimeRewards.available(a);
+        check("temps_de_jeu_palier_atteint", avail >= 1 && da.playtimeNotified.contains("h1"), avail);
+        var h1 = cfg.tiers.get(0);
+        boolean claimed = fr.cobblepulse.utils.playtime.PlaytimeRewards.claim(a, h1);
+        boolean twice = fr.cobblepulse.utils.playtime.PlaytimeRewards.claim(a, h1);
+        check("temps_de_jeu_reclamation", claimed && !twice && Economy.balance(a.getUUID()) > before, Economy.balance(a.getUUID()) - before);
+        check("temps_de_jeu_palier_verrouille", !fr.cobblepulse.utils.playtime.PlaytimeRewards.claim(a, cfg.tiers.get(cfg.tiers.size() - 1)), null);
+        // bonus repetable (remis automatiquement)
+        long cBefore = Economy.balance(c.getUUID());
+        PlayerStore.get(c).repeatSeconds = 0;
+        fr.cobblepulse.utils.playtime.PlaytimeRewards.addActive(c, cfg.repeat.everyMinutes * 60);
+        check("temps_de_jeu_bonus_repetable", Economy.balance(c.getUUID()) >= cBefore + 250, Economy.balance(c.getUUID()) - cBefore);
+        // remise automatique
+        cfg.autoClaim = true;
+        long bBefore = Economy.balance(c.getUUID());
+        fr.cobblepulse.utils.playtime.PlaytimeRewards.addActive(c, 5 * 3600);
+        check("temps_de_jeu_remise_auto", PlayerStore.get(c).playtimeClaimed.contains("h5") && Economy.balance(c.getUUID()) > bBefore, PlayerStore.get(c).playtimeClaimed);
+        cfg.autoClaim = false;
+        // commande staff
+        long bSec = fr.cobblepulse.utils.playtime.PlaytimeRewards.activeSeconds(b);
+        cmd(a.getServer(), a.getServer().createCommandSourceStack(), "ptr ajouter TestB 2h");
+        check("temps_de_jeu_commande_ajouter", fr.cobblepulse.utils.playtime.PlaytimeRewards.activeSeconds(b) == bSec + 7200, null);
+        // menu (ecran) et tuile du Hub
+        Screens.capture(a.getUUID(), true);
+        fr.cobblepulse.utils.playtime.PlaytimeRewards.open(a);
+        check("temps_de_jeu_menu", menuTitle(a).contains("Temps de jeu") && menuItems(Screens.last(a.getUUID())) >= cfg.tiers.size(), menuTitle(a));
+        Screens.capture(a.getUUID(), false);
+        check("temps_de_jeu_tuile_hub", Hub.tiles(a).stream().anyMatch(t -> t.id.equals("playtime")), null);
+        safe("echange_miracle_delai", SelfTest::wtCooldownPhase);
+    }
+
+    private static void wtCooldownPhase() {
+        // C vient d'echanger : delai visible partout
+        String line = WonderTrade.cooldownLine(c);
+        check("wt_delai_ligne", line.contains("dans"), TextUtil.strip(line));
+        var tile = Hub.tiles(c).stream().filter(t -> t.id.equals("wondertrade")).findFirst().orElse(null);
+        check("wt_delai_tuile_hub", tile != null && tile.lore.stream().anyMatch(l -> l.contains("dans")), tile == null ? "-" : tile.lore);
+        Screens.capture(c.getUUID(), true);
+        fr.cobblepulse.utils.market.WonderTradeMenus.open(c);
+        Scheduler.later(30, () -> safe("wt_delai_menu", () -> {
+            List<String> names = Screens.names(c.getUUID());
+            check("wt_delai_menu", names.stream().anyMatch(n -> n.contains("Prochain échange dans")), names);
+            // compte a rebours en direct : le menu est renvoye chaque seconde
+            JsonObject first = Screens.last(c.getUUID());
+            Scheduler.later(25, () -> safe("wt_delai_direct", () -> {
+                check("wt_delai_mise_a_jour", Screens.last(c.getUUID()) != first, null);
+                Screens.capture(c.getUUID(), false);
+                gtsDurationPhase();
+            }));
+        }));
+    }
+
+    private static void gtsDurationPhase() {
+        List<Integer> choices = Gts.durationChoices(a);
+        int base = Gts.tax(a);
+        check("gts_durees_proposees", choices.containsAll(List.of(24, 48, 72, 168, 336)), choices);
+        check("gts_taxe_selon_duree", Gts.taxFor(a, 48) == base && Gts.taxFor(a, 168) == base + 5 && Gts.taxFor(a, 336) == base + 10,
+                Gts.taxFor(a, 48) + " / " + Gts.taxFor(a, 168) + " / " + Gts.taxFor(a, 336));
+        LuckPermsBridge.clearUserNodes(a.getUUID(), "cobblepulse.gts.");
+        a.getInventory().clearContent();
+        a.getInventory().setItem(a.getInventory().selected, new ItemStack(Items.LAPIS_LAZULI, 9));
+        Gts.listHand(a, 400, 5, bad -> {
+            check("gts_duree_invalide_refusee", !bad && count(a, Items.LAPIS_LAZULI) == 9, null);
+            Gts.listHand(a, 400, 168, ok -> Gts.mine(a.getUUID()).thenAccept(mine -> Scheduler.next(() -> safe("gts_duree", () -> {
+                Gts.Listing l = mine.stream().filter(x -> x.data() != null && ItemSerial.decodeOne(x.data()).is(Items.LAPIS_LAZULI)).findFirst().orElse(null);
+                long hours = l == null ? -1 : Math.round((l.expires() - l.created()) / 3_600_000.0);
+                check("gts_annonce_longue_taxee", ok && l != null && hours == 168 && l.tax() == Gts.tax(a) + 5, l == null ? "-" : hours + " h, taxe " + l.tax());
+                // menu de choix de la duree (ecran)
+                Screens.capture(a.getUUID(), true);
+                int[] chosen = {-1};
+                fr.cobblepulse.utils.market.GtsMenus.chooseDuration(a, 1000, "Test", h -> chosen[0] = h);
+                int slot = Screens.slotNamed(a.getUUID(), "7 j");
+                Screens.click(a, Screens.sessionId(a.getUUID()), slot, "left");
+                Scheduler.later(3, () -> safe("gts_duree_menu", () -> {
+                    check("gts_menu_duree", slot >= 0 && chosen[0] == 168, Screens.names(a.getUUID()));
+                    Screens.capture(a.getUUID(), false);
+                    shopEditorPhase();
+                }));
+            }))));
+        });
+    }
+
+    private static void shopEditorPhase() {
+        UUID us = staff.getUUID();
+        Screens.capture(us, true);
+        ShopConfig.Category cat = Cfg.SHOP.get("ressources");
+        int before = cat.entries.size();
+        ShopMenus.editCategory(staff, cat, 0);
+        Screens.click(staff, Screens.sessionId(us), 45, "left");
+        Scheduler.later(3, () -> safe("boutique_objet", () -> {
+            JsonObject pick = Screens.last(us);
+            check("boutique_selecteur_objet", "pick".equals(Screens.lastKind(us)) && "item".equals(pick.get("kind").getAsString()), Screens.lastKind(us));
+            fr.cobblepulse.utils.gui.ChatInput.answer(staff, "cobblemon:great_ball", false);
+            Scheduler.later(3, () -> {
+                fr.cobblepulse.utils.gui.ChatInput.answer(staff, "16", false);
+                Scheduler.later(3, () -> {
+                    fr.cobblepulse.utils.gui.ChatInput.answer(staff, "300 75", false);
+                    Scheduler.later(3, () -> safe("boutique_objet_cree", () -> {
+                        ShopConfig.Entry e = cat.entries.size() > before ? cat.entries.get(cat.entries.size() - 1) : null;
+                        ItemStack st = e == null ? ItemStack.EMPTY : ShopService.stack(e);
+                        check("boutique_objet_sans_main", e != null && st.getItem().toString().contains("great_ball") && st.getCount() == 16 && e.buy == 300 && e.sell == 75,
+                                e == null ? "aucun" : e.item + " " + e.buy + "/" + e.sell);
+                        if (e != null) cat.entries.remove(e);
+                        shopPokemonPhase(cat);
+                    }));
+                });
+            });
+        }));
+    }
+
+    private static void shopPokemonPhase(ShopConfig.Category cat) {
+        UUID us = staff.getUUID();
+        int before = cat.entries.size();
+        ShopMenus.editCategory(staff, cat, 0);
+        Screens.click(staff, Screens.sessionId(us), 47, "left");
+        Scheduler.later(3, () -> safe("boutique_pokemon", () -> {
+            JsonObject pick = Screens.last(us);
+            check("boutique_createur_pokemon", "pick".equals(Screens.lastKind(us)) && "pokemon".equals(pick.get("kind").getAsString()), Screens.lastKind(us));
+            fr.cobblepulse.utils.gui.ChatInput.answer(staff, "pikachu niveau=20 shiny ivs=31,31,31,31,31,31 nature=timid ball=ultra_ball", false);
+            Scheduler.later(3, () -> {
+                fr.cobblepulse.utils.gui.ChatInput.answer(staff, "5000 -", false);
+                Scheduler.later(3, () -> safe("boutique_pokemon_cree", () -> {
+                    ShopConfig.Entry e = cat.entries.size() > before ? cat.entries.get(cat.entries.size() - 1) : null;
+                    boolean ok = e != null && "pokemon".equals(e.type) && e.pokemon.species.equals("pikachu") && e.pokemon.level == 20 && e.pokemon.shiny
+                            && e.buy == 5000 && e.sell == -1;
+                    check("boutique_pokemon_sans_equipe", ok, e == null ? "aucun" : MonSpecParser.format(e.pokemon));
+                    // le Pokemon vendu est bien cree
+                    if (e != null) {
+                        Pokemon pk = fr.cobblepulse.utils.pokemon.PokemonFactory.create(e.pokemon, new ArrayList<>());
+                        check("boutique_pokemon_fidele", pk != null && pk.getShiny() && pk.getLevel() == 20 && PokemonText.perfectIvs(pk) == 6
+                                && pk.getNature().getName().getPath().equals("timid"), pk == null ? "-" : PokemonText.title(pk).getString());
+                        cat.entries.remove(e);
+                    }
+                    // copie depuis l'equipe (clic droit)
+                    clearParty(staff);
+                    PokemonText.party(staff).add(mon("eevee", 33, true));
+                    ShopMenus.editCategory(staff, cat, 0);
+                    Screens.click(staff, Screens.sessionId(us), 47, "right");
+                    Scheduler.later(3, () -> safe("boutique_copie", () -> {
+                        Screens.click(staff, Screens.sessionId(us), 10, "left");
+                        Scheduler.later(3, () -> {
+                            fr.cobblepulse.utils.gui.ChatInput.answer(staff, "8000 -", false);
+                            Scheduler.later(3, () -> safe("boutique_copie_creee", () -> {
+                                ShopConfig.Entry c2 = cat.entries.size() > before ? cat.entries.get(cat.entries.size() - 1) : null;
+                                check("boutique_pokemon_copie_equipe", c2 != null && c2.pokemon != null && c2.pokemon.species.equals("eevee")
+                                        && c2.pokemon.level == 33 && c2.pokemon.shiny, c2 == null ? "aucun" : MonSpecParser.format(c2.pokemon));
+                                if (c2 != null) cat.entries.remove(c2);
+                                Cfg.saveShopCategory(cat);
+                                String spec = "charizard niveau=50 shiny forme=megax ivs=31,31,31,31,31,31 nature=modest talent=blaze ball=ultra_ball";
+                                check("boutique_fiche_aller_retour", MonSpecParser.format(MonSpecParser.parse(spec)).contains("nature=modest"),
+                                        MonSpecParser.format(MonSpecParser.parse(spec)));
+                                Screens.capture(us, false);
+                                safe("mega", SelfTest::megaPhase);
+                                finish();
+                            }));
+                        });
+                    }));
+                }));
+            });
+        }));
+    }
+
+    private static void megaPhase() {
+        Species charizard = PokemonSpecies.getByIdentifier(ResourceLocation.parse("cobblemon:charizard"));
+        try {
+            java.lang.reflect.Method build = Class.forName("fr.cobblepulse.utils.wiki.SpeciesInfo").getDeclaredMethod("build", Species.class);
+            build.setAccessible(true);
+            JsonObject info = (JsonObject) build.invoke(null, charizard);
+            JsonArray megas = info.getAsJsonArray("megas");
+            info("Mega Showdown : " + Bosses.megaShowdown() + " | formes Mega de Dracaufeu : " + megas);
+            check("mega_formes_wiki", megas.size() >= 2, megas);
+            boolean stones = true;
+            for (var f : info.getAsJsonArray("forms")) {
+                JsonObject fo = f.getAsJsonObject();
+                if (!"mega".equals(fo.has("special") ? fo.get("special").getAsString() : "")) continue;
+                if (Bosses.megaShowdown() ? !fo.has("stone") : !fo.has("stone") && !fo.has("stone_hint")) stones = false;
+            }
+            check("mega_gemmes_identifiees", stones, null);
+            String x = Bosses.formItemFor(charizard, "Mega-X");
+            if (Bosses.megaShowdown()) check("mega_dracaufite_x", x != null && x.contains("charizardite_x"), x);
+        } catch (Throwable t) {
+            check("mega_formes_wiki", false, t);
+        }
     }
 
     private static void finish() {
@@ -978,6 +1248,8 @@ public final class SelfTest {
             int mails = sqlCount(g, "SELECT COUNT(*) FROM " + g.table("mailbox") + " WHERE owner=?", uuid("TestB").toString());
             check("persist_boite_reception_vide", mails == 0, mails);
             check("persist_historique_spawns", !SpawnAlerts.history("shiny").isEmpty(), SpawnAlerts.history("shiny").size());
+            check("persist_temps_de_jeu", da.activeSeconds >= 3600 && da.playtimeClaimed.contains("h1"), da.activeSeconds + " s " + da.playtimeClaimed);
+            check("persist_monde_spawn", Cfg.worlds.worlds.get("minecraft:the_nether").spawn != null, null);
         });
         Scheduler.later(20, () -> {
             String summary = "SELFTEST SUMMARY: " + pass + " pass, " + fail + " fail";

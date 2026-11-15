@@ -65,8 +65,38 @@ public final class Gts {
         return Perms.numeric(p, Perms.GTS_LIMIT, Cfg.gts.defaultLimit, true);
     }
 
+    /** Duree incluse sans supplement (grade). */
     public static int durationHours(ServerPlayer p) {
         return Math.max(1, Perms.numeric(p, Perms.GTS_DURATION, Cfg.gts.defaultDurationHours, true));
+    }
+
+    /** Durees proposees au joueur : celles de gts.json, plus la duree incluse de son grade. */
+    public static java.util.List<Integer> durationChoices(ServerPlayer p) {
+        java.util.TreeSet<Integer> set = new java.util.TreeSet<>();
+        set.add(durationHours(p));
+        for (var d : Cfg.gts.durations) set.add(d.hours);
+        return new java.util.ArrayList<>(set);
+    }
+
+    /** Supplement de taxe pour une duree (0 jusqu'a la duree incluse du grade). */
+    public static int extraTax(ServerPlayer p, int hours) {
+        if (hours <= durationHours(p)) return 0;
+        int extra = 0;
+        for (var d : Cfg.gts.durations) {
+            if (d.hours == hours) return d.extraTax;
+            if (d.hours < hours) extra = d.extraTax;
+        }
+        return extra;
+    }
+
+    /** Taxe totale pour une duree donnee (grade + supplement, plafonnee). */
+    public static int taxFor(ServerPlayer p, int hours) {
+        return Math.min(Math.max(tax(p), Cfg.gts.maxTax), tax(p) + extraTax(p, hours));
+    }
+
+    /** Duree valide (une des durees proposees) ou -1. */
+    public static int validDuration(ServerPlayer p, int hours) {
+        return durationChoices(p).contains(hours) ? hours : -1;
     }
 
     private static Listing read(ResultSet rs) throws SQLException {
@@ -146,8 +176,17 @@ public final class Gts {
         return true;
     }
 
-    /** Met en vente l'objet en main (pile entiere). */
+    /** Met en vente l'objet en main (pile entiere), pour la duree incluse du grade. */
     public static void listHand(ServerPlayer p, long price, Consumer<Boolean> done) {
+        listHand(p, price, durationHours(p), done);
+    }
+
+    public static void listHand(ServerPlayer p, long price, int hours, Consumer<Boolean> done) {
+        if (validDuration(p, hours) < 0) {
+            Msg.send(p, "gts.bad_duration", "choices", choicesText(p));
+            done.accept(false);
+            return;
+        }
         ItemStack hand = p.getMainHandItem();
         if (hand.isEmpty()) {
             Msg.send(p, "gts.hand_empty");
@@ -174,7 +213,7 @@ public final class Gts {
             p.getInventory().removeItem(taken);
             p.getInventory().setChanged();
             Players.saveNow(p);
-            insert(p, "ITEM", ItemSerial.encodeOne(copy), price, "items", ok -> {
+            insert(p, "ITEM", ItemSerial.encodeOne(copy), price, "items", hours, ok -> {
                 if (!ok) Rewards.giveItem(p, copy);
                 else announce(p, copy.getCount() + " × " + copy.getHoverName().getString(), price);
                 done.accept(ok);
@@ -183,6 +222,15 @@ public final class Gts {
     }
 
     public static void listPokemon(ServerPlayer p, int slot, long price, Consumer<Boolean> done) {
+        listPokemon(p, slot, price, durationHours(p), done);
+    }
+
+    public static void listPokemon(ServerPlayer p, int slot, long price, int hours, Consumer<Boolean> done) {
+        if (validDuration(p, hours) < 0) {
+            Msg.send(p, "gts.bad_duration", "choices", choicesText(p));
+            done.accept(false);
+            return;
+        }
         var party = PokemonText.party(p);
         Pokemon pk = slot >= 0 && slot < 6 ? party.get(slot) : null;
         if (pk == null) {
@@ -224,7 +272,7 @@ public final class Gts {
             String json = PokemonText.toJson(pk);
             party.remove(pk);
             PokemonStores.saveNow(p);
-            insert(p, "POKEMON", json, price, cat, ok -> {
+            insert(p, "POKEMON", json, price, cat, hours, ok -> {
                 if (!ok) party.add(pk);
                 else announce(p, PokemonText.title(pk).getString(), price);
                 done.accept(ok);
@@ -249,12 +297,22 @@ public final class Gts {
         }));
     }
 
-    private static void insert(ServerPlayer p, String kind, String data, long price, String category, Consumer<Boolean> done) {
+    public static String durationText(int hours) {
+        return hours % 24 == 0 && hours >= 48 ? (hours / 24) + " j" : hours + " h";
+    }
+
+    public static String choicesText(ServerPlayer p) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        for (int h : durationChoices(p)) out.add(durationText(h) + " (" + taxFor(p, h) + " %)");
+        return String.join(", ", out);
+    }
+
+    private static void insert(ServerPlayer p, String kind, String data, long price, String category, int hours, Consumer<Boolean> done) {
         long now = System.currentTimeMillis();
-        long exp = now + durationHours(p) * 3_600_000L;
+        long exp = now + hours * 3_600_000L;
         UUID seller = p.getUUID();
         String name = p.getGameProfile().getName();
-        int taxPercent = tax(p);
+        int taxPercent = taxFor(p, hours);
         // tant que l'annonce est active, la colonne tax contient le pourcentage du vendeur ; a la vente, le montant preleve
         db().txAsync(c -> Db.insert(c, "INSERT INTO " + db().table("gts_listings")
                         + " (seller, seller_name, kind, data, summary, price, category, created, expires, status, server, tax) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -266,7 +324,7 @@ public final class Gts {
                         done.accept(false);
                         return;
                     }
-                    Msg.send(p, "gts.listed", "money", Economy.format(price), "hours", durationHours(p), "tax", tax(p));
+                    Msg.send(p, "gts.listed", "money", Economy.format(price), "hours", durationText(hours), "tax", taxPercent);
                     done.accept(true);
                 }));
     }

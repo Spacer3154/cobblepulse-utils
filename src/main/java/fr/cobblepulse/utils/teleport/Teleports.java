@@ -152,8 +152,6 @@ public final class Teleports {
 
     public static Loc spawn() {
         if (Cfg.warps.spawn != null && Cfg.warps.spawn.level() != null) return Cfg.warps.spawn;
-        ServerLevel ow = fr.cobblepulse.utils.CobbleUtils.server().overworld();
-        BlockPos sp = ow.getSharedSpawnPos();
-        return new Loc(ow.dimension().location().toString(), sp.getX() + 0.5, sp.getY(), sp.getZ() + 0.5, 0, 0);
+        return Worlds.spawnOf(Worlds.mainLevel());
     }
 }

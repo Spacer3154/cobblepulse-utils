@@ -33,6 +33,15 @@ public final class PlayerData {
     public boolean ecImported;
     /** Temps de jeu cumule (ticks) connu a la derniere deconnexion. */
     public long playtimeTicks;
+    /** Temps de jeu actif (hors AFK) en secondes, pour les recompenses de temps de jeu. */
+    public long activeSeconds;
+    /** Initialise depuis la statistique vanilla a la premiere prise en compte. */
+    public boolean activeSeeded;
+    /** Progression vers la prochaine recompense repetable (secondes actives). */
+    public long repeatSeconds;
+    /** Paliers de temps de jeu reclames / deja signales. */
+    public Set<String> playtimeClaimed = new HashSet<>();
+    public Set<String> playtimeNotified = new HashSet<>();
     public long firstJoin;
     public long lastSeen;
 
@@ -45,6 +54,8 @@ public final class PlayerData {
         if (ignored == null) ignored = new HashSet<>();
         if (muteReason == null) muteReason = "";
         if (dexClaimed == null) dexClaimed = new HashSet<>();
+        if (playtimeClaimed == null) playtimeClaimed = new HashSet<>();
+        if (playtimeNotified == null) playtimeNotified = new HashSet<>();
     }
 
     public long cooldownLeft(String key) {

@@ -46,9 +46,11 @@ public final class Rtp {
     }
 
     public static Loc tryOnce(ServerLevel level, RandomSource rnd) {
-        int min = Cfg.general.teleport.rtpMinRadius;
-        int max = Cfg.general.teleport.rtpMaxRadius;
-        BlockPos center = level.getSharedSpawnPos();
+        var w = Worlds.get(level);
+        int min = w.rtpMinRadius;
+        int max = Math.max(min + 1, w.rtpMaxRadius);
+        BlockPos sp = level.getSharedSpawnPos();
+        BlockPos center = new BlockPos(w.rtpCenterX != null ? w.rtpCenterX : sp.getX(), sp.getY(), w.rtpCenterZ != null ? w.rtpCenterZ : sp.getZ());
         double angle = rnd.nextDouble() * Math.PI * 2;
         double dist = min + rnd.nextDouble() * (max - min);
         int x = center.getX() + (int) (Math.cos(angle) * dist);

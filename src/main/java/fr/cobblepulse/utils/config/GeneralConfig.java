@@ -31,10 +31,6 @@ public final class GeneralConfig {
         public int tpaCooldownSeconds = 10;
         public int backCooldownSeconds = 0;
         public int rtpCooldownSeconds = 300;
-        public int rtpMinRadius = 300;
-        public int rtpMaxRadius = 3000;
-        /** Mondes autorises pour /rtp (le premier est utilise par defaut). */
-        public List<String> rtpWorlds = new ArrayList<>(List.of("minecraft:overworld"));
         public int rtpAttempts = 16;
         public int homeDefaultLimit = 3;
         public int jumpMaxDistance = 120;
@@ -92,9 +88,6 @@ public final class GeneralConfig {
         economy = economy.trim().toUpperCase(java.util.Locale.ROOT);
         if (moneyFormat == null || !moneyFormat.contains("%amount%")) moneyFormat = "%amount% ₽";
         if (teleport == null) teleport = new Teleport();
-        if (teleport.rtpWorlds == null || teleport.rtpWorlds.isEmpty()) teleport.rtpWorlds = new ArrayList<>(List.of("minecraft:overworld"));
-        teleport.rtpMinRadius = Math.max(0, teleport.rtpMinRadius);
-        teleport.rtpMaxRadius = Math.max(teleport.rtpMinRadius + 16, teleport.rtpMaxRadius);
         teleport.rtpAttempts = Math.max(1, Math.min(64, teleport.rtpAttempts));
         teleport.delaySeconds = Math.max(0, teleport.delaySeconds);
         if (chat == null) chat = new Chat();

@@ -36,9 +36,14 @@ public final class WonderTradeMenus {
                     continue;
                 }
                 String why = WonderTrade.refuse(p, pk);
-                g.button(10 + i, PokemonText.icon(pk, why == null ? Msg.format("wt.icon_click") : Msg.format(why, "level", Cfg.wt.minLevel)), pl -> {
+                g.button(10 + i, partyIcon(p, pk, why), pl -> {
                     if (why != null) {
                         Msg.send(pl, why, "level", Cfg.wt.minLevel);
+                        return;
+                    }
+                    long left = WonderTrade.cooldownLeft(pl);
+                    if (left > 0) {
+                        Msg.send(pl, "wt.cooldown", "time", TimeFmt.duration(left));
                         return;
                     }
                     confirm(pl, slot, pk);
@@ -49,8 +54,36 @@ public final class WonderTradeMenus {
                             "mine", st == null ? "?" : st.playerTrades(), "shinies", st == null ? "?" : st.playerShinies(),
                             "cooldown", cd > 0 ? TimeFmt.duration(cd) : Msg.format("wt.ready"))).build());
             g.button(18, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);
+            g.set(22, cooldownIcon(p));
+            // compte a rebours en direct ; les Pokemon redeviennent echangeables a la fin du delai
+            long[] last = {cd};
+            g.every(20, gg -> {
+                long now = WonderTrade.cooldownLeft(p);
+                gg.set(22, cooldownIcon(p));
+                if ((last[0] > 0) != (now > 0)) {
+                    for (int i = 0; i < 6; i++) {
+                        Pokemon pk = party.get(i);
+                        if (pk != null) gg.set(10 + i, partyIcon(p, pk, WonderTrade.refuse(p, pk)), gg.handler(10 + i));
+                    }
+                }
+                last[0] = now;
+            });
             g.open(p);
         }));
+    }
+
+    static net.minecraft.world.item.ItemStack cooldownIcon(ServerPlayer p) {
+        long cd = WonderTrade.cooldownLeft(p);
+        return ItemBuilder.of(cd > 0 ? Items.CLOCK : Items.LIME_DYE)
+                .name(cd > 0 ? Msg.format("wt.cooldown_name", "time", TimeFmt.duration(cd)) : Msg.format("wt.cooldown_ready_name"))
+                .lore(WonderTrade.cooldownBar(p), Msg.format("wt.cooldown_lore", "time", TimeFmt.duration(Cfg.wt.cooldownSeconds * 1000L)))
+                .build();
+    }
+
+    private static net.minecraft.world.item.ItemStack partyIcon(ServerPlayer p, Pokemon pk, String why) {
+        if (why != null) return PokemonText.icon(pk, Msg.format(why, "level", Cfg.wt.minLevel));
+        long cd = WonderTrade.cooldownLeft(p);
+        return PokemonText.icon(pk, cd > 0 ? Msg.format("wt.icon_wait", "time", TimeFmt.duration(cd)) : Msg.format("wt.icon_click"));
     }
 
     private static void confirm(ServerPlayer p, int slot, Pokemon pk) {
@@ -64,6 +97,8 @@ public final class WonderTradeMenus {
                 Gui r = new Gui(3, Msg.format("wt.result_title"));
                 r.fill(Gui.pane());
                 r.set(13, PokemonText.icon(received));
+                r.set(4, cooldownIcon(pl));
+                r.every(20, rr -> rr.set(4, cooldownIcon(pl)));
                 r.button(22, ItemBuilder.of(Items.ARROW).name(Msg.format("wt.again")).build(), WonderTradeMenus::open);
                 r.open(pl);
             });

@@ -38,6 +38,10 @@ public final class LockedMenu extends ChestMenu {
         sendAllDataToRemote();
     }
 
+    Gui gui() {
+        return gui;
+    }
+
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         return ItemStack.EMPTY;

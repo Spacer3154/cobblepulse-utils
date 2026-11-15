@@ -15,7 +15,7 @@ import java.util.List;
  * Fenetre de saisie (prix, nom, duree, commande...) affichee par-dessus un menu CobblePulse. Valider envoie la reponse
  * au serveur ; Annuler ou Echap revient au menu.
  */
-public final class PromptScreen extends Screen {
+public final class PromptScreen extends Screen implements Overlay {
     Screen parent;
     private final Component prompt;
     private EditBox box;
@@ -100,6 +100,16 @@ public final class PromptScreen extends Screen {
         o.addProperty("cancel", true);
         Ui.send("prompt_answer", o);
         if (minecraft != null) minecraft.setScreen(parent instanceof MenuScreen ? parent : null);
+    }
+
+    @Override
+    public Screen parentScreen() {
+        return parent;
+    }
+
+    @Override
+    public void setParentScreen(Screen s) {
+        parent = s;
     }
 
     @Override

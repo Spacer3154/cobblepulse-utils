@@ -26,8 +26,35 @@ public final class MarketConfig {
         public boolean keepOnePartyMember = true;
         public boolean broadcastNewListings = true;
         public long broadcastMinPrice = 1000;
+        /**
+         * Durees proposees a la mise en vente. Jusqu'a la duree incluse du grade (cobblepulse.gts.duration.N, sinon
+         * default_duration_hours), pas de supplement ; au-dela, la taxe du grade est augmentee de extra_tax.
+         */
+        public List<DurationOption> durations = new ArrayList<>();
+        /** Taxe totale maximale (grade + supplement de duree). */
+        public int maxTax = 50;
+
+        public static final class DurationOption {
+            public int hours;
+            public int extraTax;
+
+            public DurationOption() {}
+
+            public DurationOption(int hours, int extraTax) {
+                this.hours = hours;
+                this.extraTax = extraTax;
+            }
+        }
 
         public void normalize() {
+            if (durations == null || durations.isEmpty()) {
+                durations = new ArrayList<>(List.of(new DurationOption(24, 0), new DurationOption(48, 0), new DurationOption(72, 2),
+                        new DurationOption(168, 5), new DurationOption(336, 10)));
+            }
+            durations.removeIf(d -> d == null || d.hours <= 0);
+            for (DurationOption d : durations) d.extraTax = Math.max(0, Math.min(100, d.extraTax));
+            durations.sort(java.util.Comparator.comparingInt(d -> d.hours));
+            maxTax = Math.max(0, Math.min(100, maxTax));
             if (priceFloors == null) priceFloors = new LinkedHashMap<>();
             Map<String, Long> def = new LinkedHashMap<>();
             def.put("items", 1L);

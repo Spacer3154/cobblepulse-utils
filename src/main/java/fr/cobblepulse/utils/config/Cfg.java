@@ -26,6 +26,7 @@ import java.util.function.Supplier;
  *                          warps.json     kits.json      dexrewards.json
  *                          shop.json + shop/&lt;categorie&gt;.json
  *                          gts.json  sts.json  wondertrade.json  alerts.json  boss.json
+ *                          worlds.json  playtimerewards.json
  * </pre>
  * Rechargement a chaud : /cp reload.
  */
@@ -44,6 +45,8 @@ public final class Cfg {
     public static MarketConfig.WonderTrade wt = new MarketConfig.WonderTrade();
     public static AlertsConfig alerts = new AlertsConfig();
     public static BossConfig boss = new BossConfig();
+    public static WorldsConfig worlds = WorldsConfig.defaults();
+    public static PlaytimeConfig playtime = PlaytimeConfig.defaults();
     public static int revision;
 
     private Cfg() {}
@@ -88,6 +91,10 @@ public final class Cfg {
         alerts.normalize();
         boss = load(u.resolve("boss.json"), BossConfig.class, BossConfig::new);
         boss.normalize();
+        worlds = load(u.resolve("worlds.json"), WorldsConfig.class, WorldsConfig::defaults);
+        worlds.normalize();
+        playtime = load(u.resolve("playtimerewards.json"), PlaytimeConfig.class, PlaytimeConfig::defaults);
+        playtime.normalize();
         // re-ecriture des fichiers completes (nouvelles cles ajoutees, valeurs corrigees)
         save("general.json", general);
         save("commands.json", commands);
@@ -100,6 +107,8 @@ public final class Cfg {
         save("wondertrade.json", wt);
         save("alerts.json", alerts);
         save("boss.json", boss);
+        save("worlds.json", worlds);
+        save("playtimerewards.json", playtime);
         revision++;
     }
 

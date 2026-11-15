@@ -45,14 +45,9 @@ public final class Loc {
         return Level.OVERWORLD.location().toString().equals(world);
     }
 
+    /** Nom du monde (worlds.json), sans couleurs. */
     public String shortWorld() {
-        String w = world.startsWith("minecraft:") ? world.substring(10) : world;
-        return switch (w) {
-            case "overworld" -> "Monde";
-            case "the_nether" -> "Nether";
-            case "the_end" -> "End";
-            default -> w;
-        };
+        return fr.cobblepulse.utils.teleport.Worlds.plainName(world);
     }
 
     public String coords() {

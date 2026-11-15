@@ -169,6 +169,7 @@ public final class WikiService {
         List<String> weather = new ArrayList<>();
         List<String> blocks = new ArrayList<>();
         List<String> structures = new ArrayList<>();
+        List<String> dims = new ArrayList<>();
         Float minY = null;
         Float maxY = null;
         Boolean sky = null;
@@ -191,6 +192,12 @@ public final class WikiService {
             if (c instanceof AreaTypeSpawningCondition<?> a && a.getNeededNearbyBlocks() != null) {
                 for (RegistryLikeCondition<?> b : a.getNeededNearbyBlocks()) blocks.add(cond(b));
             }
+            if (c.getDimensions() != null) {
+                for (ResourceLocation dim : c.getDimensions()) {
+                    String n = fr.cobblepulse.utils.teleport.Worlds.plainName(dim.toString());
+                    if (!dims.contains(n)) dims.add(n);
+                }
+            }
             if (c.getStructures() != null) {
                 for (var e : c.getStructures()) structures.add(e.map(ResourceLocation::toString, tk -> "#" + tk.location()));
             }
@@ -199,6 +206,7 @@ public final class WikiService {
         o.add("weather", toArray(weather));
         o.add("blocks", toArray(blocks));
         o.add("structures", toArray(structures));
+        o.add("dimensions", toArray(dims));
         if (minY != null) o.addProperty("min_y", minY.intValue());
         if (maxY != null) o.addProperty("max_y", maxY.intValue());
         if (sky != null) o.addProperty("sky", sky);

@@ -23,7 +23,7 @@ import java.util.List;
 
 /** Panneau Staff (/cp admin) : acces aux editeurs selon les noeuds cobblepulse.admin.*. */
 public final class StaffPanel {
-    private static final String[] NODES = {"menu", "shop", "kits", "warps", "boss", "gts", "dexrewards"};
+    private static final String[] NODES = {"menu", "shop", "kits", "warps", "boss", "gts", "dexrewards", "worlds", "playtime"};
 
     private StaffPanel() {}
 
@@ -37,7 +37,7 @@ public final class StaffPanel {
             Msg.send(p, "general.no_permission");
             return;
         }
-        Gui g = new Gui(4, Msg.format("staff.panel_title"));
+        Gui g = new Gui(5, Msg.format("staff.panel_title"));
         g.fill(Gui.pane());
         if (Perms.admin(p, "shop")) g.button(10, ItemBuilder.of(Items.EMERALD).name(Msg.format("staff.panel_shop")).lore(Msg.format("staff.panel_shop_lore")).build(), ShopMenus::editor);
         if (Perms.admin(p, "kits")) g.button(11, ItemBuilder.of(Items.CHEST_MINECART).name(Msg.format("staff.panel_kits")).lore(Msg.format("staff.panel_kits_lore")).build(), Kits::editor);
@@ -83,7 +83,11 @@ public final class StaffPanel {
             fr.cobblepulse.utils.gui.Gui.close(pl);
             pl.getServer().getCommands().performPrefixedCommand(pl.createCommandSourceStack(), "cp reload");
         });
-        g.button(27, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);
+        if (Perms.admin(p, "worlds")) g.button(29, ItemBuilder.of(Items.FILLED_MAP).name(Msg.format("staff.panel_worlds"))
+                .lore(Msg.format("staff.panel_worlds_lore")).hideExtra().build(), fr.cobblepulse.utils.teleport.Worlds::editor);
+        if (Perms.admin(p, "playtime")) g.button(30, ItemBuilder.of(Items.CLOCK).name(Msg.format("staff.panel_playtime"))
+                .lore(Msg.format("staff.panel_playtime_lore")).build(), fr.cobblepulse.utils.playtime.PlaytimeRewards::editor);
+        g.button(40, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);
         g.open(p);
     }
 

@@ -32,6 +32,21 @@ public final class ChatInput {
         Msg.send(p, "general.input_hint");
     }
 
+    /**
+     * Selecteur (objet, Pokemon) : ecran dedie avec le mod cote client, sinon question dans le chat ({@code chatKey}).
+     * La valeur choisie arrive dans {@code handler} comme une reponse saisie.
+     */
+    static void pick(ServerPlayer p, String kind, String titleKey, String chatKey, String initial, Consumer<String> handler, Runnable onCancel) {
+        PENDING.put(p.getUUID(), new Pending(handler, onCancel, System.currentTimeMillis() + 300_000));
+        if (Screens.enabled(p)) {
+            Screens.pick(p, kind, Pickers.title(titleKey), initial);
+            return;
+        }
+        p.closeContainer();
+        Msg.send(p, chatKey);
+        Msg.send(p, "general.input_hint");
+    }
+
     /** Reponse saisie dans la fenetre de l'ecran client. */
     public static void answer(ServerPlayer p, String text, boolean cancel) {
         if (!PENDING.containsKey(p.getUUID())) return;

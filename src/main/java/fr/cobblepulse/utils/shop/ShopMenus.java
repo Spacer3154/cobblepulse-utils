@@ -14,6 +14,7 @@ import fr.cobblepulse.utils.core.TextUtil;
 import fr.cobblepulse.utils.gui.ChatInput;
 import fr.cobblepulse.utils.gui.Gui;
 import fr.cobblepulse.utils.gui.Paged;
+import fr.cobblepulse.utils.gui.Pickers;
 import fr.cobblepulse.utils.hub.Hub;
 import fr.cobblepulse.utils.integration.Economy;
 import fr.cobblepulse.utils.pokemon.MonSpec;
@@ -249,53 +250,61 @@ public final class ShopMenus {
                     .lore(Msg.format("shop.editor_entry_click")).build(), (pl, click) -> editEntry(pl, c, e)));
         }
         Paged.open(p, Msg.format("shop.editor_cat_title", "category", c.id), entries, page, ShopMenus::editor, gui -> {
-            gui.button(45, ItemBuilder.of(Items.CHEST).name(Msg.format("shop.editor_add_item")).lore(Msg.format("shop.editor_add_item_lore")).build(), pl -> {
-                ItemStack hand = pl.getMainHandItem();
-                if (hand.isEmpty()) {
-                    Msg.send(pl, "warps.edit_icon_empty");
+            // objet : choisi dans la liste de tous les objets (clic) ou objet en main avec son NBT (clic droit / Maj)
+            gui.button(45, ItemBuilder.of(Items.CHEST).name(Msg.format("shop.editor_add_item")).lore(Msg.format("shop.editor_add_item_lore")).build(), (pl, click) -> {
+                if (click.right() || click.shift()) {
+                    ItemStack hand = pl.getMainHandItem();
+                    if (hand.isEmpty()) {
+                        Msg.send(pl, "warps.edit_icon_empty");
+                        return;
+                    }
+                    ShopConfig.Entry e = newItemEntry(c, ItemSerial.toSnbt(hand), Reg.id(hand.getItem()));
+                    askPrices(pl, c, e);
                     return;
                 }
-                ShopConfig.Entry e = new ShopConfig.Entry();
-                e.id = Reg.id(hand.getItem()).replace(':', '_') + "_" + c.entries.size();
-                e.item = ItemSerial.toSnbt(hand);
-                c.entries.add(e);
-                ChatInput.ask(pl, "shop.ask_prices", txt -> {
-                    applyPrices(e, txt);
-                    Cfg.saveShopCategory(c);
-                    editEntry(pl, c, e);
+                Pickers.item(pl, "shop.pick_item", id -> ChatInput.ask(pl, "shop.ask_lot", txt -> {
+                    Long n = ChatInput.parseAmount(txt);
+                    ShopConfig.Entry e = newItemEntry(c, id + " " + (n == null || n < 1 ? 1 : Math.min(64, n)), id);
+                    askPrices(pl, c, e);
                 }, () -> {
-                    Cfg.saveShopCategory(c);
-                    editEntry(pl, c, e);
-                });
+                    ShopConfig.Entry e = newItemEntry(c, id + " 1", id);
+                    askPrices(pl, c, e);
+                }), () -> editCategory(pl, c, page));
             });
-            gui.button(46, ItemBuilder.of(Items.COMMAND_BLOCK).name(Msg.format("shop.editor_add_command")).build(), pl -> ChatInput.ask(pl, "shop.ask_command_entry", txt -> {
-                ShopConfig.Entry e = new ShopConfig.Entry();
-                e.type = "command";
-                e.id = "commande_" + c.entries.size();
-                e.item = "minecraft:paper";
-                e.commands = new ArrayList<>(List.of(txt.startsWith("/") ? txt.substring(1) : txt));
-                e.display = "&f/" + e.commands.get(0);
-                c.entries.add(e);
-                Cfg.saveShopCategory(c);
-                editEntry(pl, c, e);
-            }, () -> editCategory(pl, c, page)));
-            gui.button(47, ItemBuilder.of(Items.EGG).name(Msg.format("shop.editor_add_pokemon")).lore(Msg.format("shop.editor_add_pokemon_lore")).build(),
-                    pl -> ChatInput.ask(pl, "shop.ask_pokemon", txt -> {
-                        MonSpec m = MonSpecParser.parse(txt);
-                        if (m == null) {
-                            Msg.send(pl, "shop.bad_pokemon");
-                            editCategory(pl, c, page);
-                            return;
-                        }
+            // commande : texte, puis icone choisie, puis prix
+            gui.button(46, ItemBuilder.of(Items.COMMAND_BLOCK).name(Msg.format("shop.editor_add_command")).lore(Msg.format("shop.editor_add_command_lore")).build(),
+                    pl -> ChatInput.ask(pl, "shop.ask_command_entry", txt -> {
                         ShopConfig.Entry e = new ShopConfig.Entry();
-                        e.type = "pokemon";
-                        e.id = "pokemon_" + c.entries.size();
-                        e.pokemon = m;
-                        e.buy = 10000;
+                        e.type = "command";
+                        e.id = uniqueId(c, "commande");
+                        e.item = "minecraft:paper";
+                        e.commands = new ArrayList<>(List.of(txt.startsWith("/") ? txt.substring(1) : txt));
+                        e.display = "&f/" + e.commands.get(0);
+                        e.buy = 1000;
                         c.entries.add(e);
                         Cfg.saveShopCategory(c);
-                        editEntry(pl, c, e);
+                        Pickers.item(pl, "shop.pick_icon", id -> {
+                            e.item = id;
+                            Cfg.saveShopCategory(c);
+                            askPrices(pl, c, e);
+                        }, () -> askPrices(pl, c, e));
                     }, () -> editCategory(pl, c, page)));
+            // Pokemon : createur (clic) ou copie d'un Pokemon de l'equipe (clic droit)
+            gui.button(47, ItemBuilder.of(Items.EGG).name(Msg.format("shop.editor_add_pokemon")).lore(Msg.format("shop.editor_add_pokemon_lore")).build(), (pl, click) -> {
+                if (click.right() || click.shift()) {
+                    chooseFromParty(pl, c, null, page);
+                    return;
+                }
+                Pickers.pokemon(pl, "shop.pick_pokemon", "", txt -> {
+                    MonSpec m = MonSpecParser.parse(txt);
+                    if (m == null) {
+                        Msg.send(pl, "shop.bad_pokemon");
+                        editCategory(pl, c, page);
+                        return;
+                    }
+                    askPrices(pl, c, newPokemonEntry(c, m));
+                }, () -> editCategory(pl, c, page));
+            });
             gui.button(48, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), ShopMenus::editor);
             gui.button(50, ItemBuilder.of(c.enabled ? Items.LIME_DYE : Items.GRAY_DYE).name(Msg.format(c.enabled ? "shop.editor_cat_open" : "shop.editor_cat_closed")).build(), pl -> {
                 c.enabled = !c.enabled;
@@ -305,6 +314,74 @@ public final class ShopMenus {
             gui.button(51, ItemBuilder.of(Reg.stack(c.icon)).name(Msg.format("shop.editor_cat_settings")).lore(Msg.format("shop.editor_cat_settings_lore")).build(),
                     pl -> categorySettings(pl, c));
         });
+    }
+
+    private static String uniqueId(ShopConfig.Category c, String base) {
+        String b = base.replace(':', '_').replaceAll("[^a-z0-9_\\-]", "_");
+        String id = b;
+        int k = 2;
+        while (true) {
+            final String cand = id;
+            if (c.entries.stream().noneMatch(x -> x.id.equals(cand))) return id;
+            id = b + "_" + k++;
+        }
+    }
+
+    private static ShopConfig.Entry newItemEntry(ShopConfig.Category c, String snbt, String itemId) {
+        ShopConfig.Entry e = new ShopConfig.Entry();
+        e.id = uniqueId(c, itemId);
+        e.item = snbt;
+        c.entries.add(e);
+        Cfg.saveShopCategory(c);
+        return e;
+    }
+
+    private static ShopConfig.Entry newPokemonEntry(ShopConfig.Category c, MonSpec m) {
+        ShopConfig.Entry e = new ShopConfig.Entry();
+        e.type = "pokemon";
+        e.id = uniqueId(c, "pokemon_" + m.species);
+        e.pokemon = m;
+        e.buy = 10000;
+        c.entries.add(e);
+        Cfg.saveShopCategory(c);
+        return e;
+    }
+
+    /** Derniere etape d'un ajout : prix d'achat et de revente, puis fiche de l'article. */
+    private static void askPrices(ServerPlayer p, ShopConfig.Category c, ShopConfig.Entry e) {
+        ChatInput.ask(p, "shop.ask_prices", txt -> {
+            applyPrices(e, txt);
+            Cfg.saveShopCategory(c);
+            editEntry(p, c, e);
+        }, () -> editEntry(p, c, e));
+    }
+
+    /** Copie d'un Pokemon de l'equipe dans un article (nouvel article si entry == null). */
+    private static void chooseFromParty(ServerPlayer p, ShopConfig.Category c, ShopConfig.Entry entry, int page) {
+        Gui g = new Gui(3, Msg.format("shop.editor_party_title"));
+        g.fill(Gui.pane());
+        var party = fr.cobblepulse.utils.pokemon.PokemonText.party(p);
+        for (int i = 0; i < 6; i++) {
+            var pk = party.get(i);
+            if (pk == null) {
+                g.set(10 + i, ItemBuilder.of(Items.LIGHT_GRAY_STAINED_GLASS_PANE).name(Msg.format("gts.empty_slot", "slot", i + 1)).build());
+                continue;
+            }
+            g.button(10 + i, fr.cobblepulse.utils.pokemon.PokemonText.icon(pk, Msg.format("shop.editor_party_click")), pl -> {
+                MonSpec m = MonSpecParser.of(pk);
+                if (entry == null) askPrices(pl, c, newPokemonEntry(c, m));
+                else {
+                    entry.pokemon = m;
+                    Cfg.saveShopCategory(c);
+                    editEntry(pl, c, entry);
+                }
+            });
+        }
+        g.button(18, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), pl -> {
+            if (entry == null) editCategory(pl, c, page);
+            else editEntry(pl, c, entry);
+        });
+        g.open(p);
     }
 
     private static void applyPrices(ShopConfig.Entry e, String txt) {
@@ -323,10 +400,18 @@ public final class ShopMenus {
         Gui g = new Gui(3, Msg.format("shop.editor_cat_settings"));
         g.fill(Gui.pane());
         g.set(4, catIcon(c));
-        g.button(10, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("warps.edit_icon")).build(), pl -> {
-            if (!pl.getMainHandItem().isEmpty()) c.icon = Reg.id(pl.getMainHandItem().getItem());
-            Cfg.saveShopCategory(c);
-            categorySettings(pl, c);
+        g.button(10, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("warps.edit_icon")).lore(Msg.format("shop.editor_icon_lore")).build(), (pl, click) -> {
+            if (click.right() || click.shift()) {
+                if (!pl.getMainHandItem().isEmpty()) c.icon = Reg.id(pl.getMainHandItem().getItem());
+                Cfg.saveShopCategory(c);
+                categorySettings(pl, c);
+                return;
+            }
+            Pickers.item(pl, "shop.pick_icon", id -> {
+                c.icon = id;
+                Cfg.saveShopCategory(c);
+                categorySettings(pl, c);
+            }, () -> categorySettings(pl, c));
         });
         g.button(11, ItemBuilder.of(Items.NAME_TAG).name(Msg.format("warps.edit_name")).build(), pl -> ChatInput.ask(pl, "kits.ask_display", txt -> {
             c.name = txt;
@@ -394,21 +479,56 @@ public final class ShopMenus {
             editEntry(pl, c, e);
         }, () -> editEntry(pl, c, e)));
         if ("item".equals(e.type)) {
-            g.button(14, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("shop.editor_replace_item")).build(), pl -> {
-                if (!pl.getMainHandItem().isEmpty()) e.item = ItemSerial.toSnbt(pl.getMainHandItem());
-                Cfg.saveShopCategory(c);
-                editEntry(pl, c, e);
+            g.button(14, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("shop.editor_replace_item")).lore(Msg.format("shop.editor_replace_item_lore")).build(), (pl, click) -> {
+                if (click.right() || click.shift()) {
+                    if (!pl.getMainHandItem().isEmpty()) e.item = ItemSerial.toSnbt(pl.getMainHandItem());
+                    Cfg.saveShopCategory(c);
+                    editEntry(pl, c, e);
+                    return;
+                }
+                int count = Math.max(1, ShopService.stack(e).getCount());
+                Pickers.item(pl, "shop.pick_item", id -> {
+                    e.item = id + " " + count;
+                    Cfg.saveShopCategory(c);
+                    editEntry(pl, c, e);
+                }, () -> editEntry(pl, c, e));
             });
-        } else if ("pokemon".equals(e.type)) {
-            g.button(14, ItemBuilder.of(Items.EGG).name(Msg.format("shop.editor_edit_pokemon")).lore(Msg.format("shop.editor_add_pokemon_lore")).build(),
-                    pl -> ChatInput.ask(pl, "shop.ask_pokemon", txt -> {
-                        MonSpec m = MonSpecParser.parse(txt);
-                        if (m != null) e.pokemon = m;
-                        else Msg.send(pl, "shop.bad_pokemon");
+            g.button(17, ItemBuilder.of(Items.BUNDLE).name(Msg.format("shop.editor_lot", "count", Math.max(1, ShopService.stack(e).getCount()))).build(),
+                    pl -> ChatInput.ask(pl, "shop.ask_lot", txt -> {
+                        Long n = ChatInput.parseAmount(txt);
+                        ItemStack st = ShopService.stack(e);
+                        if (n != null && n > 0 && !st.isEmpty()) {
+                            st.setCount((int) Math.min(st.getMaxStackSize(), n));
+                            e.item = ItemSerial.toSnbt(st);
+                        }
                         Cfg.saveShopCategory(c);
                         editEntry(pl, c, e);
                     }, () -> editEntry(pl, c, e)));
+        } else if ("pokemon".equals(e.type)) {
+            g.button(14, ItemBuilder.of(Items.EGG).name(Msg.format("shop.editor_edit_pokemon")).lore(Msg.format("shop.editor_edit_pokemon_lore")).build(), (pl, click) -> {
+                if (click.right() || click.shift()) {
+                    chooseFromParty(pl, c, e, 0);
+                    return;
+                }
+                Pickers.pokemon(pl, "shop.pick_pokemon", MonSpecParser.format(e.pokemon), txt -> {
+                    MonSpec m = MonSpecParser.parse(txt);
+                    if (m != null) e.pokemon = m;
+                    else Msg.send(pl, "shop.bad_pokemon");
+                    Cfg.saveShopCategory(c);
+                    editEntry(pl, c, e);
+                }, () -> editEntry(pl, c, e));
+            });
+            g.button(17, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("shop.editor_icon")).build(), pl -> Pickers.item(pl, "shop.pick_icon", id -> {
+                e.item = id;
+                Cfg.saveShopCategory(c);
+                editEntry(pl, c, e);
+            }, () -> editEntry(pl, c, e)));
         } else {
+            g.button(17, ItemBuilder.of(Items.ITEM_FRAME).name(Msg.format("shop.editor_icon")).build(), pl -> Pickers.item(pl, "shop.pick_icon", id -> {
+                e.item = id;
+                Cfg.saveShopCategory(c);
+                editEntry(pl, c, e);
+            }, () -> editEntry(pl, c, e)));
             g.button(14, ItemBuilder.of(Items.COMMAND_BLOCK).name(Msg.format("kits.edit_commands", "count", e.commands.size()))
                     .lore(e.commands.stream().map(x -> "&7/" + x).toList()).lore(Msg.format("kits.edit_commands_lore")).build(), (pl, click) -> {
                 if (click.right() || click.shift()) {

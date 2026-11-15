@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
+import java.util.List;
 
 /**
  * Test de bout en bout (CI) : le client se connecte au serveur de test, ouvre le Hub, le Wiki (Dracaufeu : chaque onglet)
@@ -140,6 +141,178 @@ final class ClientSelfTest {
         });
         STEPS.add(mc -> command(mc, "gts"));
         STEPS.add(mc -> shot(mc, "live_36_gts"));
+
+        // ---------------------------------------------------------------- Mega-Evolutions dans le Wiki
+        STEPS.add(mc -> command(mc, "wiki"));
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w) {
+                w.setMegaOnly(true);
+                int n = w.visibleIds().size();
+                check("wiki_filtre_mega", n > 0 && n < 300 && w.visibleIds().contains("cobblemon:charizard"), n + " especes");
+                var s = PokemonSpecies.getByIdentifier(ResourceLocation.parse("cobblemon:charizard"));
+                if (s != null) w.select(s);
+            } else check("wiki_filtre_mega", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w) {
+                List<String> megas = w.megaNames();
+                check("wiki_formes_mega", megas.size() >= 2, String.valueOf(megas));
+                if (!megas.isEmpty()) w.setForm(megas.get(0));
+                w.setTab(0);
+            }
+        });
+        STEPS.add(mc -> shot(mc, "live_40_wiki_mega"));
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w) w.setTab(1);
+        });
+        STEPS.add(mc -> {
+            shot(mc, "live_41_wiki_mega_evolutions");
+            if (mc.screen instanceof WikiScreen w) w.setMegaOnly(false);
+        });
+        // ---------------------------------------------------------------- temps de jeu, Echange Miracle
+        STEPS.add(mc -> command(mc, "ptr"));
+        STEPS.add(mc -> {
+            check("ecran_temps_de_jeu", menu(mc) != null && titled(mc, "Temps de jeu"), screenName(mc));
+            shot(mc, "live_42_temps_de_jeu");
+        });
+        STEPS.add(mc -> command(mc, "wondertrade"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("wt_etat_delai", m != null && m.barNames().stream().anyMatch(n -> n.contains("change")), m == null ? screenName(mc) : String.valueOf(m.barNames()));
+            shot(mc, "live_43_wondertrade");
+        });
+        // ---------------------------------------------------------------- GTS : duree plus longue, taxe plus forte
+        STEPS.add(mc -> {
+            mc.player.getInventory().selected = 0;
+            mc.player.connection.sendCommand("give @s minecraft:diamond 5");
+        });
+        STEPS.add(mc -> command(mc, "gts"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("gts_vendre_objet", m != null && m.clickNamed("Vendre l'objet", "left"), screenName(mc));
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PromptScreen ps) ps.submit("1500");
+            else check("gts_saisie_prix", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("gts_choix_duree", m != null && titled(mc, "Durée") && m.entryNames().stream().anyMatch(n -> n.contains("7 j")), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_44_gts_duree");
+            if (m != null) m.clickNamed("7 j", "left");
+        });
+        STEPS.add(mc -> command(mc, "gts listings"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("gts_annonce_7_jours", m != null && m.entryNames().stream().anyMatch(n -> n.toLowerCase().contains("diamant")), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_45_gts_annonce");
+        });
+        // ---------------------------------------------------------------- Boutique : objet et Pokemon sans les avoir
+        STEPS.add(mc -> command(mc, "cp admin"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Shop Admin", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Ressources", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("editeur_categorie", m != null && titled(mc, "Catégorie"), screenName(mc));
+            if (m != null) m.clickNamed("Ajouter un objet", "left");
+        });
+        STEPS.add(mc -> {
+            boolean ok = mc.screen instanceof ItemPickerScreen;
+            check("selecteur_objets", ok, screenName(mc));
+            if (mc.screen instanceof ItemPickerScreen ip) ip.setQuery("diamant");
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof ItemPickerScreen ip) {
+                check("selecteur_recherche", ip.visibleCount() > 0 && ip.visibleCount() < 60, String.valueOf(ip.visibleCount()));
+                ip.choose("minecraft:diamond");
+            }
+            shot(mc, "live_46_selecteur_objets");
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof ItemPickerScreen ip) ip.submit();
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PromptScreen ps) ps.submit("3");
+            else check("saisie_lot", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PromptScreen ps) ps.submit("500 100");
+            else check("saisie_prix_article", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            check("article_objet_cree", menu(mc) != null && titled(mc, "Article"), screenName(mc));
+            shot(mc, "live_47_article_objet");
+            if (menu(mc) != null) menu(mc).clickNamed("Retour", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Ajouter un Pokémon", "left");
+        });
+        STEPS.add(mc -> {
+            check("createur_pokemon", mc.screen instanceof PokemonBuilderScreen, screenName(mc));
+            if (mc.screen instanceof PokemonBuilderScreen pb) {
+                pb.chooseSpecies("charizard");
+                pb.setShinyFlag(true);
+                pb.setLevel(50);
+                pb.setIvsPerfect();
+                check("createur_formes", pb.formCount() > 1, String.valueOf(pb.formCount()));
+            }
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PokemonBuilderScreen pb) CobbleUtils.LOG.info("[CobblePulse-Utils][livetest] fiche : {}", pb.spec());
+            shot(mc, "live_48_createur_pokemon");
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PokemonBuilderScreen pb) pb.submit();
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof PromptScreen ps) ps.submit("25000");
+            else check("saisie_prix_pokemon", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            check("article_pokemon_cree", menu(mc) != null && titled(mc, "Article"), screenName(mc));
+            shot(mc, "live_49_article_pokemon");
+        });
+        // ---------------------------------------------------------------- Mondes et dimensions
+        STEPS.add(mc -> command(mc, "cp admin"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Mondes", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("editeur_mondes", m != null && titled(mc, "Mondes") && m.entryNames().stream().anyMatch(n -> n.contains("Nether")), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_50_editeur_mondes");
+            if (m != null) m.clickNamed("Nether", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("editeur_monde", m != null && titled(mc, "Nether"), screenName(mc));
+            shot(mc, "live_51_editeur_nether");
+            if (m != null) m.clickNamed("Menu Mondes", "left");
+        });
+        STEPS.add(mc -> command(mc, "mondes"));
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("menu_mondes", m != null && m.entryNames().stream().anyMatch(n -> n.contains("Nether")), m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_52_mondes");
+            if (m != null) m.clickNamed("Nether", "left");
+        });
+        STEPS.add(mc -> {
+        });
+        STEPS.add(mc -> {
+        });
+        STEPS.add(mc -> {
+            boolean nether = mc.level != null && mc.level.dimension() == net.minecraft.world.level.Level.NETHER;
+            check("teleportation_nether", nether, mc.level == null ? "-" : mc.level.dimension().location().toString());
+            shot(mc, "live_53_nether");
+        });
     }
 
     private static void tick(Minecraft mc) {

@@ -93,6 +93,20 @@ public final class WonderTrade {
         return PlayerStore.get(p).cooldownLeft("wondertrade");
     }
 
+    /** Ligne « Prochain echange : ... » (Hub, menu, resultat). */
+    public static String cooldownLine(ServerPlayer p) {
+        long cd = cooldownLeft(p);
+        return cd > 0 ? Msg.format("wt.cooldown_line", "time", TimeFmt.duration(cd)) : Msg.format("wt.cooldown_ready");
+    }
+
+    /** Barre de progression du delai (10 cases). */
+    public static String cooldownBar(ServerPlayer p) {
+        long cd = cooldownLeft(p);
+        long total = Math.max(1, Cfg.wt.cooldownSeconds * 1000L);
+        int done = cd <= 0 ? 10 : (int) Math.max(0, Math.min(10, Math.round((total - cd) * 10.0 / total)));
+        return "&a" + "■".repeat(done) + "&8" + "■".repeat(10 - done);
+    }
+
     /** Verifications du Pokemon depose (message d'erreur, ou null si accepte). */
     public static String refuse(ServerPlayer p, Pokemon pk) {
         var party = PokemonText.party(p);

@@ -82,6 +82,13 @@ public final class Tpa {
             Msg.send(target, "tpa.offline");
             return 0;
         }
+        // monde d'arrivee : celui de la cible (/tpa) ou du demandeur (/tpahere)
+        String dest = Worlds.id(r.here ? from.serverLevel() : target.serverLevel());
+        if (!Worlds.tpaInto(dest)) {
+            Msg.send(target, "tpa.world_denied", "world", Worlds.plainName(dest));
+            Msg.send(from, "tpa.world_denied", "world", Worlds.plainName(dest));
+            return 0;
+        }
         Msg.send(target, "tpa.accepted", "player", from.getGameProfile().getName());
         Msg.send(from, "tpa.accepted_by", "player", target.getGameProfile().getName());
         if (r.here) {

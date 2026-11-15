@@ -110,6 +110,15 @@ public final class Screens {
         send(p, "prompt", o);
     }
 
+    /** Selecteur client : objet (tous les objets) ou Pokemon (createur de fiche). */
+    public static void pick(ServerPlayer p, String kind, String legacyTitle, String initial) {
+        JsonObject o = new JsonObject();
+        o.addProperty("kind", kind);
+        o.addProperty("title", Component.Serializer.toJson(TextUtil.legacy(legacyTitle), p.registryAccess()));
+        o.addProperty("value", initial == null ? "" : initial);
+        send(p, "pick", o);
+    }
+
     static void queueRefresh(Gui g) {
         if (g.resendQueued) return;
         g.resendQueued = true;

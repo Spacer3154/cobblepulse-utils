@@ -55,13 +55,13 @@ public final class TeleportCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> d) {
         Cmd.player(d, "spawn", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, p ->
-                Teleports.teleport(p, Teleports.spawn(), Msg.format("teleport.spawn_label"), null))));
-        Cmd.admin(d, "setspawn", "setspawn", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, p -> {
-            Cfg.warps.spawn = Loc.of(p);
-            Cfg.save("warps.json", Cfg.warps);
-            p.serverLevel().setDefaultSpawnPos(p.blockPosition(), p.getYRot());
-            Msg.send(p, "teleport.spawn_set", "coords", Cfg.warps.spawn.coords());
-        })));
+                        Teleports.teleport(p, Worlds.spawnFor(p), Msg.format("teleport.spawn_label"), null)))
+                .then(argument("monde", DimensionArgument.dimension()).executes(ctx -> Cmd.asPlayer(ctx, p -> {
+                    Worlds.go(p, Worlds.id(DimensionArgument.getDimension(ctx, "monde")));
+                    return 1;
+                }))));
+        // spawn du monde courant (et spawn global dans le monde principal)
+        Cmd.admin(d, "setspawn", "setspawn", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, Worlds::setSpawn)));
 
         // Warps
         Cmd.player(d, "warp", l -> Cmd.lit(l).executes(ctx -> Cmd.run(ctx, WarpMenus::open))
@@ -198,14 +198,22 @@ public final class TeleportCommands {
 
     static void rtp(ServerPlayer p, ServerLevel requested) {
         ServerLevel level = requested;
-        List<String> allowed = Cfg.general.teleport.rtpWorlds;
         if (level == null) {
-            ResourceLocation rl = ResourceLocation.tryParse(allowed.get(0));
-            if (rl != null) level = p.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, rl));
-            if (level == null) level = p.getServer().overworld();
+            // monde courant s'il autorise le /rtp, sinon monde principal, sinon le premier monde qui l'autorise
+            level = p.serverLevel();
+            if (!Worlds.get(level).rtp) level = Worlds.mainLevel();
+            if (!Worlds.get(level).rtp) {
+                for (ServerLevel l : p.getServer().getAllLevels()) {
+                    if (Worlds.get(l).rtp) {
+                        level = l;
+                        break;
+                    }
+                }
+            }
         }
-        if (!allowed.contains(level.dimension().location().toString())) {
-            Msg.send(p, "teleport.rtp_world_denied", "world", level.dimension().location().toString());
+        String id = Worlds.id(level);
+        if (!Worlds.get(level).rtp || !Worlds.canAccess(p, id)) {
+            Msg.send(p, "teleport.rtp_world_denied", "world", Worlds.plainName(id));
             return;
         }
         if (Teleports.inBattle(p)) {

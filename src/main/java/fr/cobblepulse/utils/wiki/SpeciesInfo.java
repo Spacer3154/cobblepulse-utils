@@ -62,8 +62,24 @@ final class SpeciesInfo {
         for (String line : s.getPokedex()) dex.add(line);
         o.add("pokedex", dex);
         JsonArray forms = new JsonArray();
-        for (FormData f : s.getForms()) forms.add(form(f));
+        JsonArray megas = new JsonArray();
+        for (FormData f : s.getForms()) {
+            JsonObject fo = form(f);
+            String kind = fr.cobblepulse.utils.boss.Bosses.specialKind(f.getName());
+            if (!kind.isEmpty()) {
+                fo.addProperty("special", kind);
+                String stone = fr.cobblepulse.utils.boss.Bosses.formItemFor(s, f.getName());
+                if (stone != null) fo.addProperty("stone", stone);
+                String req = f.getRequiredItem();
+                if ((req == null || req.isBlank()) && f.getRequiredItems() != null && !f.getRequiredItems().isEmpty()) req = f.getRequiredItems().get(0);
+                if (req != null && !req.isBlank()) fo.addProperty("stone_hint", req);
+                if (kind.equals("mega")) megas.add(f.getName());
+            }
+            forms.add(fo);
+        }
         o.add("forms", forms);
+        o.add("megas", megas);
+        o.addProperty("mega_showdown", fr.cobblepulse.utils.boss.Bosses.megaShowdown());
         o.add("base", form(s.getStandardForm()));
         PreEvolution pre = s.getPreEvolution();
         if (pre != null) {

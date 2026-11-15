@@ -54,6 +54,7 @@ public final class Hub {
             new Internal("kits", "kit", "minecraft:chest_minecart"),
             new Internal("enderchest", "enderchest", "minecraft:ender_chest"),
             new Internal("dex", "dex", "minecraft:book"),
+            new Internal("playtime", "playtimerewards", "minecraft:clock"),
             new Internal("spawns", "spawns", "minecraft:spyglass"));
 
     private Hub() {}
@@ -70,6 +71,11 @@ public final class Hub {
             t.icon = Reg.itemExists(in.icon) ? in.icon : "minecraft:book";
             t.lore = new ArrayList<>(List.of(Msg.raw("hub.tiles." + in.id + ".lore").split("\\|")));
             if (in.id.equals("shop") || in.id.equals("gts")) t.lore.add(Msg.format("hub.balance", "money", Economy.format(Economy.balance(p.getUUID()))));
+            if (in.id.equals("playtime")) {
+                int n = fr.cobblepulse.utils.playtime.PlaytimeRewards.available(p);
+                if (n > 0) t.lore.add(Msg.format("playtime.hub_available", "count", n));
+            }
+            if (in.id.equals("wondertrade")) t.lore.add(fr.cobblepulse.utils.market.WonderTrade.cooldownLine(p));
             out.add(t);
         }
         for (Map.Entry<String, GeneralConfig.Gateway> e : Cfg.general.gateways.entrySet()) {
@@ -102,6 +108,7 @@ public final class Hub {
             case "sts" -> Cfg.sts.enabled;
             case "wondertrade" -> Cfg.wt.enabled;
             case "dex" -> Cfg.dex.enabled;
+            case "playtime" -> Cfg.playtime.enabled;
             case "spawns" -> Cfg.alerts.enabled;
             default -> true;
         };
@@ -161,6 +168,7 @@ public final class Hub {
             case "kits" -> Kits.open(p);
             case "enderchest" -> Enderchests.open(p, p.getUUID(), p.getGameProfile().getName(), -1);
             case "dex" -> DexRewards.open(p);
+            case "playtime" -> fr.cobblepulse.utils.playtime.PlaytimeRewards.open(p);
             case "spawns" -> SpawnAlerts.openHistory(p, null);
             case "staff" -> StaffPanel.open(p);
             default -> {

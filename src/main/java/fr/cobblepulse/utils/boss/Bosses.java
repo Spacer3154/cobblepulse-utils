@@ -387,17 +387,10 @@ public final class Bosses {
         String item = formItem(bossKey);
         UUID u = p.getUUID();
         db().txAsync(c -> {
-            boolean first;
-            try (PreparedStatement ps = c.prepareStatement("SELECT wins FROM " + db().table("boss_victories") + " WHERE uuid=? AND boss_key=?")) {
-                ps.setString(1, u.toString());
-                ps.setString(2, bossKey);
-                try (ResultSet rs = ps.executeQuery()) {
-                    first = !rs.next();
-                }
-            }
-            if (first) {
-                Db.update(c, "INSERT INTO " + db().table("boss_victories") + " (uuid, boss_key, first_at, wins) VALUES (?,?,?,1)", u.toString(), bossKey, System.currentTimeMillis());
-            } else {
+            // atomique meme entre plusieurs serveurs : l'insertion echoue sans erreur si la ligne existe deja
+            boolean first = Db.update(c, db().insertIgnore() + db().table("boss_victories") + " (uuid, boss_key, first_at, wins) VALUES (?,?,?,1)",
+                    u.toString(), bossKey, System.currentTimeMillis()) == 1;
+            if (!first) {
                 Db.update(c, "UPDATE " + db().table("boss_victories") + " SET wins=wins+1 WHERE uuid=? AND boss_key=?", u.toString(), bossKey);
             }
             return first;

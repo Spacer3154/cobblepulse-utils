@@ -142,6 +142,11 @@ public final class Db {
         }
 
         /** INSERT ... ON CONFLICT / ON DUPLICATE KEY pour une cle primaire. */
+        /** INSERT qui ignore un doublon de cle (retourne 0 ligne si la ligne existe deja). */
+        public String insertIgnore() {
+            return sqlite ? "INSERT OR IGNORE INTO " : "INSERT IGNORE INTO ";
+        }
+
         public String upsert(String table, String[] cols, String[] keyCols) {
             StringBuilder sb = new StringBuilder("INSERT INTO ").append(table(table)).append(" (").append(String.join(",", cols)).append(") VALUES (");
             for (int i = 0; i < cols.length; i++) sb.append(i == 0 ? "?" : ",?");

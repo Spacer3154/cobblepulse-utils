@@ -129,6 +129,8 @@ public final class SelfTest {
         registerInPlayerList(level.getServer(), fp);
         fp.moveTo(0.5, level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, 0, 0), 0.5);
         LuckPermsBridge.ensureLoaded(fp.getUUID(), name);
+        // noeuds laisses par une execution precedente (LuckPerms garde ses donnees entre les runs SQLite et MySQL)
+        LuckPermsBridge.clearUserNodes(fp.getUUID(), "cobblepulse.");
         PlayerStore.onJoin(fp);
         return fp;
     }

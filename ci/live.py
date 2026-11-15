@@ -43,6 +43,13 @@ with open(os.path.join(MC, "options.txt"), "w") as fh:
 
 with open(os.path.join(SRV, "server.properties"), "a") as fh:
     fh.write("enforce-secure-profile=false\n")
+# /op d'un joueur jamais connecte echoue en mode hors ligne : ops.json ecrit avec l'UUID hors ligne
+import hashlib, uuid
+h = bytearray(hashlib.md5(b"OfflinePlayer:UtilsTest").digest())
+h[6] = (h[6] & 0x0f) | 0x30
+h[8] = (h[8] & 0x3f) | 0x80
+with open(os.path.join(SRV, "ops.json"), "w") as fh:
+    json.dump([{"uuid": str(uuid.UUID(bytes=bytes(h))), "name": "UtilsTest", "level": 4, "bypassesPlayerLimit": False}], fh)
 srv = subprocess.Popen(["java", "-Xmx4G", "-Dcobblepulse_utils.selftest=true", "-jar", "server.jar", "nogui"], cwd=SRV,
                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
 lines = queue.Queue()
@@ -84,7 +91,7 @@ def cmd(c):
 ok = wait_for("Done (", 900)
 log("serveur pret : %s" % ok)
 if ok:
-    for c in ["gamerule doDaylightCycle false", "gamerule doWeatherCycle false", "time set 6000", "weather clear", "op UtilsTest"]:
+    for c in ["gamerule doDaylightCycle false", "gamerule doWeatherCycle false", "time set 6000", "weather clear"]:
         cmd(c)
     env = dict(os.environ, LIBGL_ALWAYS_SOFTWARE="1", MESA_GL_VERSION_OVERRIDE="4.5")
     clog = open(os.path.join(DST, "client.log"), "w")

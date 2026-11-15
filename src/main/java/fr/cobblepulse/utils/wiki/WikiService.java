@@ -145,7 +145,7 @@ public final class WikiService {
                 double share = d.getPercentage() > 0 ? d.getPercentage() / 100.0 : total <= 0 ? 0 : d.getWeight() / total;
                 JsonObject be = new JsonObject();
                 be.addProperty("id", b.toString());
-                be.addProperty("percent", Math.round(bucketShare * share * 10000) / 100.0);
+                be.addProperty("percent", Math.round(bucketShare * share * 1e8) / 1e6);
                 byMod.computeIfAbsent(modName(b.getNamespace()), k -> new JsonArray()).add(be);
             }
             JsonObject e = new JsonObject();

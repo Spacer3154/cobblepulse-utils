@@ -196,7 +196,7 @@ public final class WikiScreen extends Screen {
         }
         int[] m = modelBox();
         try {
-            model = new ModelWidget(m[0], m[1], m[2], m[3], new RenderablePokemon(selected, aspects(), ItemStack.EMPTY), 2.0f, rotation, -10.0, false, false, 15728880);
+            model = new ModelWidget(m[0], m[1], m[2], m[3], new RenderablePokemon(selected, aspects(), ItemStack.EMPTY), 2.0f, rotation, -10.0, false, false, 15);
         } catch (Throwable t) {
             model = null;
         }
@@ -224,8 +224,9 @@ public final class WikiScreen extends Screen {
         clickables.clear();
         clickBoxes.clear();
         Ui.panel(g, 4, 4, width - 8, height - 8, Ui.PANEL, Ui.BORDER);
-        g.drawString(font, Component.literal("Wiki Cobblemon").withStyle(ChatFormatting.BOLD), 10, 11, Ui.ACCENT, false);
-        g.drawString(font, filtered.size() + " espèce(s)", 10 + font.width("Wiki Cobblemon ") + 8, 11, Ui.MUTED, false);
+        Component wikiTitle = Component.literal("Wiki Cobblemon").withStyle(ChatFormatting.BOLD);
+        g.drawString(font, wikiTitle, 10, 11, Ui.ACCENT, false);
+        g.drawString(font, filtered.size() + " espèce(s)", 10 + font.width(wikiTitle) + 8, 11, Ui.MUTED, false);
         renderList(g, mx, my);
         if (selected != null) renderDetails(g, mx, my, pt);
         super.render(g, mx, my, pt);
@@ -601,14 +602,23 @@ public final class WikiScreen extends Screen {
         };
     }
 
+    /** Pourcentage lisible meme pour les apparitions tres rares (0,0042 %). */
+    static String pct(double v) {
+        if (v <= 0) return "< 0,0001 %";
+        if (v >= 10) return String.format(Locale.FRANCE, "%.1f %%", v);
+        if (v >= 0.1) return String.format(Locale.FRANCE, "%.2f %%", v);
+        if (v >= 0.001) return String.format(Locale.FRANCE, "%.4f %%", v).replaceAll("0+ %$", " %").replace(", %", " %");
+        return "< 0,001 %";
+    }
+
     private int renderSpawns(GuiGraphics g, int x, int y, int w) {
         JsonArray spawns = Ui.arr(data, "spawns");
         if (spawns.isEmpty()) {
             g.drawString(font, "Ce Pokémon n'apparaît pas naturellement sur ce serveur.", x, y, Ui.MUTED, false);
             return y + 12;
         }
-        g.drawString(font, "Pourcentages approximatifs parmi les apparitions du même type dans le biome.", x, y, Ui.MUTED, false);
-        y += 14;
+        y = wrap(g, Component.literal("Chance approximative qu'une apparition naturelle dans le biome soit ce Pokémon."), x, y, w, Ui.MUTED);
+        y += 4;
         for (JsonElement el : spawns) {
             JsonObject s = el.getAsJsonObject();
             String head = bucket(Ui.str(s, "bucket", "")) + " • " + context(Ui.str(s, "context", "")) + " • Nv. " + Ui.str(s, "levels", "?");
@@ -628,7 +638,7 @@ public final class WikiScreen extends Screen {
                 for (JsonObject b : biomes) {
                     Component bn = Ui.biome(Ui.str(b, "id", ""));
                     g.drawString(font, font.substrByWidth(bn, w - 70).getString(), x + 12, y, Ui.TEXT, false);
-                    String pct = String.format(Locale.FRANCE, "%.2f %%", Ui.dbl(b, "percent", 0));
+                    String pct = pct(Ui.dbl(b, "percent", 0));
                     g.drawString(font, pct, x + w - font.width(pct), y, Ui.OK, false);
                     y += 10;
                 }

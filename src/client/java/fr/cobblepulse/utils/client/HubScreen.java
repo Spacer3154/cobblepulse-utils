@@ -50,15 +50,19 @@ public final class HubScreen extends Screen {
         return Math.min(width - 24, 560);
     }
 
+    private int tileW = 104;
+
     private int tileW() {
-        return 104;
+        return tileW;
     }
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float pt) {
         renderTransparentBackground(g);
         int pw = panelW();
-        int cols = Math.max(2, (pw - 20) / (tileW() + 6));
+        int cols = Math.max(2, (pw - 20) / (104 + 6));
+        // les tuiles occupent toute la largeur du panneau
+        tileW = (pw - 20 - (cols - 1) * 6) / cols;
         int rowsTotal = 0;
         for (int s = 1; s <= 3; s++) {
             int n = count(s);
@@ -94,15 +98,17 @@ public final class HubScreen extends Screen {
                 boolean hov = Ui.in(mx, my, tx, ty, tileW(), 46) || debugHover == k;
                 if (hov) hovered = k;
                 Ui.panel(g, tx, ty, tileW(), 46, hov ? Ui.CARD_ON : Ui.CARD, hov ? Ui.ACCENT : Ui.BORDER);
+                List<FormattedCharSequence> lines = font.split(t.name, tileW() - 8);
+                boolean two = lines.size() > 1;
+                float sc = two ? 1.25f : 1.5f;
                 g.pose().pushPose();
-                g.pose().translate(tx + tileW() / 2f - 12, ty + 4, 0);
-                g.pose().scale(1.5f, 1.5f, 1f);
+                g.pose().translate(tx + tileW() / 2f - 8 * sc, ty + (two ? 3 : 4), 0);
+                g.pose().scale(sc, sc, 1f);
                 g.renderItem(t.icon, 0, 0);
                 g.pose().popPose();
-                List<FormattedCharSequence> lines = font.split(t.name, tileW() - 8);
-                int ly = ty + 30;
-                for (int li = 0; li < Math.min(1, lines.size()); li++) {
-                    g.drawString(font, lines.get(li), tx + (tileW() - font.width(lines.get(li))) / 2, ly, Ui.TEXT, true);
+                int ly = two ? ty + 25 : ty + 30;
+                for (int li = 0; li < Math.min(2, lines.size()); li++) {
+                    g.drawString(font, lines.get(li), tx + (tileW() - font.width(lines.get(li))) / 2, ly + li * 10, Ui.TEXT, true);
                 }
                 boxes.add(new int[]{k, tx, ty, tileW(), 46});
                 i++;

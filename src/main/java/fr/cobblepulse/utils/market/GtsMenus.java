@@ -94,7 +94,7 @@ public final class GtsMenus {
                 gui.button(50, ItemBuilder.of(Items.WRITABLE_BOOK).name(Msg.format("gts.my_listings")).build(), GtsMenus::mine);
                 gui.button(51, ItemBuilder.of(Items.ENDER_CHEST).name(Msg.format("gts.mailbox")).lore(Msg.format("gts.mailbox_lore")).build(), GtsMenus::mailbox);
                 gui.button(52, ItemBuilder.of(Items.BOOK).name(Msg.format("gts.history")).build(), GtsMenus::history);
-                gui.set(49, ItemBuilder.of(Items.SUNFLOWER).name(Msg.format("hub.balance", "money", Economy.format(Economy.balance(p.getUUID())))).build());
+                gui.set(49, ItemBuilder.of(Items.GOLD_NUGGET).name(Msg.format("hub.balance", "money", Economy.format(Economy.balance(p.getUUID())))).build());
             });
         }));
     }

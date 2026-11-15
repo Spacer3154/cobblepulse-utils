@@ -96,11 +96,11 @@ public final class BossConfig {
         def.put("rare", tier("Rare", "&9", 13, 55, 70, 1.5f, 3, 3, false, 0, "minecraft:diamond_sword", 2500, 5,
                 "cobblemon:ultra_ball 5", "cobblemon:rare_candy 2@50", "cobblemon:hyper_potion 2@50"));
         def.put("epique", tier("Épique", "&5", 7, 70, 85, 1.7f, 4, 4, true, 0, "minecraft:netherite_sword", 5000, 10,
-                "cobblemon:rare_candy 3", "cobblemon:ability_capsule 1@30", "cobblemon:bottle_cap 1@20"));
+                "cobblemon:rare_candy 3", "cobblemon:ability_capsule 1@30", "cobblemon:exp_candy_xl 2@40"));
         def.put("legendaire", tier("Légendaire", "&6", 4, 85, 100, 1.9f, 5, 5, true, 0, "minecraft:totem_of_undying", 10000, 20,
-                "cobblemon:rare_candy 5", "cobblemon:ability_patch 1@25", "cobblemon:gold_bottle_cap 1@15"));
+                "cobblemon:rare_candy 5", "cobblemon:ability_patch 1@25", "cobblemon:ability_capsule 1@30"));
         def.put("ultime", tier("Ultime", "&c&l", 1, 110, 140, 2.2f, 6, 5, true, 3600, "minecraft:dragon_egg", 25000, 50,
-                "cobblemon:rare_candy 10", "cobblemon:master_ball 1@10", "cobblemon:gold_bottle_cap 1@40"));
+                "cobblemon:rare_candy 10", "cobblemon:master_ball 1@10", "cobblemon:ability_patch 1@40"));
         for (String k : TIER_ORDER) tiers.putIfAbsent(k, def.get(k));
         for (Tier t : tiers.values()) {
             if (t.loot == null) t.loot = new ArrayList<>();

@@ -96,6 +96,14 @@ final class LuckPermsHook {
         LuckPermsProvider.get().getUserManager().loadUser(uuid, name).join();
     }
 
+    static void clearUserNodes(UUID uuid, String prefix) {
+        var um = LuckPermsProvider.get().getUserManager();
+        User u = um.loadUser(uuid).join();
+        u.data().clear(n -> n.getKey().startsWith(prefix));
+        um.saveUser(u).join();
+        u.getCachedData().invalidate();
+    }
+
     static void setUserNode(UUID uuid, String node, boolean value) {
         var um = LuckPermsProvider.get().getUserManager();
         User u = um.loadUser(uuid).join();

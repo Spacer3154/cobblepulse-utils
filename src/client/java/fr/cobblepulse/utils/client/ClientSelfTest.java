@@ -62,6 +62,8 @@ final class ClientSelfTest {
         }
         int t = ticks - start;
         if (t < 0) return;
+        // notifications d'autres mods (choix du starter Cobblemon) : masquees pour des captures lisibles
+        mc.getToasts().clear();
         try {
             switch (t) {
                 case 0 -> {
@@ -84,7 +86,7 @@ final class ClientSelfTest {
                 case 100 -> {
                     check("wiki_ouvert", mc.screen instanceof WikiScreen, screenName(mc));
                     if (mc.screen instanceof WikiScreen w) {
-                        var s = PokemonSpecies.getByIdentifier(ResourceLocation.parse("cobblemon:charizard"));
+                        var s = PokemonSpecies.getByIdentifier(ResourceLocation.parse("cobblemon:charmander"));
                         check("wiki_especes_synchronisees", s != null && w.visibleIds().size() > 100, w.visibleIds().size() + " especes");
                         if (s != null) w.select(s);
                     }

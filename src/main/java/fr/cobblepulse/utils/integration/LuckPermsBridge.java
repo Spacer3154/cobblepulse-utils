@@ -132,6 +132,18 @@ public final class LuckPermsBridge {
         }
     }
 
+    /** Retire tous les noeuds d'un joueur commencant par le prefixe (auto-tests, panneau staff). */
+    public static boolean clearUserNodes(UUID uuid, String prefix) {
+        if (!PRESENT) return false;
+        try {
+            LuckPermsHook.clearUserNodes(uuid, prefix);
+            return true;
+        } catch (Throwable t) {
+            warn(t);
+            return false;
+        }
+    }
+
     public static boolean setUserNode(UUID uuid, String node, boolean value) {
         if (!PRESENT) return false;
         try {

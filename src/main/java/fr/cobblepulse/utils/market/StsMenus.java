@@ -41,7 +41,7 @@ public final class StsMenus {
             }
             g.set(4, ItemBuilder.of(Items.HOPPER).name(Msg.format("sts.info_name")).lore(Msg.format("sts.info_lore", "left", left, "max", max)).build());
             g.button(18, ItemBuilder.of(Items.OAK_DOOR).name(Msg.format("general.back")).build(), Hub::open);
-            g.set(26, ItemBuilder.of(Items.SUNFLOWER).name(Msg.format("hub.balance", "money", Economy.format(Economy.balance(p.getUUID())))).build());
+            g.set(26, ItemBuilder.of(Items.GOLD_NUGGET).name(Msg.format("hub.balance", "money", Economy.format(Economy.balance(p.getUUID())))).build());
             g.open(p);
         }));
     }

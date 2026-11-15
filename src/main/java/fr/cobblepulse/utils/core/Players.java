@@ -31,7 +31,15 @@ public final class Players {
 
     public static ServerPlayer online(String name) {
         MinecraftServer s = CobbleUtils.server();
-        return s == null || name == null ? null : s.getPlayerList().getPlayerByName(name);
+        if (s == null || name == null) return null;
+        ServerPlayer p = s.getPlayerList().getPlayerByName(name);
+        if (p != null) return p;
+        // joueurs factices de l'auto-test (absents de la liste par nom)
+        for (UUID u : TEST) {
+            ServerPlayer t = s.getPlayerList().getPlayer(u);
+            if (t != null && t.getGameProfile().getName().equalsIgnoreCase(name)) return t;
+        }
+        return null;
     }
 
     /** Nom d'un joueur (en ligne, sinon cache des profils), ou debut de l'UUID. */

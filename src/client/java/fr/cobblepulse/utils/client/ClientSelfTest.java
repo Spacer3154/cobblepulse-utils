@@ -350,7 +350,7 @@ final class ClientSelfTest {
                 if (foe.isEmpty()) foe = battle.getSide1().getActors().stream().flatMap(a -> a.getActivePokemon().stream())
                         .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
                         .filter(n -> n.contains("Commun")).findFirst().orElse("");
-                check("combat_boss_nom_fenetre", foe.contains("[Commun]") && foe.contains("Magicarpe") && !foe.contains("Nv."), foe);
+                check("combat_boss_nom_fenetre", foe.contains("☠") && foe.contains("Magicarpe") && !foe.contains("Nv.") && !foe.contains("Magikarp"), foe);
             }
             shot(mc, "live_57_combat_boss");
         });
@@ -382,6 +382,12 @@ final class ClientSelfTest {
         STEPS.add(mc -> {
             String spawned = MESSAGES.stream().filter(x -> x.contains("Boss Ultime apparu")).reduce((x, y) -> y).orElse("");
             check("boss_mega_nomme", spawned.contains("Dracaufeu (Méga-"), spawned.isEmpty() ? String.valueOf(MESSAGES) : spawned);
+            // plaque au-dessus du Boss (surnom synchronise) : palier + espece traduite
+            String plate = mc.level.getEntitiesOfClass(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.class, mc.player.getBoundingBox().inflate(24))
+                    .stream().map(e -> e.getEntityData().get(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.Companion.getNICKNAME()))
+                    .filter(java.util.Objects::nonNull).map(net.minecraft.network.chat.Component::getString)
+                    .filter(n -> n.contains("Ultime")).findFirst().orElse("");
+            check("boss_plaque_nom", plate.contains("[Ultime]") && plate.contains("Dracaufeu"), plate);
             shot(mc, "live_55_boss_mega_test");
         });
         STEPS.add(mc -> command(mc, "cp admin"));

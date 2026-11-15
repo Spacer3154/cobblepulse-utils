@@ -78,6 +78,8 @@ public final class Bosses {
     private record Fight(String tier, String key, String species, UUID entity, ServerLevel level, long started) {}
 
     private static final Map<UUID, Fight> FIGHTS = new java.util.concurrent.ConcurrentHashMap<>();
+    /** Boss portant le nom court de combat, a re-decorer une fois le combat fini (fuite, defaite du joueur). */
+    private static final java.util.Set<UUID> BATTLE_NAMED = java.util.concurrent.ConcurrentHashMap.newKeySet();
     /** Auto-test : victoires contre un Boss traitees. */
     public static volatile int victoriesHandled;
 
@@ -225,12 +227,11 @@ public final class Bosses {
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         if (t == null) return;
         Pokemon pk = entity.getPokemon();
-        net.minecraft.network.chat.MutableComponent name = Component.empty()
-                .append(TextUtil.legacy(Msg.format("boss.nameplate", "tier", t.color + t.name, "level", pk.getLevel())))
-                .append(pk.getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color)));
-        // surnom pose directement : PokemonEntity.setCustomName l'aplatirait en texte anglais sans couleurs.
-        // Le nom d'espece reste traduit par chaque client (plaque au-dessus du Boss et fenetre de combat).
-        pk.setNickname(name);
+        // racine non vide (« %s%s ») : Cobblemon ignore un surnom dont la racine est vide. Surnom pose directement :
+        // PokemonEntity.setCustomName l'aplatirait en texte anglais sans couleurs. L'espece reste traduite par chaque client.
+        pk.setNickname(Component.translatable("%s%s", TextUtil.legacy(Msg.format("boss.nameplate", "tier", t.color + t.name, "level", pk.getLevel())),
+                pk.getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+        BATTLE_NAMED.remove(entity.getUUID());
         entity.setCustomNameVisible(true);
         entity.setGlowingTag(t.glow);
     }
@@ -358,6 +359,11 @@ public final class Bosses {
         String tierId = tierOf(boss);
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         if (t == null) return;
+        // nom court pendant le combat (« ☠ Magicarpe » a la couleur du palier) : la fenetre de combat de Cobblemon
+        // affiche deja le niveau et n'a pas la place pour le palier. Plaque complete retablie apres le combat.
+        boss.getPokemon().setNickname(Component.translatable("%s%s", Component.literal("☠ ").withStyle(TextUtil.styleOf(t.color)),
+                boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+        BATTLE_NAMED.add(boss.getUUID());
         FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
                 boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
         long cd = t.engageCooldownSeconds * 1000;
@@ -505,6 +511,7 @@ public final class Bosses {
                 ACTIVE.remove(en.getKey());
                 continue;
             }
+            if (!pe.isBattling() && BATTLE_NAMED.contains(pe.getUUID())) decorate(pe, tierOf(pe));
             long born = pe.getPokemon().getPersistentData().getCompound(TAG).getLong("born");
             if (!pe.isBattling() && born > 0 && System.currentTimeMillis() - born > life) despawn(pe, false);
         }

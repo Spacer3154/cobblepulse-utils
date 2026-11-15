@@ -225,9 +225,12 @@ public final class Bosses {
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         if (t == null) return;
         Pokemon pk = entity.getPokemon();
-        Component name = Component.empty().append(TextUtil.legacy(Msg.format("boss.nameplate", "tier", t.color + t.name, "level", pk.getLevel())))
+        net.minecraft.network.chat.MutableComponent name = Component.empty()
+                .append(TextUtil.legacy(Msg.format("boss.nameplate", "tier", t.color + t.name, "level", pk.getLevel())))
                 .append(pk.getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color)));
-        entity.setCustomName(name);
+        // surnom pose directement : PokemonEntity.setCustomName l'aplatirait en texte anglais sans couleurs.
+        // Le nom d'espece reste traduit par chaque client (plaque au-dessus du Boss et fenetre de combat).
+        pk.setNickname(name);
         entity.setCustomNameVisible(true);
         entity.setGlowingTag(t.glow);
     }

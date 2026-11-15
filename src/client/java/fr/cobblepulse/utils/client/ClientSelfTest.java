@@ -340,7 +340,18 @@ final class ClientSelfTest {
         STEPS.add(mc -> {
         });
         STEPS.add(mc -> {
-            check("combat_boss_reel_demarre", com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() != null, String.valueOf(MESSAGES));
+            var battle = com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle();
+            check("combat_boss_reel_demarre", battle != null, String.valueOf(MESSAGES));
+            if (battle != null) {
+                // nom du Boss dans la fenetre de combat : traduit, sans niveau en double
+                String foe = battle.getSide2().getActors().stream().flatMap(a -> a.getActivePokemon().stream())
+                        .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
+                        .findFirst().orElse("");
+                if (foe.isEmpty()) foe = battle.getSide1().getActors().stream().flatMap(a -> a.getActivePokemon().stream())
+                        .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
+                        .filter(n -> n.contains("Commun")).findFirst().orElse("");
+                check("combat_boss_nom_fenetre", foe.contains("[Commun]") && foe.contains("Magicarpe") && !foe.contains("Nv."), foe);
+            }
             shot(mc, "live_57_combat_boss");
         });
         for (int k = 0; k < 24; k++) STEPS.add(mc -> {

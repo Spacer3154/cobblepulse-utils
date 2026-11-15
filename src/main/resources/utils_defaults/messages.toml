@@ -595,7 +595,8 @@ test_title = "&8Tester une alerte"
 test_cat_lore = "&e» Clic : annonce à tous|&e» Clic droit : annonce à vous seul"
 
 [boss]
-nameplate = "&8[%tier%&8] &7Nv.%level% "
+# niveau deja affiche par Cobblemon (plaque et combat) ; %level% reste disponible
+nameplate = "&8[%tier%&8] "
 announce = "%prefix_boss%Un Boss %tier% &7apparaît : %pokemon% &7Nv.%level% &8(%x%, %z%)&7 !"
 uncatchable = "%prefix_boss%&cLes Boss ne peuvent pas être capturés."
 cooldown = "%prefix_boss%&cVous pourrez défier un Boss %tier% &cdans %time%."

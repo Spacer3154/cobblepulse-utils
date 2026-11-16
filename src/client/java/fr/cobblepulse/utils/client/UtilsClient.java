@@ -17,6 +17,31 @@ import org.lwjgl.glfw.GLFW;
 
 /** Cote client : touche du Hub (H par defaut, configurable), ecrans Hub et Wiki. */
 public final class UtilsClient implements ClientModInitializer {
+    /** Menu recu pendant un combat et a n'afficher qu'apres (fenetre de butin d'un Boss). */
+    private static JsonObject deferredMenu;
+    private static int deferredTicks;
+    private static int calmTicks;
+
+    private static boolean inBattle() {
+        try {
+            return com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() != null;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    private static void showMenu(Minecraft mc, JsonObject o) {
+        if (mc.screen instanceof MenuScreen m) m.update(o);
+        else if (mc.screen instanceof Overlay ov) {
+            if (ov.parentScreen() instanceof MenuScreen m) m.update(o);
+            else ov.setParentScreen(new MenuScreen(o));
+        } else mc.setScreen(new MenuScreen(o));
+    }
+
+    /** Auto-test : une fenetre attend-elle la fin du combat ? */
+    public static boolean hasDeferredMenu() {
+        return deferredMenu != null;
+    }
     private static KeyMapping hubKey;
     private static KeyMapping wikiKey;
 
@@ -27,6 +52,16 @@ public final class UtilsClient implements ClientModInitializer {
         wikiKey = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.cobblepulse_utils.wiki", InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_UNKNOWN, "key.categories.cobblepulse_utils"));
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
+            if (deferredMenu != null) {
+                deferredTicks++;
+                calmTicks = inBattle() ? 0 : calmTicks + 1;
+                if (mc.player == null) deferredMenu = null;
+                else if (calmTicks >= 10 || deferredTicks > 600) {
+                    JsonObject o = deferredMenu;
+                    deferredMenu = null;
+                    showMenu(mc, o);
+                }
+            }
             while (hubKey.consumeClick()) {
                 if (mc.player != null && mc.screen == null) Ui.send("hub_open", null);
             }
@@ -58,13 +93,18 @@ public final class UtilsClient implements ClientModInitializer {
         switch (kind) {
             case "hub" -> mc.setScreen(new HubScreen(o));
             case "menu" -> {
-                if (mc.screen instanceof MenuScreen m) m.update(o);
-                else if (mc.screen instanceof Overlay ov) {
-                    if (ov.parentScreen() instanceof MenuScreen m) m.update(o);
-                    else ov.setParentScreen(new MenuScreen(o));
-                } else mc.setScreen(new MenuScreen(o));
+                // fenetre de butin : on laisse le combat Cobblemon finir son animation avant de l'afficher
+                if (Ui.bool(o, "after_battle", false) && !(mc.screen instanceof MenuScreen) && inBattle()) {
+                    deferredMenu = o;
+                    deferredTicks = 0;
+                    calmTicks = 0;
+                } else {
+                    deferredMenu = null;
+                    showMenu(mc, o);
+                }
             }
             case "menu_close" -> {
+                deferredMenu = null;
                 if (mc.screen instanceof MenuScreen || mc.screen instanceof Overlay) mc.setScreen(null);
             }
             case "pick" -> {

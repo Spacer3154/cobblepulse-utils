@@ -192,12 +192,24 @@ public final class RootCommands {
             return 0;
         }
         ServerPlayer p = src.getPlayer();
+        // Mega / Primo demande sur un palier ordinaire : Mega-Boss du palier correspondant
+        boolean wantsMega = f.equals("mega") || f.equals("primal");
+        String target = wantsMega ? Bosses.megaTierFor(tier) : tier;
+        if (target == null) target = tier;
+        if (Bosses.isMegaTier(target) && species != null && !species.isBlank() && !species.equals("*")) {
+            var sp = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve(species);
+            if (sp != null && Bosses.megaForm(sp) == null) {
+                src.sendSystemMessage(Msg.withComponent("boss.no_mega_form", "pokemon", sp.getTranslatedName()));
+                return 0;
+            }
+        }
         var e = Bosses.spawnAt(p, tier, species, f, 3);
         if (e == null) {
             Msg.send(src, "boss.spawn_failed");
             return 0;
         }
-        var t = Cfg.boss.tiers.get(tier);
+        var t = Cfg.boss.tiers.get(Bosses.tierOf(e));
+        if (!target.equals(tier)) Msg.send(src, "boss.mega_tier_used", "tier", t.color + t.name);
         String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + fr.cobblepulse.utils.boss.Bosses.formLabel(e.getPokemon().getForm().getName()) + ")";
         src.sendSystemMessage(Msg.withComponent("boss.spawned", "pokemon", e.getPokemon().getSpecies().getTranslatedName().copy()
                 .append(fr.cobblepulse.utils.core.TextUtil.legacy(formName)), "tier", t.color + t.name, "level", e.getPokemon().getLevel()));

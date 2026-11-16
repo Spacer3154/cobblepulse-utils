@@ -47,6 +47,7 @@ public class Gui {
     Consumer<ServerPlayer> onClose;
     /** Liste (menus pagines) : l'ecran client affiche une grille unique avec recherche. */
     boolean list;
+    boolean afterBattle;
     /** Joueur dont l'ecran client affiche ce menu (rafraichi a chaque modification). */
     ServerPlayer shownTo;
     boolean resendQueued;
@@ -74,6 +75,16 @@ public class Gui {
         SimpleContainer c = new SimpleContainer(slots);
         for (int i = 0; i < container.getContainerSize(); i++) c.setItem(i, container.getItem(i));
         container = c;
+        return this;
+    }
+
+    public int rows() {
+        return rows;
+    }
+
+    /** Ecran client : attendre la fin de l'animation du combat Cobblemon avant d'afficher (fenetre de butin). */
+    public Gui afterBattle(boolean wait) {
+        this.afterBattle = wait;
         return this;
     }
 

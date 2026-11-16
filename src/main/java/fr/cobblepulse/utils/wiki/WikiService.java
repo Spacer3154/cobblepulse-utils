@@ -230,7 +230,8 @@ public final class WikiService {
             JsonObject j = new JsonObject();
             j.addProperty("id", id);
             j.addProperty("name", t.color + t.name);
-            j.addProperty("levels", t.levelMin + "-" + t.levelMax);
+            j.addProperty("levels", t.levelMin + "-" + t.levelMax + (t.mega ? " • Méga ou Primo" : ""));
+            j.addProperty("mega", t.mega);
             j.addProperty("ivs", t.perfectIvs);
             j.addProperty("icon", t.icon);
             j.addProperty("cooldown", t.engageCooldownSeconds);

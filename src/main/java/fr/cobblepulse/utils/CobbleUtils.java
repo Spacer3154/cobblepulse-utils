@@ -96,6 +96,8 @@ public final class CobbleUtils implements ModInitializer {
                 for (ServerPlayer p : s.getPlayerList().getPlayers()) if (!Players.isTest(p.getUUID())) Mailbox.autoClaimMoney(p, false);
             });
             Scheduler.repeat(400, 400, Bosses::tick);
+            Scheduler.repeat(10, 10, fr.cobblepulse.utils.boss.BossLoot::tick);
+            Bosses.highLevelsSupported();
             Scheduler.repeat(100, 6000, () -> {
                 WonderTrade.refill();
                 SpawnAlerts.save();
@@ -104,6 +106,7 @@ public final class CobbleUtils implements ModInitializer {
             LOG.info("[CobblePulse-Utils] Pret ({} categories de shop, {} kits, {} warps)", Cfg.SHOP.size(), Cfg.kits.kits.size(), Cfg.warps.warps.size());
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> {
+            fr.cobblepulse.utils.boss.BossLoot.flushAll();
             PlayerStore.saveAllSync();
             Enderchests.saveAllSync();
             SpawnAlerts.save();
@@ -155,6 +158,7 @@ public final class CobbleUtils implements ModInitializer {
         });
         ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
             ServerPlayer p = handler.getPlayer();
+            fr.cobblepulse.utils.boss.BossLoot.flush(p);
             Teleports.cancel(p.getUUID());
             Tpa.clear(p.getUUID());
             ChatInput.clear(p.getUUID());
@@ -174,6 +178,7 @@ public final class CobbleUtils implements ModInitializer {
         });
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
             if (entity instanceof ServerPlayer p) Teleports.setBack(p, Loc.of(p), true);
+            else SpawnAlerts.onDeath(entity, source);
         });
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> Bosses.onLoad(entity));
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, level) -> SpawnAlerts.onUnload(entity));

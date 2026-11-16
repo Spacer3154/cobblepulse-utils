@@ -158,7 +158,9 @@ public final class Bosses {
         if (RND.nextDouble() * 100 >= c.promotionChance) return;
         if (!eligible(pk)) return;
         if (activeCount() >= c.maxActive) return;
-        promote(entity, pickTier());
+        // Mega-Boss : seulement pour une espece qui a une Mega-Evolution ou une Primo-Resurgence
+        boolean mega = hasMegaTiers() && megaForm(pk.getSpecies()) != null && RND.nextDouble() * 100 < c.specialFormChance;
+        promote(entity, pickTier(mega));
     }
 
     static boolean eligible(Pokemon pk) {
@@ -167,30 +169,65 @@ public final class Bosses {
         return Cfg.boss.promoteLegendaries || !(l.contains("legendary") || l.contains("mythical") || l.contains("ultra_beast") || l.contains("paradox"));
     }
 
+    public static boolean hasMegaTiers() {
+        for (BossConfig.Tier t : Cfg.boss.tiers.values()) if (t.mega && t.weight > 0) return true;
+        return false;
+    }
+
+    public static boolean isMegaTier(String tierId) {
+        BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
+        return t != null && t.mega;
+    }
+
+    /** Palier ordinaire au hasard (selon les poids). */
     public static String pickTier() {
+        return pickTier(false);
+    }
+
+    /** Tirage parmi les paliers ordinaires, ou parmi les paliers de Mega-Boss. */
+    public static String pickTier(boolean mega) {
         double total = 0;
-        for (BossConfig.Tier t : Cfg.boss.tiers.values()) total += Math.max(0, t.weight);
+        for (BossConfig.Tier t : Cfg.boss.tiers.values()) if (t.mega == mega) total += Math.max(0, t.weight);
         double r = RND.nextDouble() * total;
         for (Map.Entry<String, BossConfig.Tier> e : Cfg.boss.tiers.entrySet()) {
+            if (e.getValue().mega != mega) continue;
             r -= Math.max(0, e.getValue().weight);
-            if (r <= 0) return e.getKey();
+            if (r <= 0 && e.getValue().weight > 0) return e.getKey();
         }
+        for (Map.Entry<String, BossConfig.Tier> e : Cfg.boss.tiers.entrySet()) if (e.getValue().mega == mega) return e.getKey();
         return BossConfig.TIER_ORDER.get(0);
     }
 
-    /** Transforme un Pokemon sauvage en Boss du palier donne. */
-    public static void promote(PokemonEntity entity, String tierId) {
+    /** Palier de Mega-Boss associe a un palier ordinaire (epique → mega_epique), sinon le premier ; null s'il n'y en a pas. */
+    public static String megaTierFor(String tierId) {
+        if (isMegaTier(tierId)) return tierId;
+        if (isMegaTier("mega_" + tierId)) return "mega_" + tierId;
+        for (Map.Entry<String, BossConfig.Tier> e : Cfg.boss.tiers.entrySet()) if (e.getValue().mega) return e.getKey();
+        return null;
+    }
+
+    /**
+     * Transforme un Pokemon sauvage en Boss du palier donne. Un palier de Mega-Boss impose la Mega-Evolution ou la
+     * Primo-Resurgence ; un palier ordinaire peut prendre la forme Originelle.
+     * @return false si le palier est inconnu ou si l'espece n'a pas la forme exigee
+     */
+    public static boolean promote(PokemonEntity entity, String tierId) {
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
-        if (t == null) return;
+        if (t == null) return false;
         Pokemon pk = entity.getPokemon();
         String form = "base";
-        if (RND.nextDouble() * 100 < Cfg.boss.specialFormChance) {
-            FormData special = specialForm(pk.getSpecies());
-            if (special != null) {
-                List<String> errors = new ArrayList<>();
-                PokemonFactory.applyForm(pk, pk.getSpecies(), special.getName(), errors);
-                if (errors.isEmpty() && pk.getForm() == special) form = formKey(special.getName());
-            }
+        FormData special = null;
+        if (t.mega) {
+            special = megaForm(pk.getSpecies());
+            if (special == null) return false;
+        } else if (RND.nextDouble() * 100 < Cfg.boss.specialFormChance) {
+            special = formOf(pk.getSpecies(), Set.of("origin"));
+        }
+        if (special != null) {
+            List<String> errors = new ArrayList<>();
+            PokemonFactory.applyForm(pk, pk.getSpecies(), special.getName(), errors);
+            if (errors.isEmpty() && pk.getForm() == special) form = formKey(special.getName());
+            else if (t.mega) return false;
         }
         int level = t.levelMin + RND.nextInt(t.levelMax - t.levelMin + 1);
         List<Stat> stats = new ArrayList<>(List.of(PokemonText.STATS));
@@ -210,8 +247,9 @@ public final class Bosses {
         ACTIVE.put(entity.getUUID(), (ServerLevel) entity.level());
         if (t.announce) {
             Msg.broadcast(Msg.withComponent("boss.announce", "pokemon", pk.getSpecies().getTranslatedName(),
-                    "tier", t.color + t.name, "level", level, "biome", "", "x", (int) entity.getX(), "z", (int) entity.getZ()));
+                    "tier", t.color + t.name, "level", pk.getLevel(), "biome", "", "x", (int) entity.getX(), "z", (int) entity.getZ()));
         }
+        return true;
     }
 
     /** Re-applique le niveau et l'apparence apres un rechargement de chunk. */
@@ -236,17 +274,63 @@ public final class Bosses {
         entity.setGlowingTag(t.glow);
     }
 
+    /** Niveau le plus haut accepte a l'enregistrement d'un Pokemon (voir PokemonLevelCodecMixin) : plafond des paliers. */
+    public static final int CODEC_MAX_LEVEL = 250;
+    private static volatile Boolean highLevels;
+
+    /**
+     * Vrai si un Pokemon au-dela du niveau maximal de Cobblemon peut etre enregistre (sauvegarde du monde, copie).
+     * Verifie une fois, par un vrai enregistrement ; sinon les Boss sont plafonnes au niveau maximal, car un Boss
+     * non enregistrable ferait echouer la sauvegarde du monde.
+     */
+    public static boolean highLevelsSupported() {
+        Boolean known = highLevels;
+        if (known != null) return known;
+        boolean ok;
+        try {
+            PokemonProperties pp = PokemonProperties.Companion.parse("level=5");
+            pp.setSpecies("cobblemon:magikarp");
+            Pokemon pk = pp.create();
+            int target = maxNormalLevel() + 1;
+            writeLevel(pk, target);
+            CompoundTag saved = pk.saveToNBT(CobbleUtils.server().registryAccess(), new CompoundTag());
+            pk.clone(true, CobbleUtils.server().registryAccess());
+            ok = saved != null && pk.getLevel() == target;
+        } catch (Throwable t) {
+            ok = false;
+            CobbleUtils.LOG.warn("[CobblePulse-Utils] Cette version de Cobblemon refuse d'enregistrer un Pokemon au-dela du niveau {} ({}) : "
+                    + "les Boss seront plafonnes a ce niveau.", maxNormalLevel(), t.getMessage());
+        }
+        highLevels = ok;
+        if (ok) CobbleUtils.LOG.info("[CobblePulse-Utils] Boss au-dela du niveau {} : enregistrement verifie.", maxNormalLevel());
+        return ok;
+    }
+
+    public static int maxNormalLevel() {
+        try {
+            return com.cobblemon.mod.common.Cobblemon.INSTANCE.getConfig().getMaxPokemonLevel();
+        } catch (Throwable t) {
+            return 100;
+        }
+    }
+
+    private static void writeLevel(Pokemon pk, int level) throws ReflectiveOperationException {
+        pk.setLevel(level);
+        if (pk.getLevel() != level) {
+            if (levelField == null) {
+                levelField = Pokemon.class.getDeclaredField("level");
+                levelField.setAccessible(true);
+            }
+            levelField.setInt(pk, level);
+        }
+    }
+
     /** Niveau au-dela du maximum de Cobblemon (100) : ecriture directe du champ, le setter etant plafonne. */
     public static void applyLevel(Pokemon pk, int level) {
         try {
-            pk.setLevel(level);
-            if (pk.getLevel() != level) {
-                if (levelField == null) {
-                    levelField = Pokemon.class.getDeclaredField("level");
-                    levelField.setAccessible(true);
-                }
-                levelField.setInt(pk, level);
-            }
+            int max = maxNormalLevel();
+            if (level > max && !highLevelsSupported()) level = max;
+            writeLevel(pk, Math.min(level, CODEC_MAX_LEVEL));
         } catch (Throwable t) {
             CobbleUtils.LOG.warn("[CobblePulse-Utils] Niveau {} du Boss impossible : {}", level, t.toString());
         }
@@ -259,14 +343,22 @@ public final class Bosses {
     /** Forme speciale imposee par un test (mega, primal, origin). */
     private static String forcedKind;
 
-    static FormData specialForm(Species s) {
+    /** Forme speciale de l'espece parmi ces types (mega, primal, origin), au hasard ; un test peut imposer le type. */
+    static FormData formOf(Species s, Set<String> kinds) {
         List<FormData> found = new ArrayList<>();
         for (FormData f : s.getForms()) {
-            if (f.getName() == null || !SPECIAL.matcher(f.getName().trim()).matches()) continue;
-            if (forcedKind != null && !specialKind(f.getName()).equals(forcedKind)) continue;
+            if (f.getName() == null) continue;
+            String kind = specialKind(f.getName());
+            if (kind.isEmpty() || !kinds.contains(kind)) continue;
+            if (forcedKind != null && !kind.equals(forcedKind)) continue;
             found.add(f);
         }
         return found.isEmpty() ? null : found.get(RND.nextInt(found.size()));
+    }
+
+    /** Mega-Evolution ou Primo-Resurgence de l'espece (au hasard s'il y en a plusieurs), ou null. */
+    public static FormData megaForm(Species s) {
+        return formOf(s, Set.of("mega", "primal"));
     }
 
     /** Type de forme speciale : mega, primal, origin, ou "" (forme ordinaire). */
@@ -489,9 +581,17 @@ public final class Bosses {
     /** Le nom de l'espece est un composant : traduit par le client du joueur (Magicarpe et non Magikarp). */
     public static void reward(ServerPlayer p, BossConfig.Tier t, String tierId, String bossKey, net.minecraft.network.chat.Component species) {
         List<String> got = new ArrayList<>();
+        // objets proposes dans la fenetre de butin (recuperer, lacher ou jeter) ; argent, BP et commandes : remis tout de suite
+        boolean window = Cfg.boss.lootWindow;
+        List<net.minecraft.world.item.ItemStack> items = new ArrayList<>();
         for (Reward r : t.loot) {
-            String s = Rewards.roll(p, r);
-            if (s != null) got.add(s);
+            if (r.chance < 100 && Math.random() * 100 >= r.chance) continue;
+            if (window && Rewards.isItem(r)) {
+                net.minecraft.world.item.ItemStack st = fr.cobblepulse.utils.core.ItemSerial.fromSnbt(r.item);
+                if (st.isEmpty()) continue;
+                items.add(st);
+                got.add(Rewards.describe(r));
+            } else if (Rewards.give(p, r)) got.add(Rewards.describe(r));
         }
         String item = formItem(bossKey);
         UUID u = p.getUUID();
@@ -510,11 +610,17 @@ public final class Bosses {
                 double chance = isFirst ? Cfg.boss.formItemFirstChance : Cfg.boss.formItemRepeatChance;
                 if (RND.nextDouble() * 100 < chance) {
                     Reward r = Reward.item(item, 100);
-                    if (Rewards.give(p, r)) got.add("&d" + Rewards.describe(r) + (isFirst ? " " + Msg.format("boss.first_win") : ""));
+                    String label = "&d" + Rewards.describe(r) + (isFirst ? " " + Msg.format("boss.first_win") : "");
+                    net.minecraft.world.item.ItemStack st = fr.cobblepulse.utils.core.ItemSerial.fromSnbt(r.item);
+                    if (window && !st.isEmpty()) {
+                        items.add(0, st);
+                        got.add(label);
+                    } else if (Rewards.give(p, r)) got.add(label);
                 }
             }
-            Players.saveNow(p);
             Msg.send(p, Msg.withComponent("boss.victory", "pokemon", species, "tier", t.color + t.name, "rewards", got.isEmpty() ? "-" : String.join("&7, ", got)));
+            if (!items.isEmpty()) BossLoot.offer(p, Msg.withComponent("boss.loot_title", "pokemon", species, "tier", t.color + t.name), items);
+            Players.saveNow(p);
         }));
     }
 
@@ -566,16 +672,29 @@ public final class Bosses {
 
     /**
      * Boss de test devant le staff.
+     * <p>Un palier de Mega-Boss donne toujours une Mega-Evolution ou une Primo-Resurgence. Demander « mega » ou
+     * « primal » sur un palier ordinaire fait apparaitre le Mega-Boss du palier correspondant.</p>
      * @param form auto (tirage normal), base, mega, primal ou origin
+     * @return null si le palier est inconnu ou si l'espece n'a pas la forme exigee
      */
     public static PokemonEntity spawnAt(ServerPlayer p, String tierId, String speciesName, String form, double distance) {
         String f = form == null ? "auto" : form.toLowerCase(Locale.ROOT);
+        boolean wantsMega = f.equals("mega") || f.equals("primal");
+        if (wantsMega && !isMegaTier(tierId)) {
+            String m = megaTierFor(tierId);
+            if (m == null) return null;
+            tierId = m;
+        }
+        BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
+        if (t == null) return null;
+        // types de forme acceptes : Mega-Boss = mega et/ou primal ; palier ordinaire = origin seulement
+        Set<String> kinds = t.mega ? (wantsMega ? Set.of(f) : Set.of("mega", "primal")) : (f.equals("origin") ? Set.of("origin") : Set.of());
         Species s = speciesName == null || speciesName.isBlank() || speciesName.equals("*") ? null : SpeciesLookup.resolve(speciesName);
         if (s == null) {
             List<Species> pool = new ArrayList<>(com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getImplemented());
-            if (f.equals("auto") || f.equals("base")) pool.removeIf(x -> x.getLabels().contains("legendary") || x.getLabels().contains("mythical"));
-            // forme demandee : especes qui la possedent (Mega, Primo, Originelle)
-            else pool.removeIf(x -> x.getForms().stream().noneMatch(fd -> specialKind(fd.getName()).equals(f)));
+            if (kinds.isEmpty()) pool.removeIf(x -> x.getLabels().contains("legendary") || x.getLabels().contains("mythical"));
+            // forme exigee : especes qui la possedent (Mega, Primo, Originelle)
+            else pool.removeIf(x -> x.getForms().stream().noneMatch(fd -> kinds.contains(specialKind(fd.getName()))));
             if (pool.isEmpty()) return null;
             s = pool.get(RND.nextInt(pool.size()));
         }
@@ -587,14 +706,17 @@ public final class Bosses {
         PokemonEntity e = new PokemonEntity(p.serverLevel(), pk, com.cobblemon.mod.common.CobblemonEntities.POKEMON);
         e.moveTo(pos.x, p.getY(), pos.z, p.getYRot() + 180, 0);
         double old = Cfg.boss.specialFormChance;
-        if (!f.equals("auto")) Cfg.boss.specialFormChance = f.equals("base") ? 0 : 100;
+        // palier ordinaire : forme Originelle seulement si elle est demandee (auto = tirage normal)
+        if (!t.mega && !f.equals("auto")) Cfg.boss.specialFormChance = f.equals("origin") ? 100 : 0;
+        boolean ok;
         try {
-            if (!f.equals("auto") && !f.equals("base")) forcedKind = f;
-            promote(e, tierId);
+            if (wantsMega || f.equals("origin") && !t.mega) forcedKind = f;
+            ok = promote(e, tierId);
         } finally {
             Cfg.boss.specialFormChance = old;
             forcedKind = null;
         }
+        if (!ok) return null;
         p.serverLevel().addFreshEntity(e);
         return e;
     }

@@ -65,6 +65,8 @@ public final class SpawnAlerts {
     public static final List<String> CATEGORIES = List.of("shiny", "paradox", "ultra_beast", "legendary", "mythical");
     /** Auto-test : texte de la derniere annonce. */
     public static volatile String lastBroadcast = "";
+    /** Auto-test : texte de la derniere annonce de capture / victoire / mort. */
+    public static volatile String lastOutcome = "";
 
     /** Entree d'historique (serialisee dans data/spawn_history.json). */
     public static final class Entry {
@@ -80,6 +82,8 @@ public final class SpawnAlerts {
         public long statusTime;
         public Loc loc;
         public boolean shiny;
+        /** Alerte de test envoyee a un seul membre du staff (UUID) : la suite lui est annoncee a lui seul. */
+        public String onlyTo = "";
     }
 
     private static final Map<String, Deque<Entry>> HISTORY = new LinkedHashMap<>();
@@ -102,6 +106,14 @@ public final class SpawnAlerts {
                 onCapture(e.getPokemon(), e.getPlayer());
             } catch (Throwable t) {
                 CobbleUtils.LOG.warn("[CobblePulse-Utils] Historique (capture) : {}", t.toString());
+            }
+            return Unit.INSTANCE;
+        });
+        CobblemonEvents.BATTLE_VICTORY.subscribe(Priority.LOWEST, e -> {
+            try {
+                onVictory(e.getWinners(), e.getLosers());
+            } catch (Throwable t) {
+                CobbleUtils.LOG.warn("[CobblePulse-Utils] Historique (victoire) : {}", t.toString());
             }
             return Unit.INSTANCE;
         });
@@ -227,6 +239,7 @@ public final class SpawnAlerts {
         en.nearest = nearest == null ? "" : nearest.getGameProfile().getName();
         en.loc = new Loc(level.dimension().location().toString(), entity.getX(), entity.getY(), entity.getZ(), 0, 0);
         en.shiny = pk.getShiny();
+        en.onlyTo = onlyTo == null ? "" : onlyTo.getUUID().toString();
         for (String c : cats) {
             Deque<Entry> dq = HISTORY.computeIfAbsent(c, k -> new ArrayDeque<>());
             dq.addFirst(en);
@@ -298,15 +311,113 @@ public final class SpawnAlerts {
     }
 
     private static void onCapture(Pokemon pk, ServerPlayer player) {
-        String id = pk.getUuid().toString();
-        for (Deque<Entry> dq : HISTORY.values()) {
-            for (Entry e : dq) {
-                if (id.equals(e.pokemonUuid) && "ACTIVE".equals(e.status)) {
-                    e.status = "CAPTURED";
-                    e.captor = player == null ? "" : player.getGameProfile().getName();
-                    e.statusTime = System.currentTimeMillis();
-                }
+        String name = player == null ? "" : player.getGameProfile().getName();
+        for (Entry e : tracked(pk.getUuid().toString())) {
+            if (!open(e)) continue;
+            outcome(e, "CAPTURED", name, Cfg.alerts.announceCapture && !name.isEmpty() ? "alerts.captured" : null);
+        }
+    }
+
+    /** Auto-test : victoire en combat simulee. */
+    public static void testDefeat(Pokemon pk, ServerPlayer player) {
+        defeated(pk.getUuid().toString(), player == null ? "" : player.getGameProfile().getName());
+    }
+
+    /** Fin de combat : un Pokemon sauvage suivi a ete mis K.O. par un ou plusieurs joueurs. */
+    private static void onVictory(List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> winners,
+                                  List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> losers) {
+        List<String> names = new ArrayList<>();
+        for (var a : winners) {
+            if (!(a instanceof com.cobblemon.mod.common.battles.actor.PlayerBattleActor)) continue;
+            for (UUID u : a.getPlayerUUIDs()) {
+                ServerPlayer p = fr.cobblepulse.utils.core.Players.online(u);
+                if (p != null && !names.contains(p.getGameProfile().getName())) names.add(p.getGameProfile().getName());
             }
+        }
+        if (names.isEmpty()) return;
+        for (var a : losers) {
+            // l'entite d'un Pokemon sauvage K.O. n'est plus liee au combat : on passe par l'identifiant du Pokemon
+            if (!(a instanceof com.cobblemon.mod.common.battles.actor.PokemonBattleActor pa) || pa.getPokemon() == null) continue;
+            Set<String> ids = new HashSet<>();
+            if (pa.getPokemon().getOriginalPokemon() != null) ids.add(pa.getPokemon().getOriginalPokemon().getUuid().toString());
+            if (pa.getPokemon().getEffectedPokemon() != null) ids.add(pa.getPokemon().getEffectedPokemon().getUuid().toString());
+            for (String id : ids) defeated(id, String.join(", ", names));
+        }
+    }
+
+    private static void defeated(String pokemonUuid, String players) {
+        for (Entry e : tracked(pokemonUuid)) {
+            if (!open(e)) continue;
+            outcome(e, "DEFEATED", players, Cfg.alerts.announceDefeat && !players.isEmpty() ? "alerts.defeated" : null);
+        }
+    }
+
+    /** Mort d'un Pokemon suivi hors combat (epee, arc, chute...). En combat, c'est la victoire qui est annoncee. */
+    public static void onDeath(Entity entity, net.minecraft.world.damagesource.DamageSource source) {
+        if (!(entity instanceof PokemonEntity pe)) return;
+        List<Entry> list = BY_ENTITY.get(entity.getUUID().toString());
+        if (list == null || pe.isBattling()) return;
+        ServerPlayer killer = source != null && source.getEntity() instanceof ServerPlayer sp ? sp : null;
+        String name = killer == null ? "" : killer.getGameProfile().getName();
+        for (Entry e : new ArrayList<>(list)) {
+            if (!open(e)) continue;
+            outcome(e, "KILLED", name, Cfg.alerts.announceKill && killer != null ? "alerts.killed" : null);
+        }
+    }
+
+    /** Entrees d'historique de ce Pokemon (une entree peut figurer dans plusieurs categories). */
+    private static List<Entry> tracked(String pokemonUuid) {
+        List<Entry> out = new ArrayList<>();
+        for (Deque<Entry> dq : HISTORY.values()) for (Entry e : dq) if (pokemonUuid.equals(e.pokemonUuid) && !out.contains(e)) out.add(e);
+        return out;
+    }
+
+    /**
+     * Le sort de ce Pokemon peut-il encore etre fixe ? Oui s'il est actif, ou s'il vient d'etre marque « disparu » /
+     * « mort » sans joueur : l'entite est retiree du monde avant que la capture ou la victoire soit signalee.
+     */
+    private static boolean open(Entry e) {
+        if ("ACTIVE".equals(e.status)) return true;
+        boolean provisional = ("DESPAWN".equals(e.status) || "KILLED".equals(e.status)) && (e.captor == null || e.captor.isEmpty());
+        return provisional && System.currentTimeMillis() - e.statusTime < 60_000L;
+    }
+
+    private static List<String> categoriesOf(Entry e) {
+        List<String> out = new ArrayList<>();
+        for (Map.Entry<String, Deque<Entry>> h : HISTORY.entrySet()) {
+            if (h.getValue().contains(e) && Cfg.alerts.categories.get(h.getKey()) != null) out.add(h.getKey());
+        }
+        return out;
+    }
+
+    /** Fixe le sort d'un Pokemon rare et l'annonce (key null : pas d'annonce). */
+    private static void outcome(Entry e, String status, String player, String key) {
+        e.status = status;
+        e.captor = player == null ? "" : player;
+        e.statusTime = System.currentTimeMillis();
+        List<String> cats = categoriesOf(e);
+        if (key == null || cats.isEmpty() || !Cfg.alerts.enabled) return;
+        AlertsConfig.Category first = Cfg.alerts.categories.get(cats.get(0));
+        Species sp = null;
+        try {
+            sp = PokemonSpecies.getByIdentifier(ResourceLocation.parse(e.species));
+        } catch (Throwable ignored) {
+        }
+        MutableComponent name = (sp == null ? Component.literal(e.species) : sp.getTranslatedName().copy()).withStyle(TextUtil.styleOf(first.color));
+        String text = Msg.format(key, "categories", label(cats), "player", e.captor, "color", first.color);
+        MutableComponent msg = Msg.splice(text, "pokemon", name);
+        lastOutcome = text;
+        ServerPlayer only = null;
+        if (e.onlyTo != null && !e.onlyTo.isEmpty()) {
+            try {
+                only = fr.cobblepulse.utils.core.Players.online(UUID.fromString(e.onlyTo));
+            } catch (IllegalArgumentException ignored) {
+            }
+            if (only == null) return;
+        }
+        for (ServerPlayer p : only != null ? List.of(only) : CobbleUtils.server().getPlayerList().getPlayers()) {
+            if (!Msg.reachable(p) || only == null && !Perms.player(p, Perms.ALERTS_RECEIVE)) continue;
+            p.sendSystemMessage(msg);
         }
     }
 
@@ -317,11 +428,14 @@ public final class SpawnAlerts {
         Entity.RemovalReason r = entity.getRemovalReason();
         if (r == null || r == Entity.RemovalReason.UNLOADED_TO_CHUNK || r == Entity.RemovalReason.UNLOADED_WITH_PLAYER
                 || r == Entity.RemovalReason.CHANGED_DIMENSION) return;
-        // la capture est signalee juste apres la disparition de l'entite : on laisse 2 s
+        boolean killed = r == Entity.RemovalReason.KILLED;
+        // la capture ou la victoire est signalee apres la disparition de l'entite : le statut pose ici reste provisoire
+        // pendant une minute (voir open) ; on laisse 2 s avant de le poser
         Scheduler.later(40, () -> {
             for (Entry e : list) {
                 if ("ACTIVE".equals(e.status)) {
-                    e.status = "DESPAWN";
+                    e.status = killed ? "KILLED" : "DESPAWN";
+                    e.captor = "";
                     e.statusTime = System.currentTimeMillis();
                 }
             }
@@ -347,6 +461,8 @@ public final class SpawnAlerts {
         if (!e.nearest.isEmpty()) b.lore(Msg.format("alerts.icon_nearest", "player", e.nearest));
         b.lore(switch (e.status) {
             case "CAPTURED" -> Msg.format("alerts.status_captured", "player", e.captor);
+            case "DEFEATED" -> Msg.format("alerts.status_defeated", "player", e.captor);
+            case "KILLED" -> e.captor == null || e.captor.isEmpty() ? Msg.format("alerts.status_dead") : Msg.format("alerts.status_killed", "player", e.captor);
             case "DESPAWN" -> Msg.format("alerts.status_despawn");
             default -> Msg.format("alerts.status_active");
         });

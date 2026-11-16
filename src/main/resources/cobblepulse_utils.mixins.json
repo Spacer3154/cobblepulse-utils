@@ -9,7 +9,8 @@
     "TrackedEntityInvoker",
     "TrackedEntityMixin",
     "PlayerDisplayNameMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "PokemonLevelCodecMixin"
   ],
   "client": [],
   "injectors": {

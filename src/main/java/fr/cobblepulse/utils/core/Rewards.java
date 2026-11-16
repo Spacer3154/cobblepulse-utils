@@ -45,6 +45,11 @@ public final class Rewards {
         };
     }
 
+    /** Recompense de type objet (tout ce qui n'est ni argent, ni BP, ni commande, ni Pokemon). */
+    public static boolean isItem(Reward r) {
+        return !"money".equals(r.type) && !"bp".equals(r.type) && !"command".equals(r.type) && !"pokemon".equals(r.type);
+    }
+
     /** Tire la chance puis remet la recompense. @return libelle si obtenue, null sinon. */
     public static String roll(ServerPlayer p, Reward r) {
         if (r.chance < 100 && Math.random() * 100 >= r.chance) return null;

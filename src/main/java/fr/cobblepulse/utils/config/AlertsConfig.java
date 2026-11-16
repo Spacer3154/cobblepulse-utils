@@ -12,6 +12,12 @@ public final class AlertsConfig {
     public double nearestPlayerRadius = 256;
     /** Ignorer les apparitions non naturelles (commandes, appats...). */
     public boolean naturalOnly = false;
+    /** Annonce quand un joueur capture un Pokemon rare annonce. */
+    public boolean announceCapture = true;
+    /** Annonce quand un joueur met K.O. en combat un Pokemon rare annonce. */
+    public boolean announceDefeat = true;
+    /** Annonce quand un joueur tue (hors combat) un Pokemon rare annonce. */
+    public boolean announceKill = true;
     public Map<String, Category> categories = new LinkedHashMap<>();
 
     public static final class Category {

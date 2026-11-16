@@ -5,7 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** utils/boss.json : Boss PVE (promotion des spawns naturels, 6 raretes, butin, regle Mega / Primo / Origine). */
+/**
+ * utils/boss.json : Boss PVE (promotion des spawns naturels, 6 raretes + 3 paliers de Mega-Boss, butin,
+ * regle Mega / Primo / Origine).
+ */
 public final class BossConfig {
     /** Spawn naturel des Boss (aussi /cp boss toggle). */
     public boolean naturalSpawn = true;
@@ -18,8 +21,13 @@ public final class BossConfig {
     /** Les legendaires / fabuleux / Ultra-Chimeres peuvent-ils etre promus. */
     public boolean promoteLegendaries = false;
     public List<String> blacklistSpecies = new ArrayList<>();
-    /** Les Boss apparaissent avec leur forme Mega / Primo / Origine quand elle existe (chance %). */
+    /**
+     * Chance (%) qu'un Pokemon promu dont l'espece a une Mega-Evolution ou une Primo-Resurgence devienne un Mega-Boss
+     * (paliers « mega »), et qu'un Boss ordinaire prenne sa forme Originelle quand elle existe.
+     */
     public double specialFormChance = 35;
+    /** Fenetre de butin apres une victoire (recuperer, lacher ou jeter les objets). false : objets remis directement. */
+    public boolean lootWindow = true;
     /** Butin garanti de l'objet de forme : 100 % a la 1re victoire du joueur, puis ce pourcentage. */
     public double formItemFirstChance = 100;
     public double formItemRepeatChance = 10;
@@ -50,9 +58,17 @@ public final class BossConfig {
         /** Nombre de tirages dans la table de butin (chaque entree a sa propre chance). */
         public List<Reward> loot = new ArrayList<>();
         public String icon = "minecraft:iron_sword";
+        /** Mega-Boss : toujours en Mega-Evolution ou en Primo-Resurgence (especes qui en ont une). Tirage a part. */
+        public boolean mega = false;
     }
 
-    public static final List<String> TIER_ORDER = List.of("commun", "non_commun", "rare", "epique", "legendaire", "ultime");
+    public static final List<String> TIER_ORDER = List.of("commun", "non_commun", "rare", "epique", "legendaire", "ultime",
+            "mega_epique", "mega_legendaire", "mega_ultime");
+
+    private static Tier mega(Tier t) {
+        t.mega = true;
+        return t;
+    }
 
     private static Tier tier(String name, String color, double w, int min, int max, float scale, int ivs, int ai, boolean announce,
                              long cooldown, String icon, long money, long bp, String... items) {
@@ -101,6 +117,13 @@ public final class BossConfig {
                 "cobblemon:rare_candy 5", "cobblemon:ability_patch 1@25", "cobblemon:ability_capsule 1@30"));
         def.put("ultime", tier("Ultime", "&c&l", 1, 110, 140, 2.2f, 6, 5, true, 3600, "minecraft:dragon_egg", 25000, 50,
                 "cobblemon:rare_candy 10", "cobblemon:master_ball 1@10", "cobblemon:ability_patch 1@40"));
+        // Mega-Boss : poids compares entre eux seulement (60 / 30 / 10)
+        def.put("mega_epique", mega(tier("Méga Épique", "&d&l", 60, 75, 90, 1.8f, 4, 4, true, 0, "minecraft:amethyst_cluster", 8000, 15,
+                "cobblemon:rare_candy 4", "cobblemon:ability_capsule 1@40", "cobblemon:exp_candy_xl 3@50")));
+        def.put("mega_legendaire", mega(tier("Méga Légendaire", "&6&l", 30, 90, 100, 2.0f, 5, 5, true, 0, "minecraft:nether_star", 15000, 30,
+                "cobblemon:rare_candy 6", "cobblemon:ability_patch 1@35", "cobblemon:ability_capsule 1@40", "cobblemon:master_ball 1@5")));
+        def.put("mega_ultime", mega(tier("Méga Ultime", "&4&l", 10, 120, 150, 2.4f, 6, 5, true, 3600, "minecraft:end_crystal", 40000, 75,
+                "cobblemon:rare_candy 12", "cobblemon:master_ball 1@15", "cobblemon:ability_patch 1@50", "cobblemon:exp_candy_xl 5@60")));
         for (String k : TIER_ORDER) tiers.putIfAbsent(k, def.get(k));
         for (Tier t : tiers.values()) {
             if (t.loot == null) t.loot = new ArrayList<>();

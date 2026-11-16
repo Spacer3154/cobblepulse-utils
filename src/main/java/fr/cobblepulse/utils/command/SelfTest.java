@@ -548,12 +548,38 @@ public final class SelfTest {
         PokemonEntity e2 = wild(level, "mewtwo", false, 6, 6);
         SpawnAlerts.record(e2, SpawnAlerts.categories(e2.getPokemon()));
         SpawnAlerts.testCapture(e2.getPokemon(), a);
+        String capMsg = TextUtil.strip(SpawnAlerts.lastOutcome);
+        check("alertes_annonce_capture", capMsg.contains("TestA") && capMsg.contains("a capturé"), capMsg);
         e2.discard();
         e1.discard();
+        // victoire en combat : annoncee et inscrite dans l'historique
+        PokemonEntity e4 = wild(level, "pikachu", true, 5, 9);
+        SpawnAlerts.record(e4, SpawnAlerts.categories(e4.getPokemon()));
+        SpawnAlerts.testDefeat(e4.getPokemon(), b);
+        var hd = SpawnAlerts.history("shiny");
+        String defMsg = TextUtil.strip(SpawnAlerts.lastOutcome);
+        check("alertes_annonce_victoire", "DEFEATED".equals(hd.get(0).status) && "TestB".equals(hd.get(0).captor) && defMsg.contains("TestB")
+                && defMsg.contains("a vaincu"), hd.get(0).status + " | " + defMsg);
+        e4.discard();
+        // mort hors combat sous les coups d'un joueur : annoncee
+        PokemonEntity e5 = wild(level, "magikarp", true, 9, 5);
+        SpawnAlerts.record(e5, SpawnAlerts.categories(e5.getPokemon()));
+        e5.hurt(level.damageSources().playerAttack(c), 100_000f);
+        if (e5.isAlive()) {
+            info("alertes : degats des joueurs sur les Pokemon sauvages refuses par Cobblemon, mort signalee directement");
+            SpawnAlerts.onDeath(e5, level.damageSources().playerAttack(c));
+            e5.discard();
+        }
+        var hk = SpawnAlerts.history("shiny");
+        String killMsg = TextUtil.strip(SpawnAlerts.lastOutcome);
+        check("alertes_annonce_mort", "KILLED".equals(hk.get(0).status) && "TestC".equals(hk.get(0).captor) && killMsg.contains("TestC")
+                && killMsg.contains("a tué"), hk.get(0).status + " " + hk.get(0).captor + " | " + killMsg);
         Scheduler.later(80, () -> {
             var sh = SpawnAlerts.history("shiny");
             var lg = SpawnAlerts.history("legendary");
-            check("alertes_statut_despawn", !sh.isEmpty() && "DESPAWN".equals(sh.get(0).status), sh.isEmpty() ? "-" : sh.get(0).status);
+            check("alertes_statut_despawn", sh.size() >= 3 && "DESPAWN".equals(sh.get(2).status), sh.size() < 3 ? "-" : sh.get(2).status);
+            check("alertes_statuts_conserves", sh.size() >= 3 && "KILLED".equals(sh.get(0).status) && "DEFEATED".equals(sh.get(1).status),
+                    sh.size() < 3 ? "-" : sh.get(0).status + " " + sh.get(1).status);
             check("alertes_statut_capture", !lg.isEmpty() && "CAPTURED".equals(lg.get(0).status) && "TestA".equals(lg.get(0).captor),
                     lg.isEmpty() ? "-" : lg.get(0).status + " " + lg.get(0).captor);
         });
@@ -576,6 +602,22 @@ public final class SelfTest {
         if (boss == null) return;
         Pokemon pk = boss.getPokemon();
         check("boss_niveau_superieur_100", pk.getLevel() >= 110 && pk.getLevel() <= 140, pk.getLevel());
+        // crash du 16/11 : un Boss au-dela du niveau 100 present lors d'une sauvegarde du monde arretait le serveur
+        check("boss_niveau_enregistrable", Bosses.highLevelsSupported(), null);
+        int bossLevel = pk.getLevel();
+        try {
+            net.minecraft.nbt.CompoundTag saved = new net.minecraft.nbt.CompoundTag();
+            boss.saveWithoutId(saved);
+            level.save(null, false, false);
+            Pokemon copy = pk.clone(true, level.registryAccess());
+            PokemonEntity re = new PokemonEntity(level, mon("magikarp", 5, false), CobblemonEntities.POKEMON);
+            re.load(saved);
+            Bosses.onLoad(re);
+            check("boss_sauvegarde_monde_niveau_sup_100", saved.contains("Pokemon") && copy != null, saved.getAllKeys());
+            check("boss_rechargement_niveau", Bosses.isBoss(re) && re.getPokemon().getLevel() == bossLevel, re.getPokemon().getLevel() + " / " + bossLevel);
+        } catch (Throwable t) {
+            check("boss_sauvegarde_monde_niveau_sup_100", false, t);
+        }
         check("boss_incapturable", pk.isUncatchable(), null);
         check("boss_ivs_parfaits", PokemonText.perfectIvs(pk) >= 6, PokemonText.perfectIvs(pk));
         check("boss_nom_palier", boss.getCustomName() != null && boss.getCustomName().getString().contains("Ultime"), boss.getCustomName() == null ? "-" : boss.getCustomName().getString());
@@ -604,6 +646,40 @@ public final class SelfTest {
         Bosses.promote(wildOne, Bosses.pickTier());
         check("boss_promotion_palier", Bosses.isBoss(wildOne) && Cfg.boss.tiers.containsKey(Bosses.tierOf(wildOne)), Bosses.tierOf(wildOne));
         Bosses.despawn(wildOne, false);
+        // Mega-Boss : 3 paliers a part, toujours en Mega ou Primo
+        boolean megaTiers = Cfg.boss.tiers.get("mega_epique").mega && Cfg.boss.tiers.get("mega_legendaire").mega && Cfg.boss.tiers.get("mega_ultime").mega
+                && !Cfg.boss.tiers.get("ultime").mega;
+        check("mega_boss_3_paliers", megaTiers, Cfg.boss.tiers.keySet());
+        boolean split = true;
+        for (int i = 0; i < 60; i++) split &= !Bosses.isMegaTier(Bosses.pickTier(false)) && Bosses.isMegaTier(Bosses.pickTier(true));
+        check("mega_boss_tirage_a_part", split, null);
+        PokemonEntity plain = wild(level, "rattata", false, 12, 14);
+        check("mega_boss_espece_sans_mega_refusee", !Bosses.promote(plain, "mega_epique") && !Bosses.isBoss(plain), null);
+        plain.discard();
+        if (Bosses.megaShowdown()) {
+            PokemonEntity mb = wild(level, "charizard", false, 14, 12);
+            boolean ok = Bosses.promote(mb, Bosses.pickTier(true));
+            String form = mb.getPokemon().getForm().getName();
+            check("mega_boss_promotion", ok && Bosses.isMegaTier(Bosses.tierOf(mb)) && Bosses.specialKind(form).equals("mega"), Bosses.tierOf(mb) + " " + form);
+            Bosses.despawn(mb, false);
+            PokemonEntity pr = wild(level, "groudon", false, 14, 14);
+            boolean okp = Bosses.promote(pr, "mega_ultime");
+            check("mega_boss_primo", okp && Bosses.specialKind(pr.getPokemon().getForm().getName()).equals("primal") && pr.getPokemon().getLevel() >= 120,
+                    pr.getPokemon().getForm().getName() + " Nv." + pr.getPokemon().getLevel());
+            Bosses.despawn(pr, false);
+            // un palier ordinaire ne donne plus de Mega
+            boolean none = true;
+            double oldChance = Cfg.boss.specialFormChance;
+            Cfg.boss.specialFormChance = 100;
+            for (int i = 0; i < 8; i++) {
+                PokemonEntity o = wild(level, "charizard", false, 15, 15);
+                Bosses.promote(o, "epique");
+                none &= Bosses.specialKind(o.getPokemon().getForm().getName()).isEmpty();
+                Bosses.despawn(o, false);
+            }
+            Cfg.boss.specialFormChance = oldChance;
+            check("mega_boss_palier_ordinaire_sans_mega", none, null);
+        } else info("Mega-Boss : Mega Showdown absent, formes Mega non testees");
     }
 
     private static void dexChecks() {
@@ -1208,11 +1284,20 @@ public final class SelfTest {
         // Boss de test : palier, espece, forme Mega imposee, un de chaque palier, commande
         PokemonEntity mega = Bosses.spawnAt(staff, "ultime", "charizard", "mega", 3);
         String formName = mega == null ? "-" : mega.getPokemon().getForm().getName();
-        if (Bosses.megaShowdown()) check("boss_test_forme_mega", mega != null && formName.toLowerCase(java.util.Locale.ROOT).startsWith("mega"), formName);
-        else info("Boss Mega : Mega Showdown absent, forme " + formName);
+        if (Bosses.megaShowdown()) {
+            check("boss_test_forme_mega", mega != null && formName.toLowerCase(java.util.Locale.ROOT).startsWith("mega"), formName);
+            // Mega demandee sur un palier ordinaire : c'est le Mega-Boss du palier correspondant qui apparait
+            check("boss_test_mega_palier_dedie", mega != null && "mega_ultime".equals(Bosses.tierOf(mega)), mega == null ? "-" : Bosses.tierOf(mega));
+            PokemonEntity me = Bosses.spawnAt(staff, "mega_epique", null, "auto", 3);
+            check("boss_test_mega_epique_auto", me != null && !Bosses.specialKind(me.getPokemon().getForm().getName()).isEmpty(),
+                    me == null ? "-" : me.getPokemon().getSpecies().getName() + " " + me.getPokemon().getForm().getName());
+            check("boss_test_mega_espece_refusee", Bosses.spawnAt(staff, "mega_epique", "rattata", "auto", 3) == null
+                    && cmd(s, staff.createCommandSourceStack(), "cp boss spawn mega_legendaire rattata"), null);
+        } else info("Boss Mega : Mega Showdown absent, forme " + formName);
         int before = countBosses(s);
         int all = RootCommands.spawnAllTiers(staff.createCommandSourceStack());
-        check("boss_test_tous_les_paliers", all == Cfg.boss.tiers.size() && countBosses(s) == before + all, all + " / " + Cfg.boss.tiers.size());
+        long expected = Cfg.boss.tiers.values().stream().filter(x -> Bosses.megaShowdown() || !x.mega).count();
+        check("boss_test_tous_les_paliers", all == expected && countBosses(s) == before + all, all + " / " + expected);
         check("boss_test_commande", cmd(s, staff.createCommandSourceStack(), "cp boss spawn rare pikachu base") && countBosses(s) == before + all + 1, null);
         Bosses.clearAll();
         // remise a zero du temps de jeu : joueur en ligne, joueur hors ligne, tous les joueurs
@@ -1263,6 +1348,9 @@ public final class SelfTest {
         Pokemon champion = fr.cobblepulse.utils.pokemon.PokemonFactory.create(
                 MonSpecParser.parse("mewtwo niveau=100 ivs=31,31,31,31,31,31 nature=modest capacites=psychic"), new ArrayList<>());
         PokemonText.party(a).add(champion);
+        // butin laisse en attente par les verifications precedentes (menus coffre impossibles pour un joueur factice)
+        fr.cobblepulse.utils.boss.BossLoot.flush(a);
+        Screens.capture(a.getUUID(), true);
         a.getInventory().clearContent();
         long money = Economy.balance(a.getUUID());
         int handled = Bosses.victoriesHandled;
@@ -1296,11 +1384,141 @@ public final class SelfTest {
             com.cobblemon.mod.common.api.events.CobblemonEvents.BATTLE_VICTORY.emit(
                     new com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent(battle, winners, losers, false));
             battle.stop();
-            Scheduler.later(60, () -> safe("combat_boss_fin", () -> {
+            Scheduler.later(80, () -> safe("combat_boss_fin", () -> {
+                UUID ua = a.getUUID();
                 long gained = Economy.balance(a.getUUID()) - money;
-                int balls = count(a, net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.parse("cobblemon:great_ball")));
+                Item ball = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.parse("cobblemon:great_ball"));
                 check("boss_combat_victoire_detectee", Bosses.victoriesHandled == handled + 1, null);
-                check("boss_combat_butin_remis", gained >= 500 && balls >= 3, gained + " ₽, " + balls + " Super Balls");
+                // l'argent est remis tout de suite ; les objets attendent le choix du joueur dans la fenetre de butin
+                List<String> names = Screens.names(ua);
+                boolean window = fr.cobblepulse.utils.boss.BossLoot.isOpen(ua) && names.stream().anyMatch(n -> n.contains("Tout récupérer"))
+                        && names.stream().anyMatch(n -> n.contains("Tout lâcher")) && names.stream().anyMatch(n -> n.contains("Tout jeter"));
+                check("boss_butin_fenetre", window && gained >= 500 && count(a, ball) == 0 && menuTitle(a).contains("Boss vaincu"),
+                        gained + " ₽ | " + menuTitle(a) + " | " + names);
+                Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Tout récupérer"), "left");
+                Scheduler.later(5, () -> safe("butin_recupere", () -> {
+                    int balls = count(a, ball);
+                    check("boss_combat_butin_remis", balls >= 3 && !fr.cobblepulse.utils.boss.BossLoot.has(ua) && !Screens.hasSession(ua), balls + " Super Balls");
+                    lootWindowPhase();
+                }));
+            }));
+        }));
+    }
+
+    /** Fenetre de butin : par objet (recuperer, lacher, jeter), tout jeter avec confirmation, fermeture, inventaire plein. */
+    private static void lootWindowPhase() {
+        UUID ua = a.getUUID();
+        ServerLevel lvl = a.serverLevel();
+        a.getInventory().clearContent();
+        for (var it : lvl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, a.getBoundingBox().inflate(8))) it.discard();
+        fr.cobblepulse.utils.boss.BossLoot.offer(a, net.minecraft.network.chat.Component.literal("Butin de test"),
+                List.of(new ItemStack(Items.DIAMOND, 2), new ItemStack(Items.EMERALD, 3), new ItemStack(Items.GOLD_INGOT, 4), new ItemStack(Items.IRON_INGOT, 5)));
+        Scheduler.later(40, () -> safe("butin_par_objet", () -> {
+            check("butin_fenetre_test", fr.cobblepulse.utils.boss.BossLoot.isOpen(ua) && Screens.names(ua).size() == 7, Screens.names(ua));
+            int id = Screens.sessionId(ua);
+            Screens.click(a, id, 0, "left");
+            Screens.click(a, id, 1, "right");
+            Screens.click(a, id, 2, "shift");
+            Scheduler.later(5, () -> safe("butin_par_objet_fin", () -> {
+                int onGround = 0;
+                for (var it : lvl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, a.getBoundingBox().inflate(8))) {
+                    if (it.getItem().is(Items.EMERALD)) onGround += it.getItem().getCount();
+                }
+                check("butin_objet_recupere", count(a, Items.DIAMOND) == 2, count(a, Items.DIAMOND));
+                check("butin_objet_lache", onGround == 3 && count(a, Items.EMERALD) == 0, onGround);
+                check("butin_objet_jete", count(a, Items.GOLD_INGOT) == 0 && fr.cobblepulse.utils.boss.BossLoot.pending(ua).size() == 1,
+                        fr.cobblepulse.utils.boss.BossLoot.pending(ua));
+                // tout jeter : le premier clic demande confirmation, le second detruit
+                Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Tout jeter"), "left");
+                Scheduler.later(5, () -> safe("butin_tout_jeter", () -> {
+                    boolean asked = fr.cobblepulse.utils.boss.BossLoot.pending(ua).size() == 1 && Screens.slotNamed(ua, "Confirmer") >= 0;
+                    Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Confirmer"), "left");
+                    Scheduler.later(5, () -> safe("butin_tout_jeter_fin", () -> {
+                        check("butin_tout_jeter_confirme", asked && !fr.cobblepulse.utils.boss.BossLoot.has(ua) && count(a, Items.IRON_INGOT) == 0, asked);
+                        lootWindowPhase2();
+                    }));
+                }));
+            }));
+        }));
+    }
+
+    private static void lootWindowPhase2() {
+        UUID ua = a.getUUID();
+        ServerLevel lvl = a.serverLevel();
+        // tout lacher
+        fr.cobblepulse.utils.boss.BossLoot.offer(a, net.minecraft.network.chat.Component.literal("Butin de test"), List.of(new ItemStack(Items.COPPER_INGOT, 6), new ItemStack(Items.COAL, 70)));
+        Scheduler.later(40, () -> safe("butin_tout_lacher", () -> {
+            Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Tout lâcher"), "left");
+            Scheduler.later(5, () -> safe("butin_tout_lacher_fin", () -> {
+                int copper = 0;
+                int coal = 0;
+                for (var it : lvl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, a.getBoundingBox().inflate(8))) {
+                    if (it.getItem().is(Items.COPPER_INGOT)) copper += it.getItem().getCount();
+                    if (it.getItem().is(Items.COAL)) coal += it.getItem().getCount();
+                    it.discard();
+                }
+                check("butin_tout_lacher", copper == 6 && coal == 70 && !fr.cobblepulse.utils.boss.BossLoot.has(ua), copper + " / " + coal);
+                // inventaire plein : rien n'est perdu, le reste attend dans la fenetre
+                for (int i = 0; i < 36; i++) a.getInventory().setItem(i, new ItemStack(Items.DIRT, 64));
+                fr.cobblepulse.utils.boss.BossLoot.offer(a, net.minecraft.network.chat.Component.literal("Butin de test"), List.of(new ItemStack(Items.REDSTONE, 9)));
+                Scheduler.later(40, () -> safe("butin_inventaire_plein", () -> {
+                    Screens.click(a, Screens.sessionId(ua), Screens.slotNamed(ua, "Tout récupérer"), "left");
+                    Scheduler.later(5, () -> safe("butin_inventaire_plein_fin", () -> {
+                        var left = fr.cobblepulse.utils.boss.BossLoot.pending(ua);
+                        check("butin_inventaire_plein_conserve", left.size() == 1 && left.get(0).getCount() == 9 && fr.cobblepulse.utils.boss.BossLoot.isOpen(ua), left);
+                        // fermeture sans choix (Echap) apres avoir fait de la place : le reste va dans l'inventaire
+                        a.getInventory().clearContent();
+                        Screens.closedByClient(a, Screens.sessionId(ua));
+                        check("butin_fermeture_dans_inventaire", count(a, Items.REDSTONE) == 9 && !fr.cobblepulse.utils.boss.BossLoot.has(ua), count(a, Items.REDSTONE));
+                        // deconnexion avec un butin en attente : remis avant l'enregistrement du joueur
+                        fr.cobblepulse.utils.boss.BossLoot.offer(a, net.minecraft.network.chat.Component.literal("Butin de test"), List.of(new ItemStack(Items.LAPIS_LAZULI, 4)));
+                        fr.cobblepulse.utils.boss.BossLoot.flush(a);
+                        check("butin_deconnexion_remis", count(a, Items.LAPIS_LAZULI) == 4 && !fr.cobblepulse.utils.boss.BossLoot.has(ua), count(a, Items.LAPIS_LAZULI));
+                        a.getInventory().clearContent();
+                        rareBattlePhase();
+                    }));
+                }));
+            }));
+        }));
+    }
+
+    /** Pokemon rare mis K.O. dans un vrai combat : la fin de combat emise par Cobblemon declenche l'annonce. */
+    private static void rareBattlePhase() {
+        PokemonEntity rare = SpawnAlerts.test(a, "shiny", "magikarp", true);
+        String err = rare == null ? "spawn" : Bosses.startBattle(a, rare);
+        if (err != null) {
+            check("alerte_combat_demarre", false, err);
+            Screens.capture(a.getUUID(), false);
+            finish();
+            return;
+        }
+        SpawnAlerts.lastOutcome = "";
+        Scheduler.later(60, () -> safe("alerte_combat_victoire", () -> {
+            var battle = com.cobblemon.mod.common.battles.BattleRegistry.getBattleByParticipatingPlayer(a);
+            if (battle == null) {
+                check("alerte_combat_en_cours", false, null);
+                Screens.capture(a.getUUID(), false);
+                finish();
+                return;
+            }
+            List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> winners = new ArrayList<>();
+            List<com.cobblemon.mod.common.api.battles.model.actor.BattleActor> losers = new ArrayList<>();
+            for (var actor : battle.getActors()) {
+                if (actor instanceof com.cobblemon.mod.common.battles.actor.PlayerBattleActor) winners.add(actor);
+                else losers.add(actor);
+            }
+            // comme en jeu : l'entite K.O. quitte le monde, puis Cobblemon signale la victoire
+            rare.discard();
+            Scheduler.later(60, () -> safe("alerte_combat_fin", () -> {
+                String provisional = SpawnAlerts.history("shiny").get(0).status;
+                com.cobblemon.mod.common.api.events.CobblemonEvents.BATTLE_VICTORY.emit(
+                        new com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent(battle, winners, losers, false));
+                battle.stop();
+                var h = SpawnAlerts.history("shiny").get(0);
+                String msg = TextUtil.strip(SpawnAlerts.lastOutcome);
+                check("alerte_victoire_en_combat", "DEFEATED".equals(h.status) && "TestA".equals(h.captor) && msg.contains("TestA") && msg.contains("a vaincu"),
+                        provisional + " → " + h.status + " " + h.captor + " | " + msg);
+                Screens.capture(a.getUUID(), false);
                 finish();
             }));
         }));

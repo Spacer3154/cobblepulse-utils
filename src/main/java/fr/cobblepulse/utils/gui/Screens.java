@@ -139,6 +139,7 @@ public final class Screens {
         o.addProperty("title", Component.Serializer.toJson(g.title, p.registryAccess()));
         o.addProperty("rows", g.rows);
         o.addProperty("list", g.list);
+        if (g.afterBattle) o.addProperty("after_battle", true);
         // la derniere ligne d'un menu de 2 lignes ou plus est la barre d'actions (retour, pages, solde...)
         int barStart = g.rows >= 2 ? (g.rows - 1) * 9 : Integer.MAX_VALUE;
         int barEnd = g.rows * 9;

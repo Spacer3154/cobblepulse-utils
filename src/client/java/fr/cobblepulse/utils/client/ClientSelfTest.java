@@ -99,6 +99,17 @@ final class ClientSelfTest {
 
     private static final java.util.List<java.util.function.Consumer<Minecraft>> STEPS = new java.util.ArrayList<>();
 
+    /** Super Bonbons dans l'inventaire du joueur (butin garanti du palier Ultime). */
+    private static int candies(Minecraft mc) {
+        int n = 0;
+        var inv = mc.player.getInventory();
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            var st = inv.getItem(i);
+            if (net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(st.getItem()).toString().equals("cobblemon:rare_candy")) n += st.getCount();
+        }
+        return n;
+    }
+
     private static MenuScreen menu(Minecraft mc) {
         return mc.screen instanceof MenuScreen m ? m : null;
     }
@@ -327,46 +338,64 @@ final class ClientSelfTest {
             check("article_pokemon_cree", menu(mc) != null && titled(mc, "Article"), screenName(mc));
             shot(mc, "live_49_article_pokemon");
         });
-        // ---------------------------------------------------------------- vrai combat contre un Boss : le butin doit etre remis
+        // ---------------------------------------------------------------- vrai combat contre un Boss de niveau > 100 :
+        // sauvegarde du monde pendant le combat (crash du 16/11), puis fenetre de butin
         STEPS.add(mc -> {
             if (mc.screen != null) mc.setScreen(null);
-            mc.player.connection.sendCommand("pokegive mewtwo level=100");
+            mc.player.connection.sendCommand("pokegive mewtwo level=100 nature=modest min_perfect_ivs=6");
         });
         STEPS.add(mc -> {
             MESSAGES.clear();
             autoBattle = true;
-            mc.player.connection.sendCommand("cp boss combat commun magikarp base");
+            mc.player.connection.sendCommand("cp boss combat ultime magikarp base");
         });
-        STEPS.add(mc -> {
-        });
+        STEPS.add(mc -> mc.player.connection.sendCommand("save-all"));
         STEPS.add(mc -> {
             var battle = com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle();
             check("combat_boss_reel_demarre", battle != null, String.valueOf(MESSAGES));
             if (battle != null) {
-                // nom du Boss dans la fenetre de combat : traduit, sans niveau en double
-                String foe = battle.getSide2().getActors().stream().flatMap(a -> a.getActivePokemon().stream())
-                        .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
-                        .findFirst().orElse("");
-                if (foe.isEmpty()) foe = battle.getSide1().getActors().stream().flatMap(a -> a.getActivePokemon().stream())
-                        .filter(x -> x.getBattlePokemon() != null).map(x -> x.getBattlePokemon().getDisplayName().getString())
-                        .filter(n -> n.contains("Commun")).findFirst().orElse("");
-                check("combat_boss_engage", MESSAGES.stream().anyMatch(x -> x.contains("Combat contre le Boss") && x.contains("Magicarpe")), String.valueOf(MESSAGES));
+                // nom et niveau du Boss dans la fenetre de combat : traduit, sans niveau en double, au-dela de 100
+                var foes = new java.util.ArrayList<com.cobblemon.mod.common.client.battle.ClientBattlePokemon>();
+                for (var side : battle.getSides()) for (var actor : side.getActors()) {
+                    if (actor == battle.getParticipatingActor(mc.player.getUUID())) continue;
+                    for (var ap : actor.getActivePokemon()) if (ap.getBattlePokemon() != null) foes.add(ap.getBattlePokemon());
+                }
+                String foe = foes.isEmpty() ? "" : foes.get(0).getDisplayName().getString();
+                int foeLevel = foes.isEmpty() ? 0 : foes.get(0).getLevel();
+                check("combat_boss_engage", MESSAGES.stream().anyMatch(x -> x.contains("Combat contre le Boss Ultime") && x.contains("Magicarpe")), String.valueOf(MESSAGES));
                 check("combat_boss_nom_fenetre", foe.equals("Magicarpe"), foe);
+                check("combat_boss_niveau_sup_100", foeLevel >= 110, "Nv." + foeLevel);
             }
+            // le serveur a sauvegarde le monde avec un Boss de niveau > 100 present : il repond toujours
+            check("sauvegarde_avec_boss_niveau_sup_100", MESSAGES.stream().anyMatch(x -> x.toLowerCase().contains("sauvegard") || x.contains("Saved")),
+                    String.valueOf(MESSAGES));
             shot(mc, "live_57_combat_boss");
         });
-        for (int k = 0; k < 24; k++) STEPS.add(mc -> {
+        for (int k = 0; k < 40; k++) STEPS.add(mc -> {
         });
         STEPS.add(mc -> {
             autoBattle = false;
             boolean ended = com.cobblemon.mod.common.client.CobblemonClient.INSTANCE.getBattle() == null;
-            String loot = MESSAGES.stream().filter(x -> x.contains("vaincu")).findFirst().orElse("");
+            String loot = MESSAGES.stream().filter(x -> x.contains("vaincu !")).findFirst().orElse("");
             check("combat_boss_reel_termine", ended, battleTurns + " tour(s)");
             check("combat_boss_reel_butin", loot.contains("Butin") && !loot.endsWith(": -"), loot.isEmpty() ? String.valueOf(MESSAGES) : loot);
             // nom de l'espece traduit par le client (et non le nom anglais du serveur)
             check("boss_nom_traduit", loot.contains("Magicarpe") && !loot.contains("Magikarp"), loot);
-            if (mc.screen != null) mc.setScreen(null);
+            // fenetre de butin : ouverte d'elle-meme une fois le combat fini, les objets ne sont pas encore dans l'inventaire
+            MenuScreen m = menu(mc);
+            boolean bar = m != null && m.barNames().stream().anyMatch(n -> n.contains("Tout récupérer")) && m.barNames().stream().anyMatch(n -> n.contains("Tout lâcher"))
+                    && m.barNames().stream().anyMatch(n -> n.contains("Tout jeter"));
+            check("butin_fenetre_ouverte", bar && titled(mc, "Boss vaincu") && titled(mc, "Magicarpe") && !m.entryNames().isEmpty() && candies(mc) == 0,
+                    screenName(mc) + (m == null ? "" : " " + m.entryNames() + " " + m.barNames()));
             shot(mc, "live_58_butin_boss");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            if (m != null) m.clickNamed("Tout récupérer", "left");
+        });
+        STEPS.add(mc -> {
+            check("butin_tout_recupere", menu(mc) == null && candies(mc) >= 10, screenName(mc) + " | Super Bonbons : " + candies(mc));
+            if (mc.screen != null) mc.setScreen(null);
         });
 
         // ---------------------------------------------------------------- outils de test du staff (alerte, Boss Mega)
@@ -381,14 +410,15 @@ final class ClientSelfTest {
         STEPS.add(mc -> {
         });
         STEPS.add(mc -> {
-            String spawned = MESSAGES.stream().filter(x -> x.contains("Boss Ultime apparu")).reduce((x, y) -> y).orElse("");
-            check("boss_mega_nomme", spawned.contains("Dracaufeu (Méga-"), spawned.isEmpty() ? String.valueOf(MESSAGES) : spawned);
+            // Mega demandee sur le palier Ultime : c'est un Mega-Boss « Méga Ultime » qui apparait
+            String spawned = MESSAGES.stream().filter(x -> x.contains("Ultime apparu")).reduce((x, y) -> y).orElse("");
+            check("boss_mega_nomme", spawned.contains("Boss Méga Ultime") && spawned.contains("Dracaufeu (Méga-"), spawned.isEmpty() ? String.valueOf(MESSAGES) : spawned);
             // plaque au-dessus du Boss (surnom synchronise) : palier + espece traduite
             String plate = mc.level.getEntitiesOfClass(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.class, mc.player.getBoundingBox().inflate(24))
                     .stream().map(e -> e.getEntityData().get(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.Companion.getNICKNAME()))
                     .filter(java.util.Objects::nonNull).map(net.minecraft.network.chat.Component::getString)
                     .filter(n -> n.contains("Ultime")).findFirst().orElse("");
-            check("boss_plaque_nom", plate.contains("[Ultime]") && plate.contains("Dracaufeu"), plate);
+            check("boss_plaque_nom", plate.contains("[Méga Ultime]") && plate.contains("Dracaufeu"), plate);
             shot(mc, "live_55_boss_mega_test");
         });
         STEPS.add(mc -> command(mc, "cp admin"));
@@ -400,6 +430,9 @@ final class ClientSelfTest {
             MenuScreen m = menu(mc);
             check("editeur_boss_tests", m != null && m.entryNames().stream().anyMatch(n -> n.contains("Test")) || m != null && m.barNames().stream().anyMatch(n -> n.contains("Test")),
                     m == null ? screenName(mc) : String.valueOf(m.barNames()));
+            check("editeur_boss_paliers_mega", m != null && m.entryNames().stream().filter(n -> n.contains("Méga ")).count() == 3,
+                    m == null ? screenName(mc) : String.valueOf(m.entryNames()));
+            shot(mc, "live_59_editeur_boss_paliers");
             if (m != null) m.clickNamed("Ultime", "left");
         });
         STEPS.add(mc -> {

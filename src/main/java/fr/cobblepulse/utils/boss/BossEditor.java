@@ -47,6 +47,7 @@ public final class BossEditor {
             g.button(slot++, ItemBuilder.of(Reg.stack(t.icon)).name(t.color + t.name)
                     .lore(Msg.format("boss.editor_tier_lore", "min", t.levelMin, "max", t.levelMax, "weight", fmt(t.weight), "loot", t.loot.size(),
                             "ai", t.aiSkill, "ivs", t.perfectIvs, "scale", fmt(t.scale)))
+                    .lore(t.mega ? Msg.format("boss.editor_tier_mega") : null)
                     .lore("", Msg.format("boss.editor_tier_click")).hideExtra().build(), pl -> tier(pl, id));
             if (slot == 17) slot = 19;
         }
@@ -176,7 +177,7 @@ public final class BossEditor {
                 }, () -> tier(pl, id)));
         g.button(51, ItemBuilder.of(Items.COMPARATOR).name(Msg.format("boss.editor_stats")).lore(Msg.format("boss.editor_stats_lore",
                 "weight", fmt(t.weight), "scale", fmt(t.scale), "ivs", t.perfectIvs, "ai", t.aiSkill, "cooldown", t.engageCooldownSeconds,
-                "announce", t.announce ? "oui" : "non")).build(), pl -> ChatInput.ask(pl, "boss.ask_stats", txt -> {
+                "announce", t.announce ? "oui" : "non", "mega", t.mega ? "oui" : "non")).build(), pl -> ChatInput.ask(pl, "boss.ask_stats", txt -> {
             for (String kv : txt.trim().split("\\s+")) {
                 String[] a = kv.split("=");
                 if (a.length != 2) continue;
@@ -188,6 +189,7 @@ public final class BossEditor {
                         case "ia", "ai" -> t.aiSkill = Integer.parseInt(a[1]);
                         case "delai", "cooldown" -> t.engageCooldownSeconds = Long.parseLong(a[1]);
                         case "annonce", "announce" -> t.announce = Boolean.parseBoolean(a[1]) || a[1].equals("oui");
+                        case "mega", "méga" -> t.mega = Boolean.parseBoolean(a[1]) || a[1].equals("oui");
                         default -> {
                         }
                     }

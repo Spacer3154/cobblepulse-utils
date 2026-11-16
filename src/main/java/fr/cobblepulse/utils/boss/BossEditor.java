@@ -40,16 +40,19 @@ public final class BossEditor {
         }
         Gui g = new Gui(4, Msg.format("boss.editor_title"));
         g.fill(Gui.pane());
-        int slot = 10;
+        // paliers ordinaires sur la 2e ligne, paliers de Mega-Boss sur la 3e
+        int normal = 10;
+        int mega = 19;
         for (Map.Entry<String, BossConfig.Tier> e : Cfg.boss.tiers.entrySet()) {
             BossConfig.Tier t = e.getValue();
             String id = e.getKey();
-            g.button(slot++, ItemBuilder.of(Reg.stack(t.icon)).name(t.color + t.name)
+            int slot = t.mega ? mega++ : normal++;
+            if (t.mega ? slot > 25 : slot > 16) continue;
+            g.button(slot, ItemBuilder.of(Reg.stack(t.icon)).name(t.color + t.name)
                     .lore(Msg.format("boss.editor_tier_lore", "min", t.levelMin, "max", t.levelMax, "weight", fmt(t.weight), "loot", t.loot.size(),
                             "ai", t.aiSkill, "ivs", t.perfectIvs, "scale", fmt(t.scale)))
                     .lore(t.mega ? Msg.format("boss.editor_tier_mega") : null)
                     .lore("", Msg.format("boss.editor_tier_click")).hideExtra().build(), pl -> tier(pl, id));
-            if (slot == 17) slot = 19;
         }
         g.button(28, ItemBuilder.of(Cfg.boss.naturalSpawn ? Items.LIME_DYE : Items.GRAY_DYE)
                 .name(Msg.format(Cfg.boss.naturalSpawn ? "boss.editor_spawn_on" : "boss.editor_spawn_off")).build(), pl -> {

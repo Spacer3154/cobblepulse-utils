@@ -387,8 +387,10 @@ final class ClientSelfTest {
                     && m.barNames().stream().anyMatch(n -> n.contains("Tout jeter"));
             check("butin_fenetre_ouverte", bar && titled(mc, "Boss vaincu") && titled(mc, "Magicarpe") && !m.entryNames().isEmpty() && candies(mc) == 0,
                     screenName(mc) + (m == null ? "" : " " + m.entryNames() + " " + m.barNames()));
-            shot(mc, "live_58_butin_boss");
+            // souris hors de la fenetre pour la capture (sinon l'infobulle de l'objet survole masque les boutons)
+            org.lwjgl.glfw.GLFW.glfwSetCursorPos(mc.getWindow().getWindow(), 6, 6);
         });
+        STEPS.add(mc -> shot(mc, "live_58_butin_boss"));
         STEPS.add(mc -> {
             MenuScreen m = menu(mc);
             if (m != null) m.clickNamed("Tout récupérer", "left");

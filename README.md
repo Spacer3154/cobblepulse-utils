@@ -118,7 +118,7 @@ Un warp privé n'est visible qu'avec `cobblepulse.warp.<nom>`.
 dans la liste. Les formes Méga, Primo et Originelle sont nommées comme dans les jeux (Méga-Dracaufeu X), avec la
 Méga-Gemme, l'Orbe ou l'objet requis. L'onglet Évolutions a une section Méga-Évolution (types, total des statistiques,
 objet ; clic pour afficher la forme). Avec Mega Showdown, les Méga-Gemmes sont identifiées dans son registre d'objets.
-Les Boss peuvent apparaître en Méga, Primo ou Originelle (voir Boss).
+Les Méga-Boss apparaissent en Méga-Évolution ou en Primo-Résurgence (voir Boss).
 
 **Wiki** : recherche par nom ou numéro, modèle 3D (glisser pour tourner, normal / chromatique, formes), statistiques,
 talents (dont le talent caché), évolutions avec leurs conditions, capacités (niveau, CT, œuf, tuteur).
@@ -128,23 +128,41 @@ ciel, blocs, structures. L'onglet Boss montre les tables de récompenses.
 
 **Alertes** : chromatiques, paradoxes, Ultra-Chimères, légendaires et fabuleux. L'annonce donne le biome traduit et le
 joueur le plus proche ; le staff voit les coordonnées au survol. L'historique garde les 10 derniers spawns par catégorie
-(Actif / Capturé par X / Disparu). Les Boss ne sont jamais annoncés.
+(Actif / Capturé par X / Vaincu par X / Tué par X / Disparu). Les Boss ne sont jamais annoncés.
+Une seconde annonce part quand un joueur capture le Pokémon rare, le met K.O. en combat ou le tue hors combat
+(`alerts.json` → `announce_capture`, `announce_defeat`, `announce_kill`, actifs par défaut).
 Pour tester (`cobblepulse.admin.alerts`, ou bouton « Tester une alerte » du radar) :
 `/cp alertes test <shiny|paradox|ultra_beast|legendary|mythical> [espèce|*] [moi]`. Un vrai Pokémon sauvage de la
 catégorie apparaît devant soi et l'annonce part exactement comme pour un spawn naturel, à tous les joueurs ou à soi seul
-avec `moi`. Il entre dans l'historique, et son statut suit la capture ou la disparition.
+avec `moi`. Il entre dans l'historique, et son statut suit la capture, la victoire, la mort ou la disparition ;
+ces suites sont annoncées aux mêmes destinataires que l'alerte de test.
 
 **Boss** : un spawn naturel a 1 % de chances (réglable) d'être promu Boss, sur 6 paliers (Commun → Ultime, niveaux 25 à 140).
 Un Boss reçoit des IV parfaits, une taille augmentée, une aura et l'IA de combat forte de Cobblemon. Il est invulnérable
 aux dégâts physiques et incapturable. Le butin est éditable : objets, argent, BP de la Tour, commandes.
-Avec Mega Showdown, un Boss peut apparaître Méga / Primo / Origine. Sa Méga-Gemme, son Orbe ou son Globe tombe à 100 %
-à la première victoire du joueur, puis à 10 %. Le butin est remis dès que le combat est gagné (dans l'inventaire, avec un
-récapitulatif dans le chat), en plus des objets que Cobblemon fait tomber du Pokémon.
+
+**Méga-Boss** (avec Mega Showdown) : trois paliers à part, Méga Épique (niveaux 75-90), Méga Légendaire (90-100) et
+Méga Ultime (120-150). Un Méga-Boss est toujours en Méga-Évolution ou en Primo-Résurgence. Quand un Pokémon promu a une
+telle forme, il a 35 % de chances (`special_form_chance`) de devenir un Méga-Boss ; son palier est alors tiré parmi les
+trois (poids 60 / 30 / 10). Les paliers ordinaires n'apparaissent plus en Méga ni en Primo ; ils gardent la forme
+Originelle. La Méga-Gemme, l'Orbe ou le Globe tombe à 100 % à la première victoire du joueur, puis à 10 %.
+Un palier devient un palier de Méga-Boss avec `"mega": true` dans `boss.json` (ou `mega=oui` dans ses réglages en jeu).
+
+**Fenêtre de butin** : après la victoire, l'argent, les BP et les commandes sont remis tout de suite, et les objets
+s'affichent dans une fenêtre une fois le combat terminé. Trois boutons : Tout récupérer, Tout lâcher (au sol) et
+Tout jeter (détruit, un second clic confirme). Par objet : clic pour récupérer, clic droit pour lâcher, Maj + clic pour
+jeter. Si l'inventaire est plein, le reste attend dans la fenêtre. Fermer la fenêtre (ou se déconnecter) place le reste
+dans l'inventaire. `boss.json` → `loot_window: false` remet tout directement, sans fenêtre.
+
+Les Boss au-delà du niveau 100 sont enregistrés normalement avec le monde. Si une autre version de Cobblemon refusait
+ces niveaux, le mod le détecte au démarrage, l'écrit dans le journal et plafonne les Boss au niveau maximal.
 
 Outils de test du staff (`cobblepulse.admin.boss.spawn`), aussi en boutons dans l'éditeur des Boss :
-- `/cp boss spawn <palier> [espèce|*] [auto|base|mega|primal|origin]` fait apparaître un Boss devant soi ;
+- `/cp boss spawn <palier> [espèce|*] [auto|base|mega|primal|origin]` fait apparaître un Boss devant soi. Les paliers
+  de Méga-Boss sont `mega_epique`, `mega_legendaire` et `mega_ultime` ; demander `mega` ou `primal` sur un palier
+  ordinaire fait apparaître le Méga-Boss du palier correspondant ;
 - `/cp boss combat <palier> [espèce|*] [forme]` fait apparaître un Boss et lance aussitôt le combat avec son équipe ;
-- `/cp boss tous` fait apparaître un Boss de chaque palier en arc de cercle ;
+- `/cp boss tous` fait apparaître un Boss de chaque palier (Méga-Boss compris) en arc de cercle ;
 - `/cp boss clear` retire tous les Boss, `/cp boss toggle` coupe ou rétablit les Boss naturels.
 
 **Shop** : catégories avec emblème, ouverture et fermeture (globale ou par catégorie), promotions (globale, par catégorie,

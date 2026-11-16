@@ -604,6 +604,9 @@ public final class SelfTest {
         check("boss_niveau_superieur_100", pk.getLevel() >= 110 && pk.getLevel() <= 140, pk.getLevel());
         // crash du 16/11 : un Boss au-dela du niveau 100 present lors d'une sauvegarde du monde arretait le serveur
         check("boss_niveau_enregistrable", Bosses.highLevelsSupported(), null);
+        Integer shown = PokemonProperties.Companion.parse("magikarp level=" + pk.getLevel()).getLevel();
+        check("boss_niveau_fenetre_de_combat", shown != null && shown == pk.getLevel(), shown);
+        check("niveau_joueurs_toujours_plafonne", mon("magikarp", 150, false).getLevel() == 100, mon("magikarp", 150, false).getLevel());
         int bossLevel = pk.getLevel();
         try {
             net.minecraft.nbt.CompoundTag saved = new net.minecraft.nbt.CompoundTag();
@@ -1513,11 +1516,15 @@ public final class SelfTest {
                 String provisional = SpawnAlerts.history("shiny").get(0).status;
                 com.cobblemon.mod.common.api.events.CobblemonEvents.BATTLE_VICTORY.emit(
                         new com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent(battle, winners, losers, false));
-                battle.stop();
                 var h = SpawnAlerts.history("shiny").get(0);
                 String msg = TextUtil.strip(SpawnAlerts.lastOutcome);
                 check("alerte_victoire_en_combat", "DEFEATED".equals(h.status) && "TestA".equals(h.captor) && msg.contains("TestA") && msg.contains("a vaincu"),
                         provisional + " → " + h.status + " " + h.captor + " | " + msg);
+                try {
+                    // le moteur de combat peut deja avoir libere ce combat (entite retiree depuis 3 s)
+                    battle.stop();
+                } catch (Throwable ignored) {
+                }
                 Screens.capture(a.getUUID(), false);
                 finish();
             }));

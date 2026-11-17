@@ -246,7 +246,7 @@ public final class Bosses {
         decorate(entity, tierId);
         ACTIVE.put(entity.getUUID(), (ServerLevel) entity.level());
         if (t.announce) {
-            Msg.broadcast(Msg.withComponent("boss.announce", "pokemon", pk.getSpecies().getTranslatedName(),
+            Msg.broadcast(Msg.withComponent("boss.announce", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.of(pk.getSpecies()),
                     "tier", t.color + t.name, "level", pk.getLevel(), "biome", "", "x", (int) entity.getX(), "z", (int) entity.getZ()));
         }
         return true;
@@ -268,7 +268,7 @@ public final class Bosses {
         // racine non vide (« %s%s ») : Cobblemon ignore un surnom dont la racine est vide. Surnom pose directement :
         // PokemonEntity.setCustomName l'aplatirait en texte anglais sans couleurs. L'espece reste traduite par chaque client.
         pk.setNickname(Component.translatable("%s%s", TextUtil.legacy(Msg.format("boss.nameplate", "tier", t.color + t.name, "level", pk.getLevel())),
-                pk.getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+                fr.cobblepulse.utils.pokemon.SpeciesNames.of(pk.getSpecies()).copy().withStyle(TextUtil.styleOf(t.color))));
         BATTLE_NAMED.remove(entity.getUUID());
         entity.setCustomNameVisible(true);
         entity.setGlowingTag(t.glow);
@@ -504,17 +504,17 @@ public final class Bosses {
             }
         }
         FIGHTS.put(battle.getBattleId(), new Fight(tierId, boss.getPokemon().getPersistentData().getCompound(TAG).getString("key"),
-                boss.getPokemon().getSpecies().getTranslatedName().getString(), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
+                fr.cobblepulse.utils.pokemon.SpeciesNames.text(boss.getPokemon().getSpecies()), boss.getUUID(), (ServerLevel) boss.level(), System.currentTimeMillis()));
         // pendant le combat, le nom d'espece seul, a la couleur du palier : la fenetre de combat de Cobblemon affiche deja
         // le niveau, n'a pas la place pour le palier et sa police n'a pas les symboles. Plaque complete retablie apres.
-        boss.getPokemon().setNickname(Component.translatable("%s", boss.getPokemon().getSpecies().getTranslatedName().copy().withStyle(TextUtil.styleOf(t.color))));
+        boss.getPokemon().setNickname(Component.translatable("%s", fr.cobblepulse.utils.pokemon.SpeciesNames.of(boss.getPokemon().getSpecies()).copy().withStyle(TextUtil.styleOf(t.color))));
         BATTLE_NAMED.add(boss.getUUID());
         // IA de combat forte pour le Boss
         PokemonBattleActor actor = bossActor(battle);
         if (actor != null) setAi(actor, t.aiSkill);
         CobbleUtils.LOG.info("[CobblePulse-Utils] Combat contre le Boss {} ({}) : {}", boss.getPokemon().getSpecies().getName(), tierId,
                 players.stream().map(x -> x.getGameProfile().getName()).toList());
-        for (ServerPlayer p : players) Msg.send(p, Msg.withComponent("boss.engaged", "pokemon", boss.getPokemon().getSpecies().getTranslatedName(), "tier", t.color + t.name));
+        for (ServerPlayer p : players) Msg.send(p, Msg.withComponent("boss.engaged", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.of(boss.getPokemon().getSpecies()), "tier", t.color + t.name));
     }
 
     private static void setAi(AIBattleActor actor, int skill) {
@@ -546,8 +546,8 @@ public final class Bosses {
         CompoundTag tag = lost.getPersistentData().getCompound(TAG);
         String tierId = fight != null ? fight.tier() : tag.getString("tier");
         String bossKey = fight != null && !fight.key().isEmpty() ? fight.key() : tag.getString("key");
-        String species = lost.getSpecies().getTranslatedName().getString();
-        net.minecraft.network.chat.Component speciesName = lost.getSpecies().getTranslatedName();
+        String species = fr.cobblepulse.utils.pokemon.SpeciesNames.text(lost.getSpecies());
+        net.minecraft.network.chat.Component speciesName = fr.cobblepulse.utils.pokemon.SpeciesNames.of(lost.getSpecies());
         BossConfig.Tier t = Cfg.boss.tiers.get(tierId);
         List<ServerPlayer> players = new ArrayList<>();
         for (BattleActor a : winners) {

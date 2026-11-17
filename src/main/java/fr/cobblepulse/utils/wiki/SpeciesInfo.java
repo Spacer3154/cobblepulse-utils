@@ -45,7 +45,7 @@ final class SpeciesInfo {
     static JsonObject build(Species s) {
         JsonObject o = new JsonObject();
         o.addProperty("id", s.getResourceIdentifier().toString());
-        o.addProperty("name_key", key(s.getTranslatedName()));
+        o.addProperty("name_key", key(fr.cobblepulse.utils.pokemon.SpeciesNames.of(s)));
         o.addProperty("name", s.getName());
         o.addProperty("dex", s.getNationalPokedexNumber());
         o.addProperty("height", s.getHeight() / 10.0);
@@ -85,7 +85,7 @@ final class SpeciesInfo {
         if (pre != null) {
             JsonObject pe = new JsonObject();
             pe.addProperty("species", pre.getSpecies().getResourceIdentifier().toString());
-            pe.addProperty("name_key", key(pre.getSpecies().getTranslatedName()));
+            pe.addProperty("name_key", key(fr.cobblepulse.utils.pokemon.SpeciesNames.of(pre.getSpecies())));
             o.add("pre_evolution", pe);
         }
         return o;
@@ -130,7 +130,7 @@ final class SpeciesInfo {
             String res = e.getResult().getSpecies();
             Species rs = res == null ? null : SpeciesLookup.resolve(res);
             j.addProperty("species", rs == null ? String.valueOf(res) : rs.getResourceIdentifier().toString());
-            j.addProperty("name_key", rs == null ? String.valueOf(res) : key(rs.getTranslatedName()));
+            j.addProperty("name_key", rs == null ? String.valueOf(res) : key(fr.cobblepulse.utils.pokemon.SpeciesNames.of(rs)));
             j.addProperty("method", e instanceof LevelUpEvolution ? "level" : e instanceof ItemInteractionEvolution ? "item"
                     : e instanceof TradeEvolution ? "trade" : e instanceof BlockClickEvolution ? "block" : "other");
             if (e instanceof ItemInteractionEvolution ie) j.addProperty("item", itemOf(ie.getRequiredContext()));

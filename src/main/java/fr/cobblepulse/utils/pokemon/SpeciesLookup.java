@@ -18,8 +18,11 @@ import java.util.Locale;
 public final class SpeciesLookup {
     private SpeciesLookup() {}
 
+    /** Minuscules, sans accents ni ponctuation : « Étreroch » → « etreroch ». */
     public static String norm(String s) {
-        return s == null ? "" : s.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
+        if (s == null) return "";
+        String n = java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+        return n.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
     }
 
     public static Species resolve(String input) {
@@ -52,10 +55,11 @@ public final class SpeciesLookup {
             boolean cobblemon = "cobblemon".equals(id.getNamespace());
             String p = norm(id.getPath());
             String n = norm(s.getName());
+            String shown = norm(SpeciesNames.text(s));
             if (p.equals(key) || p.equals(whole)) {
                 if (cobblemon) return s;
                 if (byPath == null) byPath = s;
-            } else if (n.equals(key) || n.equals(whole)) {
+            } else if (n.equals(key) || n.equals(whole) || shown.equals(key) || shown.equals(whole)) {
                 if (byName == null || cobblemon) byName = s;
             }
         }

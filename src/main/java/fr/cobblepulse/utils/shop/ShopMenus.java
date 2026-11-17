@@ -132,7 +132,7 @@ public final class ShopMenus {
                 }
             }
             ItemStack st = com.cobblemon.mod.common.item.PokemonItem.Companion.from(sp, aspects.toArray(new String[0]));
-            net.minecraft.network.chat.MutableComponent name = sp.getTranslatedName().copy().withStyle(s -> s.withItalic(false).withColor(m.shiny ? 0xFFD24A : 0xFFFFFF));
+            net.minecraft.network.chat.MutableComponent name = fr.cobblepulse.utils.pokemon.SpeciesNames.of(sp).copy().withStyle(s -> s.withItalic(false).withColor(m.shiny ? 0xFFD24A : 0xFFFFFF));
             if (m.shiny) name.append(" ★");
             st.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, name);
             return st;

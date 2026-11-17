@@ -142,7 +142,7 @@ public final class WikiScreen extends Screen {
                 if (String.valueOf(s.getNationalPokedexNumber()).startsWith(q.replaceFirst("^0+(?=.)", ""))) filtered.add(s);
                 continue;
             }
-            String name = s.getTranslatedName().getString().toLowerCase(Locale.ROOT);
+            String name = fr.cobblepulse.utils.pokemon.SpeciesNames.text(s).toLowerCase(Locale.ROOT);
             if (name.contains(q) || s.getResourceIdentifier().getPath().contains(q) || s.getName().toLowerCase(Locale.ROOT).contains(q)) filtered.add(s);
         }
     }
@@ -208,7 +208,7 @@ public final class WikiScreen extends Screen {
     String formLabel(JsonObject f) {
         String name = Ui.str(f, "name", "?");
         String kind = Ui.str(f, "special", "");
-        String sp = selected == null ? "" : selected.getTranslatedName().getString();
+        String sp = selected == null ? "" : fr.cobblepulse.utils.pokemon.SpeciesNames.text(selected);
         return switch (kind) {
             case "mega" -> {
                 String sfx = name.trim().length() > 4 ? name.trim().substring(name.trim().length() - 1).toUpperCase(Locale.ROOT) : "";
@@ -360,7 +360,7 @@ public final class WikiScreen extends Screen {
             }
             String num = String.format("#%04d", s.getNationalPokedexNumber());
             g.drawString(font, num, x + 22, ry + 5, Ui.MUTED, false);
-            Component n = s.getTranslatedName();
+            Component n = fr.cobblepulse.utils.pokemon.SpeciesNames.of(s);
             boolean mega = hasMega(s);
             g.drawString(font, font.plainSubstrByWidth(n.getString(), w - 54 - 4 - (mega ? 10 : 0)), x + 22 + font.width(num) + 4, ry + 5, sel ? Ui.GOLD : Ui.TEXT, false);
             if (mega) g.drawString(font, "M", x + w - 12, ry + 5, Ui.PURPLE, false);
@@ -379,7 +379,7 @@ public final class WikiScreen extends Screen {
         int right = width - 12;
         JsonObject info = data == null ? null : Ui.obj(data, "info");
         // En-tete
-        MutableComponent name = selected.getTranslatedName().copy().withStyle(ChatFormatting.BOLD);
+        MutableComponent name = fr.cobblepulse.utils.pokemon.SpeciesNames.of(selected).copy().withStyle(ChatFormatting.BOLD);
         g.drawString(font, name, x0 + 4, 26, Ui.TEXT, false);
         String num = String.format("  #%04d", selected.getNationalPokedexNumber());
         g.drawString(font, num, x0 + 4 + font.width(name), 26, Ui.MUTED, false);
@@ -658,7 +658,7 @@ public final class WikiScreen extends Screen {
             }
             click(x, y, w, method == null ? 22 : 32, () -> select(s));
         }
-        g.drawString(font, s != null ? s.getTranslatedName() : Ui.tr(nameKey, Ui.pretty(id)), x + 24, y + 4, Ui.GOLD, false);
+        g.drawString(font, s != null ? fr.cobblepulse.utils.pokemon.SpeciesNames.of(s) : Ui.tr(nameKey, Ui.pretty(id)), x + 24, y + 4, Ui.GOLD, false);
         if (method != null) g.drawString(font, font.substrByWidth(method, w - 30).getString(), x + 24, y + 16, Ui.TEXT, false);
         return y + (method == null ? 24 : 34);
     }

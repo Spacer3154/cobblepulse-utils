@@ -65,6 +65,8 @@ public final class SpawnAlerts {
     public static final List<String> CATEGORIES = List.of("shiny", "paradox", "ultra_beast", "legendary", "mythical");
     /** Auto-test : texte de la derniere annonce. */
     public static volatile String lastBroadcast = "";
+    /** Auto-test : derniere annonce telle qu'envoyee (nom d'espece compris). */
+    public static volatile Component lastBroadcastMessage = Component.empty();
     /** Auto-test : texte de la derniere annonce de capture / victoire / mort. */
     public static volatile String lastOutcome = "";
 
@@ -194,7 +196,7 @@ public final class SpawnAlerts {
             cats = new ArrayList<>(List.of(cat));
         }
         record(e, cats, onlyMe ? p : null);
-        Msg.send(p, Msg.withComponent("alerts.test_done", "pokemon", sp.getTranslatedName(), "category", label(cats),
+        Msg.send(p, Msg.withComponent("alerts.test_done", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.of(sp), "category", label(cats),
                 "target", onlyMe ? Msg.format("alerts.test_target_me") : Msg.format("alerts.test_target_all")));
         return e;
     }
@@ -266,7 +268,7 @@ public final class SpawnAlerts {
 
     private static void broadcast(Pokemon pk, List<String> cats, Entry en, ServerPlayer onlyTo) {
         AlertsConfig.Category first = Cfg.alerts.categories.get(cats.get(0));
-        MutableComponent name = pk.getSpecies().getTranslatedName().copy();
+        MutableComponent name = fr.cobblepulse.utils.pokemon.SpeciesNames.of(pk.getSpecies()).copy();
         String world = fr.cobblepulse.utils.teleport.Worlds.isMain(en.loc.world) ? ""
                 : Msg.format("alerts.world_suffix", "world", fr.cobblepulse.utils.teleport.Worlds.plainName(en.loc.world));
         String text = Msg.format(en.nearest.isEmpty() ? "alerts.broadcast_nobody" : "alerts.broadcast",
@@ -279,6 +281,7 @@ public final class SpawnAlerts {
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/execute in " + en.loc.world + " run tp @s "
                         + (int) en.loc.x + " " + (int) en.loc.y + " " + (int) en.loc.z)));
         lastBroadcast = text;
+        lastBroadcastMessage = normal;
         for (ServerPlayer p : onlyTo != null ? List.of(onlyTo) : CobbleUtils.server().getPlayerList().getPlayers()) {
             if (!Msg.reachable(p) || onlyTo == null && !Perms.player(p, Perms.ALERTS_RECEIVE)) continue;
             p.sendSystemMessage(Perms.perkOrOp(p, Perms.ALERTS_COORDS) ? staff : normal);
@@ -403,7 +406,7 @@ public final class SpawnAlerts {
             sp = PokemonSpecies.getByIdentifier(ResourceLocation.parse(e.species));
         } catch (Throwable ignored) {
         }
-        MutableComponent name = (sp == null ? Component.literal(e.species) : sp.getTranslatedName().copy()).withStyle(TextUtil.styleOf(first.color));
+        MutableComponent name = (sp == null ? Component.literal(e.species) : fr.cobblepulse.utils.pokemon.SpeciesNames.of(sp).copy()).withStyle(TextUtil.styleOf(first.color));
         String text = Msg.format(key, "categories", label(cats), "player", e.captor, "color", first.color);
         MutableComponent msg = Msg.splice(text, "pokemon", name);
         lastOutcome = text;
@@ -454,7 +457,7 @@ public final class SpawnAlerts {
             base = new ItemStack(Items.EGG);
         }
         Species s = PokemonSpecies.getByIdentifier(ResourceLocation.parse(e.species));
-        ItemBuilder b = ItemBuilder.of(base).name(Component.empty().append(s == null ? Component.literal(e.species) : s.getTranslatedName().copy())
+        ItemBuilder b = ItemBuilder.of(base).name(Component.empty().append(s == null ? Component.literal(e.species) : fr.cobblepulse.utils.pokemon.SpeciesNames.of(s).copy())
                 .append(Component.literal(e.shiny ? " ★" : "")));
         b.lore(Msg.format("alerts.icon_time", "time", TimeFmt.duration(System.currentTimeMillis() - e.time), "date", TimeFmt.date(e.time)));
         b.loreComponent(TextUtil.legacy(Msg.format("alerts.icon_biome")).append(biomeName(e.biome).copy().withStyle(net.minecraft.ChatFormatting.WHITE)));

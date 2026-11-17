@@ -86,6 +86,8 @@ public final class CobbleUtils implements ModInitializer {
         });
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             fr.cobblepulse.utils.teleport.Worlds.sync(s);
+            fr.cobblepulse.utils.pokemon.SpeciesNames.language = Cfg.general.language;
+            fr.cobblepulse.utils.pokemon.SpeciesNames.reload(s);
             Scheduler.repeat(20, 20, fr.cobblepulse.utils.playtime.PlaytimeRewards::tick);
             Scheduler.repeat(1200, 1200, () -> {
                 PlayerStore.flushDirty();
@@ -143,8 +145,15 @@ public final class CobbleUtils implements ModInitializer {
             fr.cobblepulse.utils.playtime.PlaytimeRewards.register(d);
         });
 
+        // Fakemons de datapacks : les especes et leurs noms changent avec /reload
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((s, rm, ok) -> {
+            if (!ok) return;
+            fr.cobblepulse.utils.pokemon.SpeciesNames.reload(s);
+            for (ServerPlayer p : s.getPlayerList().getPlayers()) sendSpeciesNames(p);
+        });
         ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
             ServerPlayer p = handler.getPlayer();
+            sendSpeciesNames(p);
             boolean first = PlayerStore.get(p).firstJoin == 0;
             PlayerStore.onJoin(p);
             ChatFeatures.onJoin(p);
@@ -200,5 +209,11 @@ public final class CobbleUtils implements ModInitializer {
             ChatFeatures.applyNick(p.getUUID(), d.nick, p.getGameProfile().getName());
             server.getCommands().sendCommands(p);
         }
+    }
+
+    /** Noms des especes que le joueur n'a peut-etre pas traduites (Fakemons de datapacks), pour le Wiki et les ecrans. */
+    private static void sendSpeciesNames(ServerPlayer p) {
+        var names = fr.cobblepulse.utils.pokemon.SpeciesNames.forClients();
+        if (!names.isEmpty()) fr.cobblepulse.utils.net.Net.send(p, "species_names", new java.util.LinkedHashMap<>(names));
     }
 }

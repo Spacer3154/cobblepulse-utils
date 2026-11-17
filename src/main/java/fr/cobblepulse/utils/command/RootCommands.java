@@ -199,7 +199,7 @@ public final class RootCommands {
         if (Bosses.isMegaTier(target) && species != null && !species.isBlank() && !species.equals("*")) {
             var sp = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve(species);
             if (sp != null && Bosses.megaForm(sp) == null) {
-                src.sendSystemMessage(Msg.withComponent("boss.no_mega_form", "pokemon", sp.getTranslatedName()));
+                src.sendSystemMessage(Msg.withComponent("boss.no_mega_form", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.of(sp)));
                 return 0;
             }
         }
@@ -211,7 +211,7 @@ public final class RootCommands {
         var t = Cfg.boss.tiers.get(Bosses.tierOf(e));
         if (!target.equals(tier)) Msg.send(src, "boss.mega_tier_used", "tier", t.color + t.name);
         String formName = e.getPokemon().getForm() == e.getPokemon().getSpecies().getStandardForm() ? "" : " &d(" + fr.cobblepulse.utils.boss.Bosses.formLabel(e.getPokemon().getForm().getName()) + ")";
-        src.sendSystemMessage(Msg.withComponent("boss.spawned", "pokemon", e.getPokemon().getSpecies().getTranslatedName().copy()
+        src.sendSystemMessage(Msg.withComponent("boss.spawned", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.of(e.getPokemon().getSpecies()).copy()
                 .append(fr.cobblepulse.utils.core.TextUtil.legacy(formName)), "tier", t.color + t.name, "level", e.getPokemon().getLevel()));
         if (!f.equals("auto") && !f.equals("base") && formName.isEmpty()) Msg.send(src, "boss.form_unavailable", "form", f);
         if (fight) {

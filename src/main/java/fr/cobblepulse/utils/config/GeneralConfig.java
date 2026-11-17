@@ -15,6 +15,11 @@ public final class GeneralConfig {
     public String moneyFormat = "%amount% ₽";
     /** Menus en ecrans CobblePulse pour les joueurs qui ont le mod (sinon, et pour les autres : menus coffre). */
     public boolean clientScreens = true;
+    /**
+     * Langue des noms d'especes ecrits par le serveur et des noms de secours des Fakemons (fichiers de langue des
+     * datapacks et des mods), par exemple fr_fr ou en_us.
+     */
+    public String language = "fr_fr";
 
     public Teleport teleport = new Teleport();
     public Chat chat = new Chat();

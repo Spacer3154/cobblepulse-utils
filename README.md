@@ -92,6 +92,24 @@ Opérations atomiques :
 `general.json` → `economy` : `COBBLEDOLLARS` (par défaut), `IMPACTOR` ou `AUTO`. Les deux mods sont appelés directement
 par leur API, sans commande intermédiaire. Les montants sont entiers.
 
+## Noms des Pokémon et Fakémons
+
+Les noms d'espèces envoyés par le mod (alertes, Boss, GTS, boutique, Wiki…) sont traduits par le jeu de chaque joueur,
+avec un nom de secours quand il n'a pas la traduction. C'est le cas des Fakémons d'un datapack installé seulement sur
+le serveur : sans ce secours, le joueur voyait la clé brute (`cobblemon.species.etreroch.name`).
+
+Le nom de secours est pris, dans l'ordre :
+1. dans les fichiers de langue du datapack (`assets/<ns>/lang/fr_fr.json` dans le zip), s'il en contient ;
+2. dans ceux des mods (Cobblemon, Mega Showdown…) ;
+3. à défaut, dans le champ `name` du fichier de l'espèce.
+
+La langue est `general.json` → `language` (`fr_fr` par défaut, puis `en_us`). Les noms sont relus après `/reload` et
+envoyés aux joueurs qui ont le mod, pour le Wiki et les écrans. Les commandes acceptent aussi le nom affiché, accents
+compris (`/cp alertes test shiny Étreroch`).
+
+Pour que l'interface de Cobblemon elle-même (combat, PC, équipe) affiche ces noms et les modèles 3D des Fakémons,
+le même zip doit aussi être chargé côté client, comme pack de ressources du modpack.
+
 ## Modules
 
 **Mondes et dimensions** : chaque monde chargé par le serveur est ajouté automatiquement à `worlds.json`. C'est le cas

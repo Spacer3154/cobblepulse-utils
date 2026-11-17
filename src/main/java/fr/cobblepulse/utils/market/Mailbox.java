@@ -103,7 +103,7 @@ public final class Mailbox {
                 }
                 PokemonText.party(p).add(pk);
                 PokemonStores.saveNow(p);
-                Msg.send(p, "mailbox.pokemon", "pokemon", pk.getSpecies().getTranslatedName().getString(), "reason", m.reason);
+                Msg.send(p, "mailbox.pokemon", "pokemon", fr.cobblepulse.utils.pokemon.SpeciesNames.text(pk.getSpecies()), "reason", m.reason);
                 return true;
             }
             default -> {

@@ -92,6 +92,11 @@ public final class UtilsClient implements ClientModInitializer {
         }
         switch (kind) {
             case "hub" -> mc.setScreen(new HubScreen(o));
+            case "species_names" -> {
+                java.util.Map<String, String> names = new java.util.HashMap<>();
+                for (var e : o.entrySet()) if (e.getValue().isJsonPrimitive()) names.put(e.getKey(), e.getValue().getAsString());
+                fr.cobblepulse.utils.pokemon.SpeciesNames.accept(names);
+            }
             case "menu" -> {
                 // fenetre de butin : on laisse le combat Cobblemon finir son animation avant de l'afficher
                 if (Ui.bool(o, "after_battle", false) && !(mc.screen instanceof MenuScreen) && inBattle()) {

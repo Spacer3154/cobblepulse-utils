@@ -149,7 +149,7 @@ public final class PokemonBuilderScreen extends Screen implements Overlay {
         ResourceLocation rl = ResourceLocation.tryParse(raw.contains(":") ? raw : "cobblemon:" + raw);
         Species s = rl == null ? null : PokemonSpecies.getByIdentifier(rl);
         if (s != null) return s;
-        for (Species sp : all) if (sp.getName().equalsIgnoreCase(raw) || sp.getTranslatedName().getString().equalsIgnoreCase(raw)) return sp;
+        for (Species sp : all) if (sp.getName().equalsIgnoreCase(raw) || fr.cobblepulse.utils.pokemon.SpeciesNames.text(sp).equalsIgnoreCase(raw)) return sp;
         return null;
     }
 
@@ -232,7 +232,7 @@ public final class PokemonBuilderScreen extends Screen implements Overlay {
         filtered.clear();
         String q = MenuScreen.norm(search == null ? "" : search.getValue().trim());
         for (Species s : all) {
-            if (q.isEmpty() || MenuScreen.norm(s.getTranslatedName().getString()).contains(q) || s.getResourceIdentifier().toString().contains(q)
+            if (q.isEmpty() || MenuScreen.norm(fr.cobblepulse.utils.pokemon.SpeciesNames.text(s)).contains(q) || s.getResourceIdentifier().toString().contains(q)
                     || (q.chars().allMatch(Character::isDigit) && String.valueOf(s.getNationalPokedexNumber()).equals(q.replaceFirst("^0+(?=.)", "")))) {
                 filtered.add(s);
             }
@@ -377,7 +377,7 @@ public final class PokemonBuilderScreen extends Screen implements Overlay {
         Ui.panel(g, lx, ly, lw, lh, Ui.CARD, Ui.BORDER);
         Ui.panel(g, lx + lw + 10, py + 30, 118, 118, Ui.CARD, Ui.BORDER);
         if (species != null) {
-            g.drawCenteredString(font, species.getTranslatedName(), lx + lw + 69, py + 154, Ui.GOLD);
+            g.drawCenteredString(font, fr.cobblepulse.utils.pokemon.SpeciesNames.of(species), lx + lw + 69, py + 154, Ui.GOLD);
             g.drawCenteredString(font, font.plainSubstrByWidth(form.name().getString(), 124), lx + lw + 69, py + 166, Ui.MUTED);
         }
         String sp = spec();
@@ -406,7 +406,7 @@ public final class PokemonBuilderScreen extends Screen implements Overlay {
                 g.renderItem(PokemonItem.Companion.from(s, new String[0]), lx + 3, ry + 1);
             } catch (Throwable ignored) {
             }
-            g.drawString(font, font.plainSubstrByWidth(s.getTranslatedName().getString(), lw - 26), lx + 22, ry + 5, s == species ? Ui.GOLD : Ui.TEXT, false);
+            g.drawString(font, font.plainSubstrByWidth(fr.cobblepulse.utils.pokemon.SpeciesNames.text(s), lw - 26), lx + 22, ry + 5, s == species ? Ui.GOLD : Ui.TEXT, false);
         }
         g.disableScissor();
         g.pose().popPose();

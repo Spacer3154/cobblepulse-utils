@@ -408,6 +408,33 @@ final class ClientSelfTest {
             mc.player.connection.sendCommand("cp alertes test shiny pikachu moi");
         });
         STEPS.add(mc -> shot(mc, "live_54_alerte_test"));
+        // Fakemon d'un datapack serveur (bug du 17/11) : le client n'a pas sa traduction, il doit afficher son nom
+        STEPS.add(mc -> {
+            var fake = com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getByIdentifier(net.minecraft.resources.ResourceLocation.parse("cobblemon:etreroch"));
+            check("fakemon_synchronise_client", fake != null && !net.minecraft.client.resources.language.I18n.exists(fake.getTranslationKey()),
+                    fake == null ? "absent" : "traduction client : " + net.minecraft.client.resources.language.I18n.exists(fake.getTranslationKey()));
+            check("fakemon_nom_client", fake != null && "Étreroch".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.text(fake)),
+                    fake == null ? "-" : fr.cobblepulse.utils.pokemon.SpeciesNames.text(fake));
+            MESSAGES.clear();
+            mc.player.connection.sendCommand("cp alertes test shiny etreroch moi");
+        });
+        STEPS.add(mc -> {
+            String alert = MESSAGES.stream().filter(x -> x.contains("Radar")).findFirst().orElse("");
+            check("fakemon_alerte_lisible", alert.contains("Étreroch") && MESSAGES.stream().noneMatch(x -> x.contains("species.etreroch")),
+                    alert.isEmpty() ? String.valueOf(MESSAGES) : alert);
+            shot(mc, "live_60_fakemon_alerte");
+            command(mc, "wiki");
+        });
+        STEPS.add(mc -> {
+            var fake = com.cobblemon.mod.common.api.pokemon.PokemonSpecies.getByIdentifier(net.minecraft.resources.ResourceLocation.parse("cobblemon:etreroch"));
+            if (mc.screen instanceof WikiScreen w && fake != null) w.select(fake);
+            else check("fakemon_wiki", false, screenName(mc));
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w) check("fakemon_wiki", "cobblemon:etreroch".equals(w.selectedId()), w.selectedId());
+            shot(mc, "live_61_fakemon_wiki");
+            if (mc.screen != null) mc.setScreen(null);
+        });
         STEPS.add(mc -> mc.player.connection.sendCommand("cp boss spawn ultime charizard mega"));
         STEPS.add(mc -> {
         });

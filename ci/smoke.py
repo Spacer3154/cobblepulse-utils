@@ -60,6 +60,9 @@ open(os.path.join(SRV, "server.properties"), "w").write(
 
 def run_server(label, commands, wait_token=None, wait_timeout=0):
     log("===== run %s =====" % label)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import fakemon
+    log("datapack Fakemon : " + fakemon.make(SRV))
     proc = subprocess.Popen(["java", "-Xmx5G", "-Dcobblepulse_utils.selftest=true", "-jar", "server.jar", "nogui"], cwd=SRV,
                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
     lines = queue.Queue()

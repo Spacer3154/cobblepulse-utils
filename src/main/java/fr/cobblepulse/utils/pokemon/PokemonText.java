@@ -58,7 +58,7 @@ public final class PokemonText {
     }
 
     public static MutableComponent speciesName(Pokemon pk) {
-        MutableComponent c = pk.getSpecies().getTranslatedName().copy();
+        MutableComponent c = fr.cobblepulse.utils.pokemon.SpeciesNames.of(pk.getSpecies()).copy();
         String f = formName(pk);
         if (!f.isEmpty()) c.append(Component.literal(" (" + f + ")"));
         return c;
@@ -113,7 +113,7 @@ public final class PokemonText {
         List<String> l = new ArrayList<>();
         String types = Names.typeName(pk.getForm().getPrimaryType().getName())
                 + (pk.getForm().getSecondaryType() != null ? " / " + Names.typeName(pk.getForm().getSecondaryType().getName()) : "");
-        l.add("&7Espèce : &f" + pk.getSpecies().getTranslatedName().getString() + (formName(pk).isEmpty() ? "" : " &8(" + formName(pk) + ")")
+        l.add("&7Espèce : &f" + fr.cobblepulse.utils.pokemon.SpeciesNames.text(pk.getSpecies()) + (formName(pk).isEmpty() ? "" : " &8(" + formName(pk) + ")")
                 + " &8#" + pk.getSpecies().getNationalPokedexNumber());
         l.add("&7Types : &f" + types);
         l.add("&7Niveau : &f" + pk.getLevel() + (pk.getShiny() ? "  &e★ Chromatique" : ""));

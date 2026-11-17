@@ -43,6 +43,9 @@ with open(os.path.join(MC, "options.txt"), "w") as fh:
 
 with open(os.path.join(SRV, "server.properties"), "a") as fh:
     fh.write("enforce-secure-profile=false\n")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import fakemon
+log("datapack Fakemon : " + fakemon.make(SRV))
 # /op d'un joueur jamais connecte echoue en mode hors ligne : ops.json ecrit avec l'UUID hors ligne
 import hashlib, uuid
 h = bytearray(hashlib.md5(b"OfflinePlayer:UtilsTest").digest())

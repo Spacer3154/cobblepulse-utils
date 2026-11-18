@@ -226,6 +226,22 @@ final class ClientSelfTest {
         });
         STEPS.add(mc -> {
             shot(mc, "live_41_wiki_mega_evolutions");
+            // Mega-Gemme d'un autre mod (Glavenusite de CobblePulse-Ecology), lue dans le registre de Mega Showdown
+            var gl = PokemonSpecies.getByIdentifier(ResourceLocation.parse("cobblemon:glavenus"));
+            if (mc.screen instanceof WikiScreen w && gl != null) w.select(gl);
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w && "cobblemon:glavenus".equals(w.selectedId())) {
+                var stones = w.stones();
+                boolean ok = stones.values().stream().anyMatch("cobblepulse_ecology:glavenusite"::equals);
+                check("wiki_mega_gemme_autre_mod", ok, String.valueOf(stones));
+                w.setTab(1);
+            } else if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("cobblepulse_ecology")) {
+                check("wiki_mega_gemme_autre_mod", false, screenName(mc));
+            }
+        });
+        STEPS.add(mc -> {
+            if (mc.screen instanceof WikiScreen w && "cobblemon:glavenus".equals(w.selectedId())) shot(mc, "live_62_wiki_glavenusite");
             if (mc.screen instanceof WikiScreen w) w.setMegaOnly(false);
         });
         // ---------------------------------------------------------------- temps de jeu, Echange Miracle

@@ -135,7 +135,9 @@ Un warp privé n'est visible qu'avec `cobblepulse.warp.<nom>`.
 **Méga-Évolutions** : dans le Wiki, le bouton « M » ne garde que les espèces qui ont une Méga-Évolution, signalées
 dans la liste. Les formes Méga, Primo et Originelle sont nommées comme dans les jeux (Méga-Dracaufeu X), avec la
 Méga-Gemme, l'Orbe ou l'objet requis. L'onglet Évolutions a une section Méga-Évolution (types, total des statistiques,
-objet ; clic pour afficher la forme). Avec Mega Showdown, les Méga-Gemmes sont identifiées dans son registre d'objets.
+objet ; clic pour afficher la forme). Les Méga-Gemmes sont lues dans le registre de Mega Showdown (`mega_showdown:mega`) :
+celles des autres mods et des datapacks y apparaissent aussi (Glavenusite et Deviljhonite de CobblePulse-Ecology, par
+exemple), et sont données par les Méga-Boss correspondants. Une gemme peut être imposée dans `boss.json` → `form_items`.
 Les Méga-Boss apparaissent en Méga-Évolution ou en Primo-Résurgence (voir Boss).
 
 **Wiki** : recherche par nom ou numéro, modèle 3D (glisser pour tourner, normal / chromatique, formes), statistiques,

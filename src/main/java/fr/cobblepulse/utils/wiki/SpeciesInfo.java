@@ -35,14 +35,14 @@ import java.util.List;
 import java.util.Map;
 
 /** Fiche technique d'une espece pour le Wiki (cles de traduction, resolues par le client). */
-final class SpeciesInfo {
+public final class SpeciesInfo {
     private SpeciesInfo() {}
 
     static String key(net.minecraft.network.chat.Component c) {
         return c.getContents() instanceof TranslatableContents tc ? tc.getKey() : c.getString();
     }
 
-    static JsonObject build(Species s) {
+    public static JsonObject build(Species s) {
         JsonObject o = new JsonObject();
         o.addProperty("id", s.getResourceIdentifier().toString());
         o.addProperty("name_key", key(fr.cobblepulse.utils.pokemon.SpeciesNames.of(s)));

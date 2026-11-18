@@ -276,6 +276,16 @@ public final class WikiScreen extends Screen {
         buildModel();
     }
 
+    /** Auto-test : Mega-Gemme annoncee par le serveur pour chaque forme speciale (forme → objet, vide si inconnue). */
+    public java.util.Map<String, String> stones() {
+        java.util.Map<String, String> out = new java.util.LinkedHashMap<>();
+        if (data != null) for (JsonElement e : Ui.arr(Ui.obj(data, "info"), "forms")) {
+            JsonObject f = e.getAsJsonObject();
+            if (!Ui.str(f, "special", "").isEmpty()) out.put(Ui.str(f, "name", "?"), Ui.str(f, "stone", ""));
+        }
+        return out;
+    }
+
     public List<String> megaNames() {
         List<String> out = new ArrayList<>();
         if (data != null) for (JsonElement e : Ui.arr(Ui.obj(data, "info"), "megas")) out.add(e.getAsString());

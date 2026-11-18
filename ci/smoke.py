@@ -46,6 +46,10 @@ for name in ("cobblepulse.jar", "cobblepulse-battletower.jar", "cobblepulse-crat
     if os.path.exists(src) and os.path.getsize(src) > 100000:
         shutil.copy(src, os.path.join(SRV, "mods", name))
         log("mod " + name)
+# autres mods du serveur (CobblePulse-Ecology : Fakemons et Mega-Gemmes declarees dans Mega Showdown)
+for j in glob.glob("ci/mods/*.jar"):
+    shutil.copy(j, os.path.join(SRV, "mods"))
+    log("mod " + os.path.basename(j))
 for j in [j for j in glob.glob("build/libs/*.jar") if not j.endswith("-sources.jar")]:
     shutil.copy(j, os.path.join(SRV, "mods"))
     log("mod utils " + j)

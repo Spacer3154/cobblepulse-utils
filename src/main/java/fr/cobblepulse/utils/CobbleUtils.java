@@ -148,6 +148,7 @@ public final class CobbleUtils implements ModInitializer {
         // Fakemons de datapacks : les especes et leurs noms changent avec /reload
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((s, rm, ok) -> {
             if (!ok) return;
+            fr.cobblepulse.utils.boss.MegaStones.invalidate();
             fr.cobblepulse.utils.pokemon.SpeciesNames.reload(s);
             for (ServerPlayer p : s.getPlayerList().getPlayers()) sendSpeciesNames(p);
         });

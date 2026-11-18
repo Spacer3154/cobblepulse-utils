@@ -1292,7 +1292,32 @@ public final class SelfTest {
         if (fe != null) fe.discard();
     }
 
+    /** Mega-Gemmes lues dans le registre de Mega Showdown, y compris celles d'autres mods (demande du 18/11). */
+    private static void megaStonesChecks() {
+        if (!Bosses.megaShowdown()) return;
+        var all = fr.cobblepulse.utils.boss.MegaStones.all();
+        check("mega_gemmes_registre_mega_showdown", all.size() >= 40 && "mega_showdown:charizardite_x".equals(all.get("charizard:mega_x"))
+                && "mega_showdown:charizardite_y".equals(all.get("charizard:mega_y")), all.size() + " " + all.get("charizard:mega_x") + " " + all.get("charizard:mega_y"));
+        if (!net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("cobblepulse_ecology")) {
+            info("Mega-Gemmes d'autres mods : CobblePulse-Ecology absent");
+            return;
+        }
+        var gl = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("glavenus");
+        var dj = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("deviljho");
+        String glStone = gl == null ? null : Bosses.formItemFor(gl, "Mega");
+        String djStone = dj == null ? null : Bosses.formItemFor(dj, "Mega");
+        check("mega_gemme_autre_mod", "cobblepulse_ecology:glavenusite".equals(glStone) && "cobblepulse_ecology:deviljhonite".equals(djStone),
+                glStone + " / " + djStone);
+        boolean wiki = false;
+        if (gl != null) for (var e : fr.cobblepulse.utils.wiki.SpeciesInfo.build(gl).getAsJsonArray("forms")) {
+            var f = e.getAsJsonObject();
+            if (f.has("stone") && "cobblepulse_ecology:glavenusite".equals(f.get("stone").getAsString())) wiki = true;
+        }
+        check("mega_gemme_autre_mod_wiki", wiki, null);
+    }
+
     private static void staffTestsPhase() {
+        megaStonesChecks();
         MinecraftServer s = a.getServer();
         ServerLevel ow = s.overworld();
         var sp = ow.getSharedSpawnPos();

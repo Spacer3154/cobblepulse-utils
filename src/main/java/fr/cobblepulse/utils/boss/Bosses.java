@@ -394,18 +394,28 @@ public final class Bosses {
         return pk.getSpecies().getResourceIdentifier().getPath() + ":" + form;
     }
 
-    /** Objet de forme : config (espece:forme), sinon Mega-Gemme deduite des objets de Mega Showdown. */
+    private static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> MEGA_STONE_TAG = net.minecraft.tags.TagKey.create(
+            net.minecraft.core.registries.Registries.ITEM, ResourceLocation.fromNamespaceAndPath("mega_showdown", "mega_stone"));
+
+    /**
+     * Objet de forme : config (espece:forme), sinon Mega-Gemme declaree dans le registre de Mega Showdown (tous les mods),
+     * sinon deduite du nom des objets.
+     */
     public static String formItem(String bossKey) {
         String v = Cfg.boss.formItems.get(bossKey);
         if (v != null) return Reg.itemExists(v) ? v : null;
         String[] parts = bossKey.split(":");
         if (parts.length < 2 || !parts[1].startsWith("mega")) return null;
+        // registre de Mega Showdown : gemmes de tous les mods et datapacks
+        String declared = MegaStones.find(parts[0], parts[1]);
+        if (declared != null) return declared;
         String species = parts[0].replaceAll("[^a-z]", "");
         String suffix = parts[1].length() > 4 ? parts[1].substring(parts[1].length() - 1) : "";
         String best = null;
         int bestLen = 0;
         for (ResourceLocation id : BuiltInRegistries.ITEM.keySet()) {
-            if (!"mega_showdown".equals(id.getNamespace())) continue;
+            // repli par le nom : objets de Mega Showdown et objets marques Mega-Gemme (#mega_showdown:mega_stone)
+            if (!"mega_showdown".equals(id.getNamespace()) && !BuiltInRegistries.ITEM.get(id).builtInRegistryHolder().is(MEGA_STONE_TAG)) continue;
             String path = id.getPath();
             String sfx = "";
             if (path.matches(".*ite_[xyz]$")) {

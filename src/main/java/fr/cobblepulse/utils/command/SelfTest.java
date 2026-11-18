@@ -1266,29 +1266,29 @@ public final class SelfTest {
     // ------------------------------------------------------------------ outils de test du staff, remise a zero, vrai combat de Boss
 
     /**
-     * Noms d'especes (bug du 17/11 : « cobblemon.species.etreroch.name » dans une alerte). Le CI installe un datapack
-     * de Fakemon « etreroch » avec son fichier de langue, absent du client, comme le pack Normandy du serveur.
+     * Noms d'especes (bug du 17/11 : « cobblemon.species.verifax.name » dans une alerte). Le CI installe un datapack
+     * de Fakemon « verifax » avec son fichier de langue, absent du client, comme le pack Normandy du serveur.
      */
     private static void speciesNamesChecks(MinecraftServer s) {
         var magikarp = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("magikarp");
         check("noms_especes_francais_serveur", "Magicarpe".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.text(magikarp)),
                 fr.cobblepulse.utils.pokemon.SpeciesNames.text(magikarp));
-        var fake = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("etreroch");
+        var fake = fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("verifax");
         check("fakemon_datapack_charge", fake != null, null);
         if (fake == null) return;
         String key = fake.getTranslationKey();
         var comp = fr.cobblepulse.utils.pokemon.SpeciesNames.of(fake);
         boolean fallback = comp.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc
-                && key.equals(tc.getKey()) && "Étreroch".equals(tc.getFallback());
-        check("fakemon_nom_du_datapack", "Étreroch".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.text(fake)) && fallback,
+                && key.equals(tc.getKey()) && "Vérifax".equals(tc.getFallback());
+        check("fakemon_nom_du_datapack", "Vérifax".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.text(fake)) && fallback,
                 fr.cobblepulse.utils.pokemon.SpeciesNames.text(fake) + " | " + comp.getContents());
-        check("fakemon_nom_envoye_aux_joueurs", "Étreroch".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.forClients().get(key))
+        check("fakemon_nom_envoye_aux_joueurs", "Vérifax".equals(fr.cobblepulse.utils.pokemon.SpeciesNames.forClients().get(key))
                 && !fr.cobblepulse.utils.pokemon.SpeciesNames.forClients().containsKey(magikarp.getTranslationKey()),
                 fr.cobblepulse.utils.pokemon.SpeciesNames.forClients().size());
-        check("fakemon_recherche_nom_accentue", fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("Étreroch") == fake, null);
-        PokemonEntity fe = SpawnAlerts.test(staff, "shiny", "etreroch", true);
+        check("fakemon_recherche_nom_accentue", fr.cobblepulse.utils.pokemon.SpeciesLookup.resolve("Vérifax") == fake, null);
+        PokemonEntity fe = SpawnAlerts.test(staff, "shiny", "verifax", true);
         String shown = SpawnAlerts.lastBroadcastMessage.getString();
-        check("fakemon_alerte_nom_lisible", fe != null && shown.contains("Étreroch") && !shown.contains("species."), shown);
+        check("fakemon_alerte_nom_lisible", fe != null && shown.contains("Vérifax") && !shown.contains("species."), shown);
         if (fe != null) fe.discard();
     }
 

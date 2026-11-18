@@ -458,13 +458,16 @@ final class ClientSelfTest {
             // Mega demandee sur le palier Ultime : c'est un Mega-Boss « Méga Ultime » qui apparait
             String spawned = MESSAGES.stream().filter(x -> x.contains("Ultime apparu")).reduce((x, y) -> y).orElse("");
             check("boss_mega_nomme", spawned.contains("Boss Méga Ultime") && spawned.contains("Dracaufeu (Méga-"), spawned.isEmpty() ? String.valueOf(MESSAGES) : spawned);
+
+            shot(mc, "live_55_boss_mega_test");
+        });
+        STEPS.add(mc -> {
             // plaque au-dessus du Boss (surnom synchronise) : palier + espece traduite
             String plate = mc.level.getEntitiesOfClass(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.class, mc.player.getBoundingBox().inflate(24))
                     .stream().map(e -> e.getEntityData().get(com.cobblemon.mod.common.entity.pokemon.PokemonEntity.Companion.getNICKNAME()))
                     .filter(java.util.Objects::nonNull).map(net.minecraft.network.chat.Component::getString)
                     .filter(n -> n.contains("Ultime")).findFirst().orElse("");
             check("boss_plaque_nom", plate.contains("[Méga Ultime]") && plate.contains("Dracaufeu"), plate);
-            shot(mc, "live_55_boss_mega_test");
         });
         STEPS.add(mc -> command(mc, "cp admin"));
         STEPS.add(mc -> {

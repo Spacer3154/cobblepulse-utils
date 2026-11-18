@@ -1,0 +1,73 @@
+{
+  "id": "ressources",
+  "name": "&6&lRessources",
+  "icon": "minecraft:diamond",
+  "lore": [
+    "&7Achetez et revendez vos ressources."
+  ],
+  "enabled": true,
+  "discount": 0.0,
+  "slot": 14,
+  "entries": [
+    {
+      "id": "diamond",
+      "type": "item",
+      "item": "minecraft:diamond",
+      "display": "",
+      "lore": [],
+      "buy": 2000,
+      "sell": 400,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "iron_ingot",
+      "type": "item",
+      "item": "minecraft:iron_ingot",
+      "display": "",
+      "lore": [],
+      "buy": 150,
+      "sell": 30,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "gold_ingot",
+      "type": "item",
+      "item": "minecraft:gold_ingot",
+      "display": "",
+      "lore": [],
+      "buy": 250,
+      "sell": 50,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "oak_log",
+      "type": "item",
+      "item": "minecraft:oak_log",
+      "display": "",
+      "lore": [],
+      "buy": 20,
+      "sell": 4,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "wheat",
+      "type": "item",
+      "item": "minecraft:wheat",
+      "display": "",
+      "lore": [],
+      "buy": -1,
+      "sell": 2,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    }
+  ]
+}

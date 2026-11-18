@@ -1,0 +1,26 @@
+# Liste indicative inspiree des formats Smogon : ajustez-la selon votre metagame.
+# Identifiants : nom de l espece sans espaces ni ponctuation (ex. "mrmime"), forme collee ("kyuremblack").
+# Champs : inherits (herite des bans d un autre tier), banned_pokemon, allowed_pokemon, banned_items,
+# banned_abilities, banned_moves, level_cap (0 = aucun), min_team_size, max_team_size, section [rules].
+display_name = "OU (OverUsed)"
+description = "Format standard : les Pokemon Uber sont bannis."
+inherits = "uber"
+banned_pokemon = [
+  "annihilape", "arceus", "baxcalibur", "calyrex", "calyrexice", "calyrexicerider", "calyrexshadow", "calyrexshadowrider",
+  "chiyu", "chienpao", "deoxys", "deoxysattack", "dialga", "dialgaorigin", "espathra", "eternatus", "fluttermane",
+  "giratina", "giratinaorigin", "gougingfire", "groudon", "hooh", "ironbundle", "koraidon", "kyogre", "kyuremblack",
+  "kyuremwhite", "landorus", "lugia", "lunala", "magearna", "mewtwo", "miraidon", "necrozmadawnwings", "necrozmaduskmane",
+  "ogerponhearthflame", "palafin", "palkia", "palkiaorigin", "rayquaza", "regieleki", "reshiram", "roaringmoon",
+  "shayminsky", "solgaleo", "spectrier", "terapagos", "ursalunabloodmoon", "urshifu", "xerneas", "yveltal",
+  "zacian", "zaciancrowned", "zamazenta", "zamazentacrowned", "zekrom", "zygarde", "zygardecomplete", "kyurem", "darkrai",
+  "hoopaunbound", "marshadow", "melmetal", "naganadel", "pheromosa", "kartana", "blacephalon", "genesect", "dracovish"
+]
+banned_items = ["kingsrock", "razorfang", "brightpowder", "laxincense", "quickclaw"]
+banned_abilities = ["arenatrap", "moody", "shadowtag", "powerconstruct"]
+banned_moves = ["batonpass", "lastrespects", "shedtail", "doubleteam", "minimize", "fissure", "guillotine", "horndrill", "sheercold"]
+level_cap = 0
+min_team_size = 1
+max_team_size = 6
+
+[rules]
+species_clause = true

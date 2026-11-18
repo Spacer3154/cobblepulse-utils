@@ -1,0 +1,412 @@
+{
+  "commands": {
+    "menu": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "cobblepulse",
+        "cp"
+      ]
+    },
+    "wiki": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "pwiki",
+        "pokedex"
+      ]
+    },
+    "warp": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "warps"
+      ]
+    },
+    "home": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "homes"
+      ]
+    },
+    "shop": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "boutique"
+      ]
+    },
+    "gts": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "ah",
+        "hdv"
+      ]
+    },
+    "sts": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "sellpoke"
+      ]
+    },
+    "wondertrade": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "wt",
+        "miracle"
+      ]
+    },
+    "dex": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "dexrewards",
+        "dexr"
+      ]
+    },
+    "kit": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "kits"
+      ]
+    },
+    "enderchest": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "ec"
+      ]
+    },
+    "spawns": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "radar",
+        "history"
+      ]
+    },
+    "playtimerewards": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "ptr",
+        "ptrewards"
+      ]
+    },
+    "spawn": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "sethome": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "delhome": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "remhome"
+      ]
+    },
+    "tpa": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "tpahere": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "tpaccept": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "tpyes"
+      ]
+    },
+    "tpdeny": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "tpno"
+      ]
+    },
+    "tptoggle": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "back": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "return"
+      ]
+    },
+    "rtp": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "wild"
+      ]
+    },
+    "worlds": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "mondes",
+        "monde"
+      ]
+    },
+    "top": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "jump": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "j"
+      ]
+    },
+    "pokeshout": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "ps"
+      ]
+    },
+    "pokeshoutall": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "psa"
+      ]
+    },
+    "pokeheal": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "pcheal"
+      ]
+    },
+    "pc": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "pokebox"
+      ]
+    },
+    "fly": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "heal": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "feed": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "eat"
+      ]
+    },
+    "hat": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "trash": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "bin",
+        "poubelle"
+      ]
+    },
+    "repair": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "fix"
+      ]
+    },
+    "craft": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "wb",
+        "workbench"
+      ]
+    },
+    "anvil": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "nick": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "msg": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "w",
+        "tell",
+        "m"
+      ]
+    },
+    "reply": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "r"
+      ]
+    },
+    "ignore": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "list": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "online",
+        "who"
+      ]
+    },
+    "playtime": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "pt"
+      ]
+    },
+    "sell": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "balance": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": [
+        "bal",
+        "money"
+      ]
+    },
+    "pay": {
+      "enabled": true,
+      "default_access": true,
+      "aliases": []
+    },
+    "setspawn": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "setwarp": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "delwarp": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "invsee": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "endersee": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "ecsee"
+      ]
+    },
+    "tphere": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "s"
+      ]
+    },
+    "tpall": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "vanish": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "v"
+      ]
+    },
+    "god": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "tgm"
+      ]
+    },
+    "gamemode": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "gm"
+      ]
+    },
+    "speed": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "broadcast": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": [
+        "bc",
+        "alert"
+      ]
+    },
+    "sudo": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "mute": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "unmute": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    },
+    "tempban": {
+      "enabled": true,
+      "default_access": false,
+      "aliases": []
+    }
+  }
+}

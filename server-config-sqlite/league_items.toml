@@ -1,0 +1,46 @@
+# =====================================================================
+#  CobblePulse - Items des badges
+#  Les badges ne sont pas crees par CobblePulse : ils referencent des
+#  items d'autres mods installes sur le serveur (format "modid:item_name").
+#  Les valeurs ci-dessous sont des items vanilla de remplacement :
+#  remplacez-les par les items de votre mod de badges.
+# =====================================================================
+
+# Optionnel : badge de Champion determine par son type au moment de la victoire
+# (section [type_badges]) plutot que par le numero du poste.
+use_type_badges = false
+
+[badges]
+champion_1 = "minecraft:amethyst_shard"
+champion_2 = "minecraft:prismarine_crystals"
+champion_3 = "minecraft:blaze_powder"
+champion_4 = "minecraft:emerald"
+champion_5 = "minecraft:lapis_lazuli"
+champion_6 = "minecraft:redstone"
+champion_7 = "minecraft:glowstone_dust"
+champion_8 = "minecraft:quartz"
+elite_1 = "minecraft:echo_shard"
+elite_2 = "minecraft:heart_of_the_sea"
+elite_3 = "minecraft:nautilus_shell"
+elite_4 = "minecraft:ender_eye"
+master = "minecraft:nether_star"
+
+[type_badges]
+normal = ""
+fire = ""
+water = ""
+grass = ""
+electric = ""
+ice = ""
+fighting = ""
+poison = ""
+ground = ""
+flying = ""
+psychic = ""
+bug = ""
+rock = ""
+ghost = ""
+dragon = ""
+dark = ""
+steel = ""
+fairy = ""

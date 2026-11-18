@@ -1,0 +1,24 @@
+# Liste indicative inspiree des formats Smogon : ajustez-la selon votre metagame.
+# Identifiants : nom de l espece sans espaces ni ponctuation (ex. "mrmime"), forme collee ("kyuremblack").
+# Champs : inherits (herite des bans d un autre tier), banned_pokemon, allowed_pokemon, banned_items,
+# banned_abilities, banned_moves, level_cap (0 = aucun), min_team_size, max_team_size, section [rules].
+display_name = "UU (UnderUsed)"
+description = "Bans OU + Pokemon les plus utilises en OU."
+inherits = "ou"
+banned_pokemon = [
+  "greattusk", "gholdengo", "kingambit", "dragapult", "garganacl", "ironvaliant", "ironmoth", "ironcrown", "ironboulder",
+  "ragingbolt", "ogerponwellspring", "ogerponcornerstone", "samurotthisui", "corviknight", "dragonite", "gliscor", "heatran",
+  "landorustherian", "tinglu", "cinderace", "enamorus", "ogerpon", "pecharunt", "slowkinggalar", "ironhands", "weavile",
+  "zapdos", "alomomola", "clefable", "rotomwash", "hatterene", "glimmora", "hydrapple", "primarina", "ursaluna",
+  "walkingwake", "volcarona", "meowscarada", "latias", "latios", "toxapex", "skeledirge", "tornadustherian", "kyurem",
+  "moltres", "zamazentahero", "sneasler", "archaludon", "ironleaves", "greninja", "serperior", "azumarill"
+]
+banned_items = []
+banned_abilities = []
+banned_moves = []
+level_cap = 0
+min_team_size = 1
+max_team_size = 6
+
+[rules]
+species_clause = true

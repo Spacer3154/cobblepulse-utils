@@ -1,0 +1,69 @@
+{
+  "id": "speciaux",
+  "name": "&b&lSpéciaux",
+  "icon": "minecraft:nether_star",
+  "lore": [
+    "&7Pokémon et services exclusifs."
+  ],
+  "enabled": true,
+  "discount": 0.0,
+  "slot": 16,
+  "entries": [
+    {
+      "id": "eevee_shiny",
+      "type": "pokemon",
+      "item": "",
+      "display": "&eÉvoli chromatique &7(IV parfaits)",
+      "lore": [],
+      "buy": 250000,
+      "sell": -1,
+      "commands": [],
+      "pokemon": {
+        "species": "eevee",
+        "form": "",
+        "nickname": "",
+        "level": 10,
+        "nature": "",
+        "ability": "",
+        "gender": "",
+        "shiny": true,
+        "held_item": "",
+        "ball": "",
+        "ivs": {
+          "hp": 31,
+          "atk": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "hp": 0,
+          "atk": 0,
+          "def": 0,
+          "spa": 0,
+          "spd": 0,
+          "spe": 0
+        },
+        "moves": [],
+        "tera_type": ""
+      },
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "xp",
+      "type": "command",
+      "item": "minecraft:experience_bottle",
+      "display": "&a30 niveaux d'expérience",
+      "lore": [],
+      "buy": 5000,
+      "sell": -1,
+      "commands": [
+        "experience add %player% 30 levels"
+      ],
+      "discount": 0.0,
+      "slot": -1
+    }
+  ]
+}

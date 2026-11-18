@@ -1,0 +1,45 @@
+{
+  "enabled": true,
+  "default_tax": 5,
+  "default_limit": 5,
+  "default_duration_hours": 48,
+  "max_price": 100000000,
+  "price_floors": {
+    "items": 1,
+    "pokemon": 100,
+    "shiny": 2500,
+    "legendary": 25000,
+    "mythical": 25000,
+    "ultra_beast": 10000,
+    "paradox": 10000
+  },
+  "blacklist_items": [],
+  "blacklist_species": [],
+  "allow_untradeable": false,
+  "keep_one_party_member": true,
+  "broadcast_new_listings": true,
+  "broadcast_min_price": 1000,
+  "durations": [
+    {
+      "hours": 24,
+      "extra_tax": 0
+    },
+    {
+      "hours": 48,
+      "extra_tax": 0
+    },
+    {
+      "hours": 72,
+      "extra_tax": 2
+    },
+    {
+      "hours": 168,
+      "extra_tax": 5
+    },
+    {
+      "hours": 336,
+      "extra_tax": 10
+    }
+  ],
+  "max_tax": 50
+}

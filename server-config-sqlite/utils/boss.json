@@ -1,0 +1,535 @@
+{
+  "natural_spawn": true,
+  "promotion_chance": 1.0,
+  "max_active": 12,
+  "lifetime_minutes": 30,
+  "promote_legendaries": false,
+  "blacklist_species": [],
+  "special_form_chance": 35.0,
+  "loot_window": true,
+  "form_item_first_chance": 100.0,
+  "form_item_repeat_chance": 10.0,
+  "form_items": {
+    "kyogre:primal": "mega_showdown:blue_orb",
+    "groudon:primal": "mega_showdown:red_orb",
+    "dialga:origin": "mega_showdown:adamant_crystal",
+    "palkia:origin": "mega_showdown:lustrous_globe",
+    "giratina:origin": "mega_showdown:griseous_core"
+  },
+  "bp_command": "battletower admin bp give %player% %amount%",
+  "tiers": {
+    "commun": {
+      "name": "Commun",
+      "color": "&f",
+      "weight": 50.0,
+      "level_min": 25,
+      "level_max": 40,
+      "scale": 1.25,
+      "perfect_ivs": 1,
+      "ai_skill": 1,
+      "glow": true,
+      "announce": false,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 500,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:great_ball 3",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:potion 2",
+          "commands": [],
+          "amount": 0,
+          "chance": 60.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:iron_sword",
+      "mega": false
+    },
+    "non_commun": {
+      "name": "Non-commun",
+      "color": "&a",
+      "weight": 25.0,
+      "level_min": 40,
+      "level_max": 55,
+      "scale": 1.35,
+      "perfect_ivs": 2,
+      "ai_skill": 2,
+      "glow": true,
+      "announce": false,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 1200,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 2,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ultra_ball 3",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:super_potion 2",
+          "commands": [],
+          "amount": 0,
+          "chance": 60.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 25.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:golden_sword",
+      "mega": false
+    },
+    "rare": {
+      "name": "Rare",
+      "color": "&9",
+      "weight": 13.0,
+      "level_min": 55,
+      "level_max": 70,
+      "scale": 1.5,
+      "perfect_ivs": 3,
+      "ai_skill": 3,
+      "glow": true,
+      "announce": false,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 2500,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 5,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ultra_ball 5",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 2",
+          "commands": [],
+          "amount": 0,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:hyper_potion 2",
+          "commands": [],
+          "amount": 0,
+          "chance": 50.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:diamond_sword",
+      "mega": false
+    },
+    "epique": {
+      "name": "Épique",
+      "color": "&5",
+      "weight": 7.0,
+      "level_min": 70,
+      "level_max": 85,
+      "scale": 1.7,
+      "perfect_ivs": 4,
+      "ai_skill": 4,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 5000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 10,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 3",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_capsule 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 30.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:exp_candy_xl 2",
+          "commands": [],
+          "amount": 0,
+          "chance": 40.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:netherite_sword",
+      "mega": false
+    },
+    "legendaire": {
+      "name": "Légendaire",
+      "color": "&6",
+      "weight": 4.0,
+      "level_min": 85,
+      "level_max": 100,
+      "scale": 1.9,
+      "perfect_ivs": 5,
+      "ai_skill": 5,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 10000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 20,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 5",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_patch 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 25.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_capsule 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 30.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:totem_of_undying",
+      "mega": false
+    },
+    "ultime": {
+      "name": "Ultime",
+      "color": "&c&l",
+      "weight": 1.0,
+      "level_min": 110,
+      "level_max": 140,
+      "scale": 2.2,
+      "perfect_ivs": 6,
+      "ai_skill": 5,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 3600,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 25000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 50,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 10",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:master_ball 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 10.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_patch 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 40.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:dragon_egg",
+      "mega": false
+    },
+    "mega_epique": {
+      "name": "Méga Épique",
+      "color": "&d&l",
+      "weight": 60.0,
+      "level_min": 75,
+      "level_max": 90,
+      "scale": 1.8,
+      "perfect_ivs": 4,
+      "ai_skill": 4,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 8000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 15,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 4",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_capsule 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 40.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:exp_candy_xl 3",
+          "commands": [],
+          "amount": 0,
+          "chance": 50.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:amethyst_cluster",
+      "mega": true
+    },
+    "mega_legendaire": {
+      "name": "Méga Légendaire",
+      "color": "&6&l",
+      "weight": 30.0,
+      "level_min": 90,
+      "level_max": 100,
+      "scale": 2.0,
+      "perfect_ivs": 5,
+      "ai_skill": 5,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 0,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 15000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 30,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 6",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_patch 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 35.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_capsule 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 40.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:master_ball 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 5.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:nether_star",
+      "mega": true
+    },
+    "mega_ultime": {
+      "name": "Méga Ultime",
+      "color": "&4&l",
+      "weight": 10.0,
+      "level_min": 120,
+      "level_max": 150,
+      "scale": 2.4,
+      "perfect_ivs": 6,
+      "ai_skill": 5,
+      "glow": true,
+      "announce": true,
+      "engage_cooldown_seconds": 3600,
+      "loot": [
+        {
+          "type": "money",
+          "item": "",
+          "commands": [],
+          "amount": 40000,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "bp",
+          "item": "",
+          "commands": [],
+          "amount": 75,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:rare_candy 12",
+          "commands": [],
+          "amount": 0,
+          "chance": 100.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:master_ball 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 15.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:ability_patch 1",
+          "commands": [],
+          "amount": 0,
+          "chance": 50.0,
+          "display": ""
+        },
+        {
+          "type": "item",
+          "item": "cobblemon:exp_candy_xl 5",
+          "commands": [],
+          "amount": 0,
+          "chance": 60.0,
+          "display": ""
+        }
+      ],
+      "icon": "minecraft:end_crystal",
+      "mega": true
+    }
+  }
+}

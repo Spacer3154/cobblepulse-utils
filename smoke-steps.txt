@@ -1,0 +1,54 @@
+mod fabric-api 0.116.18+1.21.1 -> fabric-api-0.116.18+1.21.1.jar
+mod fabric-language-kotlin 1.14.2+kotlin.2.4.21 -> fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar
+mod luckperms v5.4.140-fabric -> LuckPerms-Fabric-5.4.140.jar
+mod cobblemon 1.8.4F -> Cobblemon-fabric-1.8.4+1.21.1.jar
+mod cobbledollars 2.0.0+Beta-6.1 -> CobbleDollars-fabric-2.0.0+Beta-6.1+1.21.1.jar
+mod cobblemon-mega-showdown 1.3.3+1.8.4+1.21.1-release -> mega_showdown-fabric-1.3.3+1.8.4+1.21.1-release.jar
+mod architectury-api 13.0.12+fabric -> architectury-13.0.12-fabric.jar
+mod accessories 1.1.0-beta.54+1.21.1 -> accessories-fabric-1.1.0-beta.54+1.21.1.jar
+mod owo-lib 0.13.0-alpha.15+1.21 -> owo-lib-0.13.0-alpha.15+1.21.jar
+mod cobblepulse.jar
+mod cobblepulse-battletower.jar
+mod cobblepulse-crates.jar
+mod cobblepulse-ecology-3.0.0+mc1.21.1.jar
+mod utils build/libs/cobblepulse-utils-1.0.0.jar
+===== run sqlite-1 =====
+datapack Fakemon : cree (data/cobblemon/species/generation1/magikarp.json)
+server ready: True
+> cp utilstest
+waiting for: SELFTEST DONE -> True
+> cp utilstest report
+> list
+> cp reload
+[sqlite-1] [11:43:47] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST SUMMARY: 216 pass, 0 fail
+[sqlite-1] [11:43:47] [Server thread/INFO]: SELFTEST SUMMARY: 216 pass, 0 fail
+exit code 0
+===== run sqlite-2 =====
+datapack Fakemon : deja present
+server ready: True
+> cp utilstest persisted
+waiting for: SELFTEST DONE -> True
+> cp utilstest report
+[sqlite-2] [11:44:29] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST SUMMARY: 16 pass, 0 fail
+[sqlite-2] [11:44:30] [Server thread/INFO]: SELFTEST SUMMARY: 16 pass, 0 fail
+exit code 0
+===== run mysql-1 =====
+datapack Fakemon : cree (data/cobblemon/species/generation1/magikarp.json)
+server ready: True
+> cp utilstest
+waiting for: SELFTEST DONE -> True
+> cp utilstest report
+> list
+> cp reload
+[mysql-1] [11:46:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST SUMMARY: 216 pass, 0 fail
+[mysql-1] [11:46:14] [Server thread/INFO]: SELFTEST SUMMARY: 216 pass, 0 fail
+exit code 0
+===== run mysql-2 =====
+datapack Fakemon : deja present
+server ready: True
+> cp utilstest persisted
+waiting for: SELFTEST DONE -> True
+> cp utilstest report
+[mysql-2] [11:46:57] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST SUMMARY: 16 pass, 0 fail
+[mysql-2] [11:46:58] [Server thread/INFO]: SELFTEST SUMMARY: 16 pass, 0 fail
+exit code 0

@@ -1,0 +1,795 @@
+Starting net.fabricmc.loader.impl.game.minecraft.BundlerClassPathCapture
+[11:44:39] [main/INFO]: Loading Minecraft 1.21.1 with Fabric Loader 0.19.5
+[11:44:39] [main/WARN]: Warnings were found!
+ - Mod 'CobblePulse' (cobblepulse) 1.0.0 recommends any version of placeholder-api, which is missing!
+	 - You should install any version of placeholder-api for the optimal experience.
+ - Mod 'CobblePulse Battletower' (cobblepulse_battletower) 1.0.0 recommends any version of placeholder-api, which is missing!
+	 - You should install any version of placeholder-api for the optimal experience.
+[11:44:39] [main/INFO]: Loading 86 mods:
+	- accessories 1.1.0-beta.54+1.21.1
+	- architectury 13.0.12
+	- cobbledollars 2.0.0+Beta-6.1+1.21.1
+	- cobblemon 1.8.4+1.21.1
+	   |-- com_ibm_icu_icu4j 71.1
+	   |-- org_graalvm_js_js 22.3.0
+	   |-- org_graalvm_regex_regex 22.3.0
+	   |-- org_graalvm_sdk_graal-sdk 22.3.0
+	   |-- org_graalvm_truffle_truffle-api 22.3.0
+	   |-- org_mongodb_mongodb-driver-core 4.10.2
+	   \-- org_mongodb_mongodb-driver-sync 4.10.2
+	- cobblepulse 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   \-- com_zaxxer_hikaricp 5.1.0
+	- cobblepulse_battletower 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   |-- com_zaxxer_hikaricp 5.1.0
+	   \-- org_xerial_sqlite-jdbc 3.46.1.3
+	- cobblepulse_crates 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   \-- com_electronwill_night-config_toml 3.6.7
+	- cobblepulse_ecology 3.0.0
+	- cobblepulse_utils 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   |-- com_zaxxer_hikaricp 5.1.0
+	   \-- org_xerial_sqlite-jdbc 3.46.1.3
+	- fabric-api 0.116.18+1.21.1
+	   |-- fabric-api-base 0.4.42+6573ed8c19
+	   |-- fabric-api-lookup-api-v1 1.6.72+7b3d111d19
+	   |-- fabric-biome-api-v1 13.0.31+d527f9fd19
+	   |-- fabric-block-api-v1 1.1.0+0bc3503219
+	   |-- fabric-block-view-api-v2 1.0.11+ebb2264e19
+	   |-- fabric-command-api-v1 1.2.49+f71b366f19
+	   |-- fabric-command-api-v2 2.2.28+6ced4dd919
+	   |-- fabric-commands-v0 0.2.66+df3654b319
+	   |-- fabric-content-registries-v0 8.0.19+b559734419
+	   |-- fabric-convention-tags-v1 2.1.7+7f945d5b19
+	   |-- fabric-convention-tags-v2 2.12.0+c3656daa19
+	   |-- fabric-crash-report-info-v1 0.2.29+0af3f5a719
+	   |-- fabric-data-attachment-api-v1 1.4.7+5b36e0f719
+	   |-- fabric-data-generation-api-v1 20.3.1+7439032a19
+	   |-- fabric-dimensions-v1 4.0.1+65213ef819
+	   |-- fabric-entity-events-v1 1.8.0+2b27e0a419
+	   |-- fabric-events-interaction-v0 0.7.14+ba9dae0619
+	   |-- fabric-game-rule-api-v1 1.0.53+6ced4dd919
+	   |-- fabric-item-api-v1 11.3.0+467044f319
+	   |-- fabric-item-group-api-v1 4.1.7+def88e3a19
+	   |-- fabric-lifecycle-events-v1 2.6.0+0865547519
+	   |-- fabric-loot-api-v2 3.0.15+3f89f5a519
+	   |-- fabric-loot-api-v3 1.0.3+3f89f5a519
+	   |-- fabric-message-api-v1 6.0.14+8aaf3aca19
+	   |-- fabric-networking-api-v1 4.3.1+d30f6a7919
+	   |-- fabric-object-builder-api-v1 15.2.1+40875a9319
+	   |-- fabric-particles-v1 4.0.2+6573ed8c19
+	   |-- fabric-recipe-api-v1 5.0.16+2475392c19
+	   |-- fabric-registry-sync-v0 5.3.2+e3eddc2119
+	   |-- fabric-rendering-data-attachment-v1 0.3.49+73761d2e19
+	   |-- fabric-rendering-fluids-v1 3.1.6+1daea21519
+	   |-- fabric-resource-conditions-api-v1 4.4.0+7439032a19
+	   |-- fabric-resource-loader-v0 1.3.1+5b5275af19
+	   |-- fabric-screen-handler-api-v1 1.3.91+b559734419
+	   |-- fabric-tag-api-v1 1.3.0+1eb36c0719
+	   |-- fabric-transfer-api-v1 5.4.5+9eaf054019
+	   \-- fabric-transitive-access-wideners-v1 6.2.0+45b9699719
+	- fabric-language-kotlin 1.14.2+kotlin.2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-reflect 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk7 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk8 2.4.21
+	   |-- org_jetbrains_kotlinx_atomicfu-jvm 0.33.0
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-jdk8 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-datetime-jvm 0.8.0
+	   |-- org_jetbrains_kotlinx_kotlinx-io-bytestring-jvm 0.9.1
+	   |-- org_jetbrains_kotlinx_kotlinx-io-core-jvm 0.9.1
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-core-jvm 1.11.0
+	   \-- org_jetbrains_kotlinx_kotlinx-serialization-json-jvm 1.11.0
+	- fabricloader 0.19.5
+	   \-- mixinextras 0.5.5
+	- java 21
+	- luckperms 5.4.140
+	   \-- fabric-permissions-api-v0 0.3.1
+	- mega_showdown 1.3.3+1.8.4+1.21.1-release
+	- minecraft 1.21.1
+	- owo 0.13.0-alpha.15+1.21
+	   |-- blue_endless_jankson 1.2.2
+	   |-- io_wispforest_endec 0.1.5.1
+	   |-- io_wispforest_endec_gson 0.1.3.1
+	   |-- io_wispforest_endec_jankson 0.1.3.1
+	   \-- io_wispforest_endec_netty 0.1.2
+[11:44:39] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/work/cobblepulse-utils/cobblepulse-utils/run-server/libraries/net/fabricmc/sponge-mixin/0.17.4+mixin.0.8.7/sponge-mixin-0.17.4+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[11:44:40] [main/WARN]: Error loading class: quick/battle/network/QuickBattleInitiatePacket (java.lang.ClassNotFoundException: quick/battle/network/QuickBattleInitiatePacket)
+[11:44:40] [main/WARN]: @Mixin target quick.battle.network.QuickBattleInitiatePacket was not found mixins.cobbledollars-fabric.json:quickbattle.QuickBattleInitiatePacketMixin from mod cobbledollars
+[11:44:40] [main/WARN]: Error loading class: juuxel/adorn/block/variant/BlockVariantSets (java.lang.ClassNotFoundException: juuxel/adorn/block/variant/BlockVariantSets)
+[11:44:40] [main/WARN]: @Mixin target juuxel.adorn.block.variant.BlockVariantSets was not found mixins.cobblemon-common.json:invoker.AdornRegisterInvoker from mod cobblemon
+[11:44:40] [main/WARN]: Error loading class: net/minecraft/class_1140 (java.lang.ClassNotFoundException: net/minecraft/class_1140)
+[11:44:40] [main/WARN]: @Mixin target net.minecraft.class_1140 was not found mixins.cobblemon-fabric.json:FabricSoundEngineMixin from mod cobblemon
+[11:44:40] [main/WARN]: Error loading class: xyz/nucleoid/server/translations/impl/language/LanguageReader (java.lang.ClassNotFoundException: xyz/nucleoid/server/translations/impl/language/LanguageReader)
+[11:44:40] [main/WARN]: @Mixin target xyz.nucleoid.server.translations.impl.language.LanguageReader was not found owo.mixins.json:extension.json5.LanguageReaderMixin from mod owo
+[11:44:40] [main/WARN]: Error loading class: xyz/nucleoid/server/translations/impl/language/SystemDelegatedLanguage (java.lang.ClassNotFoundException: xyz/nucleoid/server/translations/impl/language/SystemDelegatedLanguage)
+[11:44:40] [main/WARN]: Error loading class: net/minecraft/class_1044 (java.lang.ClassNotFoundException: net/minecraft/class_1044)
+[11:44:40] [main/WARN]: @Mixin target net.minecraft.class_1044 was not found owo.mixins.json:ui.access.AbstractTextureAccessor from mod owo
+[11:44:40] [main/INFO]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[11:44:45] [main/INFO]: Registering Listeners!
+[11:44:45] [main/ERROR]: No data fixer registered for cobbledollars:cobble_merchant
+[11:44:46] [main/WARN]: Error loading class: net/minecraft/class_1132 (java.lang.ClassNotFoundException: net/minecraft/class_1132)
+[11:44:46] [main/INFO]: Booting LaxPermissionValidator, permissions will be checked using Minecrafts permission level system, see https://minecraft.wiki/w/Permission_level
+[11:44:46] [main/INFO]: Launching Cobblemon 1.8.4 
+[11:44:46] [main/INFO]: Booting FabricPermissionValidator, permissions will be checked using fabric-permissions-api, see https://github.com/lucko/fabric-permissions-api
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:pokemon
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:empty_pokeball
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:boat
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:chest_boat
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:poke_bobber
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:generic_bedrock
+[11:44:46] [main/ERROR]: No data fixer registered for cobblemon:npc
+[11:44:47] [main/INFO]: Starting the Best Spawner...
+[11:44:47] [main/INFO]: Loaded 7 spawning condition types.
+[11:44:47] [main/INFO]: Loaded 6 spawnable position types.
+[11:44:47] [main/INFO]: Loaded 4 spawn detail types.
+[11:44:47] [Cobblemon Showdown/INFO]: Starting showdown service...
+[11:44:47] [Cobblemon Showdown/INFO]: Showdown files are up to date (v1.3.4).
+[11:44:48] [Cobblemon Showdown/INFO]: Showdown has been started!
+[11:44:48] [main/INFO]: Note: Cobblemon data registries are only loaded once per server instance as Pokémon species are not safe to reload.
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/custom_status registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/moves registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/ability registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/conditions registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/held_items registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/typecharts registry
+[11:44:48] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/scripts registry
+[11:44:48] [main/INFO]: Registered the cobblemon:molang registry
+[11:44:48] [main/INFO]: Registered the cobblemon:species_features registry
+[11:44:48] [main/INFO]: Registered the cobblemon:global_species_features registry
+[11:44:48] [main/INFO]: Registered the cobblemon:species_feature_assignments registry
+[11:44:48] [main/INFO]: Registered the cobblemon:action_effects registry
+[11:44:48] [main/INFO]: Registered the cobblemon:moves registry
+[11:44:48] [main/INFO]: Registered the cobblemon:moveset_builders registry
+[11:44:48] [main/INFO]: Registered the cobblemon:abilities registry
+[11:44:48] [main/INFO]: Registered the cobblemon:behaviours registry
+[11:44:48] [main/INFO]: Registered the cobblemon:marks registry
+[11:44:48] [main/INFO]: Registered the cobblemon:species registry
+[11:44:48] [main/INFO]: Registered the cobblemon:species_additions registry
+[11:44:48] [main/INFO]: Registered the cobblemon:pokeballs registry
+[11:44:48] [main/INFO]: Registered the cobblemon:properties_tab_completion registry
+[11:44:48] [main/INFO]: Registered the cobblemon:party_pools registry
+[11:44:48] [main/INFO]: Registered the cobblemon:party_compositions registry
+[11:44:48] [main/INFO]: Registered the cobblemon:spawn_detail_presets registry
+[11:44:48] [main/INFO]: Registered the cobblemon:spawn_rules registry
+[11:44:48] [main/INFO]: Registered the cobblemon:mechanics registry
+[11:44:48] [main/INFO]: Registered the cobblemon:bag_items registry
+[11:44:48] [main/INFO]: Registered the cobblemon:held_items registry
+[11:44:48] [main/INFO]: Registered the cobblemon:dialogues registry
+[11:44:48] [main/INFO]: Registered the cobblemon:natural_materials registry
+[11:44:48] [main/INFO]: Registered the cobblemon:fossils registry
+[11:44:48] [main/INFO]: Registered the cobblemon:npc_preset registry
+[11:44:48] [main/INFO]: Registered the cobblemon:npc registry
+[11:44:48] [main/INFO]: Registered the cobblemon:dex_entries registry
+[11:44:48] [main/INFO]: Registered the cobblemon:dex_entry_additions registry
+[11:44:48] [main/INFO]: Registered the cobblemon:dexes registry
+[11:44:48] [main/INFO]: Registered the cobblemon:dex_additions registry
+[11:44:48] [main/INFO]: Registered the cobblemon:cosmetic_items registry
+[11:44:48] [main/INFO]: Registered the cobblemon:callbacks registry
+[11:44:48] [main/INFO]: Registered the cobblemon:unlockable_pc_box_wallpapers registry
+[11:44:48] [main/INFO]: Registered the cobblemon:starters registry
+[11:44:48] [main/INFO]: Registered the cobblemon:spawn_pool_world registry
+[11:44:48] [main/INFO]: Registered the cobblemon:pokerods registry
+[11:44:48] [main/INFO]: Registered the cobblemon:berries registry
+[11:44:48] [main/INFO]: Registered the cobblemon:habitat_pools registry
+[11:44:48] [main/INFO]: Registered the cobblemon:seasonings registry
+[11:44:48] [main/INFO]: Registered the cobblemon:pokemon_interactions registry
+[11:44:48] [main/INFO]: Registered the cobblemon:spawn_bait_effects registry
+[11:44:48] [main/INFO]: Registered the cobblemon:ride_settings registry
+[11:44:48] [main/INFO]: Registered the cobblemon:technical_machines registry
+[11:44:49] [main/INFO]: [CobblePulse] Placeholder API absent : tag de clan non expose a ShadowChat
+[11:44:49] [main/INFO]: [CobblePulse] Initialise
+[11:44:49] [main/INFO]: [Battletower] 10 tiers charges depuis config/cobblepulse/tournament_tiers
+[11:44:49] [main/INFO]: [Battletower] Text Placeholder API absent : placeholders non exposes
+[11:44:49] [main/INFO]: [Battletower] Initialise
+[11:44:49] [main/INFO]: [Crates] Mod initialise
+[11:44:49] [main/INFO]: CobblePulse-Ecology : 2 mega-gemme(s) enregistree(s)
+[11:44:49] [main/INFO]: Registering C2S receiver with id mega_showdown:mega_evo
+[11:44:49] [main/INFO]: Registering C2S receiver with id mega_showdown:primal_evo
+[11:44:49] [main/INFO]: Registering C2S receiver with id mega_showdown:crown
+[11:44:49] [main/INFO]: Registering C2S receiver with id mega_showdown:ultra_burst
+[11:44:49] [main/INFO]: Registering C2S receiver with id mega_showdown:secret_sword_move_swap
+[11:44:49] [main/INFO]: chyz: now i just need to painstakingly move jerry (the little tiny lil fella tiny guy man button) to correct spot when recipe book is opened
+[11:44:49] [main/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[11:44:49] [main/INFO]: Found new data pack file/cpu-fakemon-verifax.zip, loading it automatically
+[11:44:50] [main/INFO]: No existing world data, creating new world
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /cobblepulse fusionne avec la commande existante (sous-commandes conservees)
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /cp fusionne avec la commande existante (sous-commandes conservees)
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokedex existait deja : fusion (ses sous-commandes restent disponibles)
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /return existait deja : fusion (ses sous-commandes restent disponibles)
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokeheal existait deja : fusion (ses sous-commandes restent disponibles)
+[11:44:51] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokebox existait deja : fusion (ses sous-commandes restent disponibles)
+[11:44:51] [main/INFO]: Loaded 2362 recipes
+[11:44:51] [main/INFO]: Loaded 2455 advancements
+[11:44:51] [main/INFO]: Loaded custom elemental statuses
+[11:44:52] [main/INFO]: Loaded 11 server scripts and 1 client scripts
+[11:44:53] [main/INFO]: Loaded 944 moves
+[11:44:53] [main/INFO]: Loaded 327 abilities
+[11:44:53] [main/INFO]: Loaded 49 entity behaviours
+[11:44:53] [main/INFO]: Loaded 168 marks
+[11:44:54] [main/INFO]: Finished additions
+[11:44:54] [cobblemon Datafixer Bootstrap/INFO]: 6 Datafixer optimizations took 26 milliseconds
+[11:44:55] [main/INFO]: Loaded 1050 Pokémon species
+[11:44:55] [main/INFO]: Loaded 0 party compositions.
+[11:44:55] [main/INFO]: Loaded 22 spawn detail presets.
+[11:44:55] [main/INFO]: Starting dummy Showdown battle to force it to pre-load data.
+[11:44:55] [main/INFO]: Imported 266 held item IDs from showdown
+[11:44:55] [main/INFO]: Loaded 15 fossils
+[11:44:56] [main/INFO]: Loaded 8 callbacks and 0 client callbacks
+[11:44:57] [main/INFO]: Loaded 70 berries
+[11:44:57] [main/INFO]: Loaded 167 Pokémon interaction sets
+[11:44:58] [main/INFO]: Applied 986 biome modifications to 64 of 64 new biomes in 14.03 ms
+[11:44:58] [Server thread/INFO]: Loading default shop config...
+[11:44:58] [Server thread/INFO]: Default shop config loaded!
+[11:44:58] [Server thread/INFO]: Loading bank config...
+[11:44:58] [Server thread/INFO]: Default Bank config loaded!
+[11:44:58] [Server thread/INFO]: [Crates] 10 caisses, 4 pools, 0 conteneurs lies. LuckPerms : oui
+[11:44:58] [Server thread/INFO]: CobblePulse-Utils-MySQL - Starting...
+[11:44:59] [Server thread/INFO]: CobblePulse-Utils-MySQL - Added connection com.mysql.cj.jdbc.ConnectionImpl@76c00b93
+[11:44:59] [Server thread/INFO]: CobblePulse-Utils-MySQL - Start completed.
+[11:44:59] [Server thread/INFO]: [CobblePulse-Utils] Stockage actif : MySQL (127.0.0.1/cobblepulse_utils) (+ SQLite (./config/cobblepulse/utils/data/cobblepulse_utils.db) pour les modules locaux)
+[11:44:59] [Server thread/INFO]: [CobblePulse-Utils] Economie : CobbleDollars
+[11:44:59] [Server thread/INFO]:         __    
+[11:44:59] [Server thread/INFO]:   |    |__)   LuckPerms v5.4.140
+[11:44:59] [Server thread/INFO]:   |___ |      Running on Fabric - fabric@0.116.18+1.21.1
+[11:44:59] [Server thread/INFO]: 
+[11:44:59] [Server thread/INFO]: Loading configuration...
+[11:44:59] [Server thread/INFO]: Loading storage provider... [H2]
+[11:44:59] [Server thread/INFO]: Loading internal permission managers...
+[11:44:59] [Server thread/INFO]: Performing initial data load...
+[11:44:59] [Server thread/INFO]: Successfully enabled. (took 435ms)
+[11:44:59] [Server thread/INFO]: Starting minecraft server version 1.21.1
+[11:44:59] [Server thread/INFO]: Loading properties
+[11:44:59] [Server thread/INFO]: Default game type: SURVIVAL
+[11:44:59] [Server thread/INFO]: Generating keypair
+[11:44:59] [Server thread/INFO]: Starting Minecraft server on *:25565
+[11:44:59] [Server thread/INFO]: Using epoll channel type
+[11:44:59] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[11:44:59] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[11:44:59] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[11:44:59] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[11:45:00] [Server thread/INFO]: Preparing level "world"
+[11:45:05] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[11:45:05] [Worker-Main-1/INFO]: Preparing spawn area: 2%
+[11:45:05] [Worker-Main-1/INFO]: Preparing spawn area: 2%
+[11:45:06] [Worker-Main-2/INFO]: Preparing spawn area: 2%
+[11:45:06] [Worker-Main-2/INFO]: Preparing spawn area: 18%
+[11:45:07] [Worker-Main-1/INFO]: Preparing spawn area: 18%
+[11:45:07] [Worker-Main-1/INFO]: Preparing spawn area: 48%
+[11:45:08] [Worker-Main-2/INFO]: Preparing spawn area: 51%
+[11:45:08] [Worker-Main-2/INFO]: Preparing spawn area: 51%
+[11:45:09] [Server thread/INFO]: Time elapsed: 3789 ms
+[11:45:09] [Server thread/INFO]: Done (9.194s)! For help, type "help"
+[11:45:09] [Server thread/INFO]: Optimizing spawn pools...
+[11:45:09] [Server thread/INFO]: [CobblePulse] Stockage actif : JSON (./config/cobblepulse/data)
+[11:45:09] [Server thread/INFO]: [CobblePulse] 0 clans charges
+[11:45:09] [Server thread/INFO]: [CobblePulse] Pret en 28 ms
+[11:45:09] [Server thread/INFO]: [Battletower] Stockage actif : JSON (./config/cobblepulse_battletower/data)
+[11:45:09] [Server thread/INFO]: [Battletower] 0 dossiers joueurs charges
+[11:45:09] [Server thread/INFO]: [Battletower] Pret en 28 ms (50 etages, 10 tiers depuis config/cobblepulse/tournament_tiers)
+[11:45:09] [Server thread/INFO]: CobblePulse-Ecology OK : 24/24 especes, 2 mega-gemme(s), 2 recette(s) chargee(s)
+[11:45:09] [Server thread/INFO]: [CobblePulse-Utils] Noms d'especes : 1050 (2100 venant de 3 datapack(s), 1 sans traduction des mods) en 70 ms
+[11:45:09] [Server thread/INFO]: [CobblePulse-Utils] Boss au-dela du niveau 100 : enregistrement verifie.
+[11:45:09] [Server thread/INFO]: [CobblePulse-Utils] Commandes d'autres mods remplacees : [pokedex, return, pokeheal, pokebox]
+[11:45:09] [Server thread/INFO]: [CobblePulse-Utils] Pret (4 categories de shop, 3 kits, 1 warps)
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] INFO stockage : MySQL (127.0.0.1/cobblepulse_utils) | economie : CobbleDollars | LuckPerms : true
+[11:45:14] [CobblePulse-Utils-DB-mysql/INFO]: [CobblePulse-Utils] Reservoir de l'Echange Miracle complete : +72 Pokemon
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_database_json - MYSQL
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_general.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_commands.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_messages.toml
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_warps.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_kits.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_dexrewards.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_shop.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_gts.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_sts.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_wondertrade.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_alerts.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fichier_boss.json
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_categories_exemple - [pokeballs, ressources, soins, speciaux]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_objets_valides - []
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kits_objets_valides - []
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_dex_objets_valides - []
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_6_paliers - [commun, non_commun, rare, epique, legendaire, ultime, mega_epique, mega_legendaire, mega_ultime]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS messages_charges
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS economie_cobbledollars - CobbleDollars
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS commandes_cahier_des_charges - toutes presentes
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS cp_sous_commandes
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS cp_fusion_mod_clans - sous-commandes du mod Clans conservees
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS pokedex_fusion_cobblemon - 4 sous-noeuds
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS homes_limite_defaut - 3
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS homes_quota - [maison, mine, ferme]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS homes_quota_luckperms - 5
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS homes_quota_luckperms_ajout
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS warp_cree
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS warp_prive_cache
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS warp_prive_permission
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS teleport_warp - (100.5, 90.0, 100.5)
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS back_memorise
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS spawn_defini
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS tpa_demande_acceptee
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS tptoggle_refuse
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_depart_recupere
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_usage_unique
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_quotidien - [kit:quotidien]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_vip_refuse_sans_permission
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_vip_permission
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_bypass_delai
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS kit_nbt_conserve - Lame de test
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ec_lignes_defaut - 3
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ec_lignes_pages_luckperms - 6 lignes, 3 pages
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS nick_affiche - ~Alpha
+[11:45:14] [Server thread/INFO]: ✦ Staff » TestA est muet pour 10min. Raison : spam
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mute_bloque_chat
+[11:45:14] [Server thread/INFO]: ✦ Staff » TestA n'est plus muet.
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS unmute
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ignore_chat_public
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fly_heal_permission_luckperms
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fly_desactive
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS repair_permission_luckperms - 0
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS god
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS vanish_cache_aux_joueurs
+[11:45:14] [Server thread/INFO]: ✦ Staff » BanTest est banni pour 2h (triche).
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS tempban_expiration
+[11:45:14] [Server thread/INFO]: ✦ CobblePulse » Solde de TestC : 100 000 ₽
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS balance_autre_joueur
+[11:45:14] [Server thread/ERROR]: .old File pokedex for 3abc078c-86ff-3783-80c2-1407a4bdbbd1 is corrupt or missing. Data is lost
+[11:45:14] [Server thread/ERROR]: .old File tm_moves for 3abc078c-86ff-3783-80c2-1407a4bdbbd1 is corrupt or missing. Data is lost
+[11:45:14] [Server thread/ERROR]: .old File cobblemonplayerdata for 3abc078c-86ff-3783-80c2-1407a4bdbbd1 is corrupt or missing. Data is lost
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS pokeshout_texte
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS hub_tuiles_joueur - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS hub_panneau_staff
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS hub_passerelles - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS hub_passerelle_absente_masquee
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS cobbledollars_depot - 50000
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_achat_groupe - 50000 -> 49000
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_vente_groupee - 100
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS sell_hand - 150
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_promo_et_reduction_grade - 50 / 90
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_categorie_fermee
+[11:45:14] [Server thread/ERROR]: .old File pokedex for da6d6fb4-8d65-30f8-8210-3beecc0bd19a is corrupt or missing. Data is lost
+[11:45:14] [Server thread/ERROR]: .old File tm_moves for da6d6fb4-8d65-30f8-8210-3beecc0bd19a is corrupt or missing. Data is lost
+[11:45:14] [Server thread/ERROR]: .old File cobblemonplayerdata for da6d6fb4-8d65-30f8-8210-3beecc0bd19a is corrupt or missing. Data is lost
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_pokemon_personnalise - Eevee ★ Nv.10 ♂
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_commande - 4500
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS shop_fonds_insuffisants
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wiki_spawns_biomes - 2 entrees, 9 biomes, max 0.123711 %
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wiki_biomes_par_mod - [Minecraft]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wiki_fiche_technique - evolutions true, talent cache true, capacites true
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_categories
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_historique - minecraft:forest
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_annonce_capture - ✦ Radar » Légendaire : TestA a capturé le %pokemon% !
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_annonce_victoire - DEFEATED | ✦ Radar » Chromatique : TestB a vaincu le %pokemon% en combat.
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_annonce_mort - KILLED TestC | ✦ Radar » Chromatique : TestC a tué le %pokemon%.
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_boss_exclus
+[11:45:14] [Server thread/INFO]: ☠ Boss » Un Boss Ultime apparaît : Charizard Nv.113 (-11, 167) !
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_apparu
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_niveau_superieur_100 - 113
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_niveau_enregistrable
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_niveau_fenetre_de_combat - 113
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS niveau_joueurs_toujours_plafonne - 100
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_sauvegarde_monde_niveau_sup_100 - [EntityEffects, Brain, HurtByTimestamp, Sitting, Invulnerable, FallFlying, ForcedAge, Behaviours, PortalCooldown, AbsorptionAmount, FallDistance, InLove, DeathTime, HandDropChances, ScaleModifier, PersistenceRequired, Pokemon, UUID, Age, Motion, BehaviourFlags, BehavioursAreCustom, Health, LeftHanded, Air, OnGround, ScriptingData, Glowing, PoseType, Rotation, HandItems, ArmorDropChances, CustomName, ScriptingConfig, Pos, Fire, ArmorItems, CanPickUpLoot, attributes, HurtTime, CustomNameVisible]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_rechargement_niveau - 113 / 113
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_incapturable
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_ivs_parfaits - 6
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_nom_palier - [Ultime] Charizard
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_invulnerable_physique - 32.0 / 32.0
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_objet_forme_config
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils] Mega-Gemmes lues dans Mega Showdown : 89 objet(s), 88 forme(s)
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_clear - 2
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_promotion_palier - commun
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_3_paliers - [commun, non_commun, rare, epique, legendaire, ultime, mega_epique, mega_legendaire, mega_ultime]
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_tirage_a_part
+[11:45:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_espece_sans_mega_refusee
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Méga Épique apparaît : Charizard Nv.88 (-1, 172) !
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_promotion - mega_epique Mega-X
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Méga Ultime apparaît : Groudon Nv.122 (-1, 174) !
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_primo - Primal Nv.122
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.74 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.81 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.76 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.71 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.80 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.71 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.81 (0, 175) !
+[11:45:15] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Charizard Nv.71 (0, 175) !
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_boss_palier_ordinaire_sans_mega
+[11:45:15] [Server thread/ERROR]: .old File pokedex for 5f649445-ba8f-3d58-8d92-4bfa1daeaf7e is corrupt or missing. Data is lost
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS dex_progression - 52/1003
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS dex_palier_reclame
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS dex_palier_verrouille
+[11:45:15] [Server thread/INFO]: No player was found
+[11:45:15] [Server thread/INFO]: [Tour de Combat] Joueur inconnu : TestA
+[11:45:15] [Server thread/INFO]: [Tour de Combat] Joueur inconnu : TestA
+[11:45:15] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_boss_non_enregistre
+[11:45:16] [Server thread/INFO]: ✦ GTS » TestA met en vente 3 × Diamond pour 1 000 ₽ ! (/gts)
+[11:45:16] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_annonce_objet
+[11:45:16] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_annonce_listee - 1
+[11:45:17] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ec_sauvegarde_base
+[11:45:17] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_butin_argent - 50950
+[11:45:17] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_premieres_victoires_base - 2
+[11:45:18] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_statut_despawn - DESPAWN
+[11:45:18] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_statuts_conserves - KILLED DEFEATED
+[11:45:18] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alertes_statut_capture - CAPTURED TestA
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS tpa_teleporte_apres_delai - (-50.5, 95.0, -50.5)
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_achat_unique_concurrence - reussis 1, B false, C true
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_cobbledollars_debite - 100500
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_vendeur_paye_taxe - 950 / 950
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_prix_plancher_shiny
+[11:45:19] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_annonce_pokemon
+[11:45:19] [Server thread/ERROR]: .old File tm_moves for 5f649445-ba8f-3d58-8d92-4bfa1daeaf7e is corrupt or missing. Data is lost
+[11:45:21] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_achat_pokemon - Bulbasaur
+[11:45:21] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_limite_grade - true/false
+[11:45:24] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_retrait_rend_objet - 5
+[11:45:24] [CobblePulse-Utils-DB-mysql/INFO]: [CobblePulse-Utils] 1 annonce(s) GTS expiree(s)
+[11:45:26] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_expiration_boite_reception - 1
+[11:45:26] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_boite_reception_recuperee - 2
+[11:45:26] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS sts_rachat - 130
+[11:45:26] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS sts_quota_grade
+[11:45:31] [Server thread/ERROR]: .old File cobblemonplayerdata for 5f649445-ba8f-3d58-8d92-4bfa1daeaf7e is corrupt or missing. Data is lost
+[11:45:33] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_echange - 72 -> 72
+[11:45:33] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_delai
+[11:45:35] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boite_reception_argent_reseau - 777
+[11:45:43] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecrans_tous_les_menus - 12 menus
+[11:45:43] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_contenu_propre
+[11:45:43] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_objet_pokemon_fidele - Pikachu ★ Nv.30 ♀
+[11:45:43] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_clic_navigation - Poké Balls
+[11:45:44] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_clic_perime_ignore
+[11:45:44] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_fenetre_saisie - prompt
+[11:45:44] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_saisie_annulee
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_saisie_validee - [maison, mine, ferme, quatrieme, ecran, Retour, Nouveau home ici]
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_liste_complete - 70
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_rafraichi - 1 -> 2
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS ecran_ferme_par_serveur
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS coffre_pour_client_sans_mod
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_detectes - [minecraft:overworld, minecraft:the_nether, minecraft:the_end]
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_noms
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_spawn_calcule - -16 85 160 / 100 50 0
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_homes_par_monde - minecraft:the_nether []
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_setspawn_par_monde
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_acces_reserve - cobblepulse.world.minecraft.the_nether
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_tpa_bloquee
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_rtp_rayon - 12.020815280171307
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_menu - [Monde principal, Nether, Retour]
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_commande_teleporte - minecraft:the_nether
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mondes_regles_boss_alertes
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_initialise - 0
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_palier_atteint - 1
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_reclamation - 1250
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_palier_verrouille
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_bonus_repetable - 250
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_remise_auto - [h1, h5]
+[11:45:45] [Server thread/INFO]: ✦ CobblePulse » 2h de jeu actif ajoutés à TestB.
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_commande_ajouter
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_menu - Temps de jeu (1h)
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_tuile_hub
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_delai_ligne - Prochain échange : dans 9min 45s
+[11:45:45] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_delai_tuile_hub - [&7Déposez un Pokémon,, &7recevez-en un au hasard !, &7Prochain échange : &edans 9min 45s]
+[11:45:46] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_delai_menu - [Échange Miracle, Porygon2 Nv.11 , Geodude Nv.15 ♀, Emplacement 3 vide, Emplacement 4 vide, Emplacement 5 vide, Emplacement 6 vide, Retour, Prochain échange dans 9min 45s]
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS wt_delai_mise_a_jour
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_durees_proposees - [24, 48, 72, 168, 336]
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_taxe_selon_duree - 5 / 10 / 15
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_duree_invalide_refusee
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_annonce_longue_taxee - 168 h, taxe 10
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS gts_menu_duree - [Test, 24 h (5 %), 2 j (5 %), 3 j (7 %), 7 j (10 %), 14 j (15 %), Annuler]
+[11:45:48] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_selecteur_objet - pick
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_objet_sans_main - cobblemon:great_ball 16 300/75
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_createur_pokemon - pick
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_pokemon_sans_equipe - pikachu niveau=20 shiny ivs=31,31,31,31,31,31 nature=timid ball=ultra_ball
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_pokemon_fidele - Pikachu ★ Nv.20 ♀
+[11:45:49] [Server thread/ERROR]: .old File pokedex for dabc9fd1-66ec-3fe1-9b5b-af8a9b453588 is corrupt or missing. Data is lost
+[11:45:49] [Server thread/ERROR]: .old File tm_moves for dabc9fd1-66ec-3fe1-9b5b-af8a9b453588 is corrupt or missing. Data is lost
+[11:45:49] [Server thread/ERROR]: .old File cobblemonplayerdata for dabc9fd1-66ec-3fe1-9b5b-af8a9b453588 is corrupt or missing. Data is lost
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_pokemon_copie_equipe - eevee niveau=33 shiny ivs=16,20,16,30,10,3 nature=docile talent=runaway genre=male ball=poke_ball tera=normal capacites=bite,copycat,refresh,babydolleyes
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boutique_fiche_aller_retour - charizard niveau=50 shiny forme=megax ivs=31,31,31,31,31,31 nature=modest talent=blaze ball=ultra_ball
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] INFO Mega Showdown : true | formes Mega de Dracaufeu : ["Mega-X","Mega-Y"]
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_formes_wiki - ["Mega-X","Mega-Y"]
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_gemmes_identifiees
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_dracaufite_x - mega_showdown:charizardite_x
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_gemmes_registre_mega_showdown - 88 mega_showdown:charizardite_x mega_showdown:charizardite_y
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_gemme_autre_mod - cobblepulse_ecology:glavenusite / cobblepulse_ecology:deviljhonite
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS mega_gemme_autre_mod_wiki
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alerte_test_legendaire - Wo-Chien | ✦ Radar » Légendaire : un %pokemon% est apparu dans %biome% près de TestStaff !
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alerte_test_chromatique
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alerte_test_commande - 1
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS noms_especes_francais_serveur - Magicarpe
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fakemon_datapack_charge
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fakemon_nom_du_datapack - Vérifax | translation{key='cobblemon.species.verifax.name', fallback='Vérifax', args=[]}
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fakemon_nom_envoye_aux_joueurs - 1
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fakemon_recherche_nom_accentue
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS fakemon_alerte_nom_lisible - ✦ Radar » Chromatique : un Vérifax est apparu dans Forest près de TestStaff !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Méga Ultime apparaît : Charizard Nv.126 (-15, 163) !
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_forme_mega - Mega-X
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_mega_palier_dedie - mega_ultime
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Méga Épique apparaît : Altaria Nv.87 (-15, 163) !
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_mega_epique_auto - Altaria Mega
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_mega_espece_refusee
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Épique apparaît : Kadabra Nv.79 (-13, 166) !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Légendaire apparaît : Skwovet Nv.85 (-15, 166) !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Ultime apparaît : Larvitar Nv.119 (-17, 166) !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Méga Épique apparaît : Salamence Nv.75 (-18, 165) !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Méga Légendaire apparaît : Pyroar Nv.94 (-19, 164) !
+[11:45:49] [Server thread/INFO]: ☠ Boss » Un Boss Méga Ultime apparaît : Pidgeot Nv.129 (-20, 163) !
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_tous_les_paliers - 9 / 9
+[11:45:49] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_test_commande
+[11:45:50] [Server thread/INFO]: ✦ CobblePulse » Temps de jeu de TestB réinitialisé (paliers réclamés).
+[11:45:50] [Server thread/INFO]: ✦ CobblePulse » Temps de jeu de HorsLigne réinitialisé (paliers et temps de jeu actif).
+[11:45:50] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_remise_joueur
+[11:45:51] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_remise_hors_ligne - 0 []
+[11:45:51] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_remise_tous - 5 joueurs
+[11:45:51] [Server thread/INFO]: ✦ CobblePulse » Temps de jeu de HorsLigne réinitialisé (paliers et temps de jeu actif).
+[11:45:51] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS temps_de_jeu_commande_tous
+[11:45:51] [Server thread/INFO]: [CobblePulse-Utils] Combat contre le Boss Magikarp (commun) : [TestA]
+[11:45:52] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_combat_demarre
+[11:45:52] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_nom_court_combat - Magikarp
+[11:45:54] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_combat_en_cours
+[11:45:54] [Server thread/INFO]: [CobblePulse-Utils][selftest] INFO entite du Boss apres retrait : plus accessible (cas qui privait de butin)
+[11:45:54] [Server thread/INFO]: [CobblePulse-Utils] Boss Magicarpe (commun) vaincu par [TestA]
+[11:45:58] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_combat_victoire_detectee
+[11:45:58] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_butin_fenetre - 500 ₽ | Boss vaincu : Magikarp (Commun) | [Great Ball, Potion, Tout récupérer, Tout lâcher, Tout jeter]
+[11:45:59] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS boss_combat_butin_remis - 3 Super Balls
+[11:46:01] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_fenetre_test - [Diamond, Emerald, Gold Ingot, Iron Ingot, Tout récupérer, Tout lâcher, Tout jeter]
+[11:46:01] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_objet_recupere - 2
+[11:46:01] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_objet_lache - 3
+[11:46:01] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_objet_jete - [5 minecraft:iron_ingot]
+[11:46:01] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_tout_jeter_confirme - true
+[11:46:04] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_tout_lacher - 6 / 70
+[11:46:06] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_inventaire_plein_conserve - [9 minecraft:redstone]
+[11:46:06] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_fermeture_dans_inventaire - 9
+[11:46:06] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS butin_deconnexion_remis - 4
+[11:46:12] [Server thread/INFO]: [CobblePulse-Utils][selftest] PASS alerte_victoire_en_combat - DESPAWN → DEFEATED TestA | ✦ Radar » Chromatique : TestA a vaincu le %pokemon% en combat.
+[11:46:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST SUMMARY: 216 pass, 0 fail
+[11:46:14] [Server thread/INFO]: [CobblePulse-Utils][selftest] SELFTEST DONE
+[11:46:14] [Server thread/INFO]: INFO stockage : MySQL (127.0.0.1/cobblepulse_utils) | economie : CobbleDollars | LuckPerms : true
+[11:46:14] [Server thread/INFO]: PASS fichier_database_json - MYSQL
+[11:46:14] [Server thread/INFO]: PASS fichier_general.json
+[11:46:14] [Server thread/INFO]: PASS fichier_commands.json
+[11:46:14] [Server thread/INFO]: PASS fichier_messages.toml
+[11:46:14] [Server thread/INFO]: PASS fichier_warps.json
+[11:46:14] [Server thread/INFO]: PASS fichier_kits.json
+[11:46:14] [Server thread/INFO]: PASS fichier_dexrewards.json
+[11:46:14] [Server thread/INFO]: PASS fichier_shop.json
+[11:46:14] [Server thread/INFO]: PASS fichier_gts.json
+[11:46:14] [Server thread/INFO]: PASS fichier_sts.json
+[11:46:14] [Server thread/INFO]: PASS fichier_wondertrade.json
+[11:46:14] [Server thread/INFO]: PASS fichier_alerts.json
+[11:46:14] [Server thread/INFO]: PASS fichier_boss.json
+[11:46:14] [Server thread/INFO]: PASS shop_categories_exemple - [pokeballs, ressources, soins, speciaux]
+[11:46:14] [Server thread/INFO]: PASS shop_objets_valides - []
+[11:46:14] [Server thread/INFO]: PASS kits_objets_valides - []
+[11:46:14] [Server thread/INFO]: PASS boss_dex_objets_valides - []
+[11:46:14] [Server thread/INFO]: PASS boss_6_paliers - [commun, non_commun, rare, epique, legendaire, ultime, mega_epique, mega_legendaire, mega_ultime]
+[11:46:14] [Server thread/INFO]: PASS messages_charges
+[11:46:14] [Server thread/INFO]: PASS economie_cobbledollars - CobbleDollars
+[11:46:14] [Server thread/INFO]: PASS commandes_cahier_des_charges - toutes presentes
+[11:46:14] [Server thread/INFO]: PASS cp_sous_commandes
+[11:46:14] [Server thread/INFO]: PASS cp_fusion_mod_clans - sous-commandes du mod Clans conservees
+[11:46:14] [Server thread/INFO]: PASS pokedex_fusion_cobblemon - 4 sous-noeuds
+[11:46:14] [Server thread/INFO]: PASS homes_limite_defaut - 3
+[11:46:14] [Server thread/INFO]: PASS homes_quota - [maison, mine, ferme]
+[11:46:14] [Server thread/INFO]: PASS homes_quota_luckperms - 5
+[11:46:14] [Server thread/INFO]: PASS homes_quota_luckperms_ajout
+[11:46:14] [Server thread/INFO]: PASS warp_cree
+[11:46:14] [Server thread/INFO]: PASS warp_prive_cache
+[11:46:14] [Server thread/INFO]: PASS warp_prive_permission
+[11:46:14] [Server thread/INFO]: PASS teleport_warp - (100.5, 90.0, 100.5)
+[11:46:14] [Server thread/INFO]: PASS back_memorise
+[11:46:14] [Server thread/INFO]: PASS spawn_defini
+[11:46:14] [Server thread/INFO]: PASS tpa_demande_acceptee
+[11:46:14] [Server thread/INFO]: PASS tptoggle_refuse
+[11:46:14] [Server thread/INFO]: PASS kit_depart_recupere
+[11:46:14] [Server thread/INFO]: PASS kit_usage_unique
+[11:46:14] [Server thread/INFO]: PASS kit_quotidien - [kit:quotidien]
+[11:46:14] [Server thread/INFO]: PASS kit_vip_refuse_sans_permission
+[11:46:14] [Server thread/INFO]: PASS kit_vip_permission
+[11:46:14] [Server thread/INFO]: PASS kit_bypass_delai
+[11:46:14] [Server thread/INFO]: PASS kit_nbt_conserve - Lame de test
+[11:46:14] [Server thread/INFO]: PASS ec_lignes_defaut - 3
+[11:46:14] [Server thread/INFO]: PASS ec_lignes_pages_luckperms - 6 lignes, 3 pages
+[11:46:14] [Server thread/INFO]: PASS nick_affiche - ~Alpha
+[11:46:14] [Server thread/INFO]: PASS mute_bloque_chat
+[11:46:14] [Server thread/INFO]: PASS unmute
+[11:46:14] [Server thread/INFO]: PASS ignore_chat_public
+[11:46:14] [Server thread/INFO]: PASS fly_heal_permission_luckperms
+[11:46:14] [Server thread/INFO]: PASS fly_desactive
+[11:46:14] [Server thread/INFO]: PASS repair_permission_luckperms - 0
+[11:46:14] [Server thread/INFO]: PASS god
+[11:46:14] [Server thread/INFO]: PASS vanish_cache_aux_joueurs
+[11:46:14] [Server thread/INFO]: PASS tempban_expiration
+[11:46:14] [Server thread/INFO]: PASS balance_autre_joueur
+[11:46:14] [Server thread/INFO]: PASS pokeshout_texte
+[11:46:14] [Server thread/INFO]: PASS hub_tuiles_joueur - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans]
+[11:46:14] [Server thread/INFO]: PASS hub_panneau_staff
+[11:46:14] [Server thread/INFO]: PASS hub_passerelles - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans]
+[11:46:14] [Server thread/INFO]: PASS hub_passerelle_absente_masquee
+[11:46:14] [Server thread/INFO]: PASS cobbledollars_depot - 50000
+[11:46:14] [Server thread/INFO]: PASS shop_achat_groupe - 50000 -> 49000
+[11:46:14] [Server thread/INFO]: PASS shop_vente_groupee - 100
+[11:46:14] [Server thread/INFO]: PASS sell_hand - 150
+[11:46:14] [Server thread/INFO]: PASS shop_promo_et_reduction_grade - 50 / 90
+[11:46:14] [Server thread/INFO]: PASS shop_categorie_fermee
+[11:46:14] [Server thread/INFO]: PASS shop_pokemon_personnalise - Eevee ★ Nv.10 ♂
+[11:46:14] [Server thread/INFO]: PASS shop_commande - 4500
+[11:46:14] [Server thread/INFO]: PASS shop_fonds_insuffisants
+[11:46:14] [Server thread/INFO]: PASS wiki_spawns_biomes - 2 entrees, 9 biomes, max 0.123711 %
+[11:46:14] [Server thread/INFO]: PASS wiki_biomes_par_mod - [Minecraft]
+[11:46:14] [Server thread/INFO]: PASS wiki_fiche_technique - evolutions true, talent cache true, capacites true
+[11:46:14] [Server thread/INFO]: PASS alertes_categories
+[11:46:14] [Server thread/INFO]: PASS alertes_historique - minecraft:forest
+[11:46:14] [Server thread/INFO]: PASS alertes_annonce_capture - ✦ Radar » Légendaire : TestA a capturé le %pokemon% !
+[11:46:14] [Server thread/INFO]: PASS alertes_annonce_victoire - DEFEATED | ✦ Radar » Chromatique : TestB a vaincu le %pokemon% en combat.
+[11:46:14] [Server thread/INFO]: PASS alertes_annonce_mort - KILLED TestC | ✦ Radar » Chromatique : TestC a tué le %pokemon%.
+[11:46:14] [Server thread/INFO]: PASS alertes_boss_exclus
+[11:46:14] [Server thread/INFO]: PASS boss_apparu
+[11:46:14] [Server thread/INFO]: PASS boss_niveau_superieur_100 - 113
+[11:46:14] [Server thread/INFO]: PASS boss_niveau_enregistrable
+[11:46:14] [Server thread/INFO]: PASS boss_niveau_fenetre_de_combat - 113
+[11:46:14] [Server thread/INFO]: PASS niveau_joueurs_toujours_plafonne - 100
+[11:46:14] [Server thread/INFO]: PASS boss_sauvegarde_monde_niveau_sup_100 - [EntityEffects, Brain, HurtByTimestamp, Sitting, Invulnerable, FallFlying, ForcedAge, Behaviours, PortalCooldown, AbsorptionAmount, FallDistance, InLove, DeathTime, HandDropChances, ScaleModifier, PersistenceRequired, Pokemon, UUID, Age, Motion, BehaviourFlags, BehavioursAreCustom, Health, LeftHanded, Air, OnGround, ScriptingData, Glowing, PoseType, Rotation, HandItems, ArmorDropChances, CustomName, ScriptingConfig, Pos, Fire, ArmorItems, CanPickUpLoot, attributes, HurtTime, CustomNameVisible]
+[11:46:14] [Server thread/INFO]: PASS boss_rechargement_niveau - 113 / 113
+[11:46:14] [Server thread/INFO]: PASS boss_incapturable
+[11:46:14] [Server thread/INFO]: PASS boss_ivs_parfaits - 6
+[11:46:14] [Server thread/INFO]: PASS boss_nom_palier - [Ultime] Charizard
+[11:46:14] [Server thread/INFO]: PASS boss_invulnerable_physique - 32.0 / 32.0
+[11:46:14] [Server thread/INFO]: PASS boss_objet_forme_config
+[11:46:14] [Server thread/INFO]: PASS boss_clear - 2
+[11:46:14] [Server thread/INFO]: PASS boss_promotion_palier - commun
+[11:46:14] [Server thread/INFO]: PASS mega_boss_3_paliers - [commun, non_commun, rare, epique, legendaire, ultime, mega_epique, mega_legendaire, mega_ultime]
+[11:46:14] [Server thread/INFO]: PASS mega_boss_tirage_a_part
+[11:46:14] [Server thread/INFO]: PASS mega_boss_espece_sans_mega_refusee
+[11:46:14] [Server thread/INFO]: PASS mega_boss_promotion - mega_epique Mega-X
+[11:46:14] [Server thread/INFO]: PASS mega_boss_primo - Primal Nv.122
+[11:46:14] [Server thread/INFO]: PASS mega_boss_palier_ordinaire_sans_mega
+[11:46:14] [Server thread/INFO]: PASS dex_progression - 52/1003
+[11:46:14] [Server thread/INFO]: PASS dex_palier_reclame
+[11:46:14] [Server thread/INFO]: PASS dex_palier_verrouille
+[11:46:14] [Server thread/INFO]: PASS alertes_boss_non_enregistre
+[11:46:14] [Server thread/INFO]: PASS gts_annonce_objet
+[11:46:14] [Server thread/INFO]: PASS gts_annonce_listee - 1
+[11:46:14] [Server thread/INFO]: PASS ec_sauvegarde_base
+[11:46:14] [Server thread/INFO]: PASS boss_butin_argent - 50950
+[11:46:14] [Server thread/INFO]: PASS boss_premieres_victoires_base - 2
+[11:46:14] [Server thread/INFO]: PASS alertes_statut_despawn - DESPAWN
+[11:46:14] [Server thread/INFO]: PASS alertes_statuts_conserves - KILLED DEFEATED
+[11:46:14] [Server thread/INFO]: PASS alertes_statut_capture - CAPTURED TestA
+[11:46:14] [Server thread/INFO]: PASS tpa_teleporte_apres_delai - (-50.5, 95.0, -50.5)
+[11:46:14] [Server thread/INFO]: PASS gts_achat_unique_concurrence - reussis 1, B false, C true
+[11:46:14] [Server thread/INFO]: PASS gts_cobbledollars_debite - 100500
+[11:46:14] [Server thread/INFO]: PASS gts_vendeur_paye_taxe - 950 / 950
+[11:46:14] [Server thread/INFO]: PASS gts_prix_plancher_shiny
+[11:46:14] [Server thread/INFO]: PASS gts_annonce_pokemon
+[11:46:14] [Server thread/INFO]: PASS gts_achat_pokemon - Bulbasaur
+[11:46:14] [Server thread/INFO]: PASS gts_limite_grade - true/false
+[11:46:14] [Server thread/INFO]: PASS gts_retrait_rend_objet - 5
+[11:46:14] [Server thread/INFO]: PASS gts_expiration_boite_reception - 1
+[11:46:14] [Server thread/INFO]: PASS gts_boite_reception_recuperee - 2
+[11:46:14] [Server thread/INFO]: PASS sts_rachat - 130
+[11:46:14] [Server thread/INFO]: PASS sts_quota_grade
+[11:46:14] [Server thread/INFO]: PASS wt_echange - 72 -> 72
+[11:46:14] [Server thread/INFO]: PASS wt_delai
+[11:46:14] [Server thread/INFO]: PASS boite_reception_argent_reseau - 777
+[11:46:14] [Server thread/INFO]: PASS ecrans_tous_les_menus - 12 menus
+[11:46:14] [Server thread/INFO]: PASS ecran_contenu_propre
+[11:46:14] [Server thread/INFO]: PASS ecran_objet_pokemon_fidele - Pikachu ★ Nv.30 ♀
+[11:46:14] [Server thread/INFO]: PASS ecran_clic_navigation - Poké Balls
+[11:46:14] [Server thread/INFO]: PASS ecran_clic_perime_ignore
+[11:46:14] [Server thread/INFO]: PASS ecran_fenetre_saisie - prompt
+[11:46:14] [Server thread/INFO]: PASS ecran_saisie_annulee
+[11:46:14] [Server thread/INFO]: PASS ecran_saisie_validee - [maison, mine, ferme, quatrieme, ecran, Retour, Nouveau home ici]
+[11:46:14] [Server thread/INFO]: PASS ecran_liste_complete - 70
+[11:46:14] [Server thread/INFO]: PASS ecran_rafraichi - 1 -> 2
+[11:46:14] [Server thread/INFO]: PASS ecran_ferme_par_serveur
+[11:46:14] [Server thread/INFO]: PASS coffre_pour_client_sans_mod
+[11:46:14] [Server thread/INFO]: PASS mondes_detectes - [minecraft:overworld, minecraft:the_nether, minecraft:the_end]
+[11:46:14] [Server thread/INFO]: PASS mondes_noms
+[11:46:14] [Server thread/INFO]: PASS mondes_spawn_calcule - -16 85 160 / 100 50 0
+[11:46:14] [Server thread/INFO]: PASS mondes_homes_par_monde - minecraft:the_nether []
+[11:46:14] [Server thread/INFO]: PASS mondes_setspawn_par_monde
+[11:46:14] [Server thread/INFO]: PASS mondes_acces_reserve - cobblepulse.world.minecraft.the_nether
+[11:46:14] [Server thread/INFO]: PASS mondes_tpa_bloquee
+[11:46:14] [Server thread/INFO]: PASS mondes_rtp_rayon - 12.020815280171307
+[11:46:14] [Server thread/INFO]: PASS mondes_menu - [Monde principal, Nether, Retour]
+[11:46:14] [Server thread/INFO]: PASS mondes_commande_teleporte - minecraft:the_nether
+[11:46:14] [Server thread/INFO]: PASS mondes_regles_boss_alertes
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_initialise - 0
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_palier_atteint - 1
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_reclamation - 1250
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_palier_verrouille
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_bonus_repetable - 250
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_remise_auto - [h1, h5]
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_commande_ajouter
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_menu - Temps de jeu (1h)
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_tuile_hub
+[11:46:14] [Server thread/INFO]: PASS wt_delai_ligne - Prochain échange : dans 9min 45s
+[11:46:14] [Server thread/INFO]: PASS wt_delai_tuile_hub - [&7Déposez un Pokémon,, &7recevez-en un au hasard !, &7Prochain échange : &edans 9min 45s]
+[11:46:14] [Server thread/INFO]: PASS wt_delai_menu - [Échange Miracle, Porygon2 Nv.11 , Geodude Nv.15 ♀, Emplacement 3 vide, Emplacement 4 vide, Emplacement 5 vide, Emplacement 6 vide, Retour, Prochain échange dans 9min 45s]
+[11:46:14] [Server thread/INFO]: PASS wt_delai_mise_a_jour
+[11:46:14] [Server thread/INFO]: PASS gts_durees_proposees - [24, 48, 72, 168, 336]
+[11:46:14] [Server thread/INFO]: PASS gts_taxe_selon_duree - 5 / 10 / 15
+[11:46:14] [Server thread/INFO]: PASS gts_duree_invalide_refusee
+[11:46:14] [Server thread/INFO]: PASS gts_annonce_longue_taxee - 168 h, taxe 10
+[11:46:14] [Server thread/INFO]: PASS gts_menu_duree - [Test, 24 h (5 %), 2 j (5 %), 3 j (7 %), 7 j (10 %), 14 j (15 %), Annuler]
+[11:46:14] [Server thread/INFO]: PASS boutique_selecteur_objet - pick
+[11:46:14] [Server thread/INFO]: PASS boutique_objet_sans_main - cobblemon:great_ball 16 300/75
+[11:46:14] [Server thread/INFO]: PASS boutique_createur_pokemon - pick
+[11:46:14] [Server thread/INFO]: PASS boutique_pokemon_sans_equipe - pikachu niveau=20 shiny ivs=31,31,31,31,31,31 nature=timid ball=ultra_ball
+[11:46:14] [Server thread/INFO]: PASS boutique_pokemon_fidele - Pikachu ★ Nv.20 ♀
+[11:46:14] [Server thread/INFO]: PASS boutique_pokemon_copie_equipe - eevee niveau=33 shiny ivs=16,20,16,30,10,3 nature=docile talent=runaway genre=male ball=poke_ball tera=normal capacites=bite,copycat,refresh,babydolleyes
+[11:46:14] [Server thread/INFO]: PASS boutique_fiche_aller_retour - charizard niveau=50 shiny forme=megax ivs=31,31,31,31,31,31 nature=modest talent=blaze ball=ultra_ball
+[11:46:14] [Server thread/INFO]: INFO Mega Showdown : true | formes Mega de Dracaufeu : ["Mega-X","Mega-Y"]
+[11:46:14] [Server thread/INFO]: PASS mega_formes_wiki - ["Mega-X","Mega-Y"]
+[11:46:14] [Server thread/INFO]: PASS mega_gemmes_identifiees
+[11:46:14] [Server thread/INFO]: PASS mega_dracaufite_x - mega_showdown:charizardite_x
+[11:46:14] [Server thread/INFO]: PASS mega_gemmes_registre_mega_showdown - 88 mega_showdown:charizardite_x mega_showdown:charizardite_y
+[11:46:14] [Server thread/INFO]: PASS mega_gemme_autre_mod - cobblepulse_ecology:glavenusite / cobblepulse_ecology:deviljhonite
+[11:46:14] [Server thread/INFO]: PASS mega_gemme_autre_mod_wiki
+[11:46:14] [Server thread/INFO]: PASS alerte_test_legendaire - Wo-Chien | ✦ Radar » Légendaire : un %pokemon% est apparu dans %biome% près de TestStaff !
+[11:46:14] [Server thread/INFO]: PASS alerte_test_chromatique
+[11:46:14] [Server thread/INFO]: PASS alerte_test_commande - 1
+[11:46:14] [Server thread/INFO]: PASS noms_especes_francais_serveur - Magicarpe
+[11:46:14] [Server thread/INFO]: PASS fakemon_datapack_charge
+[11:46:14] [Server thread/INFO]: PASS fakemon_nom_du_datapack - Vérifax | translation{key='cobblemon.species.verifax.name', fallback='Vérifax', args=[]}
+[11:46:14] [Server thread/INFO]: PASS fakemon_nom_envoye_aux_joueurs - 1
+[11:46:14] [Server thread/INFO]: PASS fakemon_recherche_nom_accentue
+[11:46:14] [Server thread/INFO]: PASS fakemon_alerte_nom_lisible - ✦ Radar » Chromatique : un Vérifax est apparu dans Forest près de TestStaff !
+[11:46:14] [Server thread/INFO]: PASS boss_test_forme_mega - Mega-X
+[11:46:14] [Server thread/INFO]: PASS boss_test_mega_palier_dedie - mega_ultime
+[11:46:14] [Server thread/INFO]: PASS boss_test_mega_epique_auto - Altaria Mega
+[11:46:14] [Server thread/INFO]: PASS boss_test_mega_espece_refusee
+[11:46:14] [Server thread/INFO]: PASS boss_test_tous_les_paliers - 9 / 9
+[11:46:14] [Server thread/INFO]: PASS boss_test_commande
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_remise_joueur
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_remise_hors_ligne - 0 []
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_remise_tous - 5 joueurs
+[11:46:14] [Server thread/INFO]: PASS temps_de_jeu_commande_tous
+[11:46:14] [Server thread/INFO]: PASS boss_combat_demarre
+[11:46:14] [Server thread/INFO]: PASS boss_nom_court_combat - Magikarp
+[11:46:14] [Server thread/INFO]: PASS boss_combat_en_cours
+[11:46:14] [Server thread/INFO]: INFO entite du Boss apres retrait : plus accessible (cas qui privait de butin)
+[11:46:14] [Server thread/INFO]: PASS boss_combat_victoire_detectee
+[11:46:14] [Server thread/INFO]: PASS boss_butin_fenetre - 500 ₽ | Boss vaincu : Magikarp (Commun) | [Great Ball, Potion, Tout récupérer, Tout lâcher, Tout jeter]
+[11:46:14] [Server thread/INFO]: PASS boss_combat_butin_remis - 3 Super Balls
+[11:46:14] [Server thread/INFO]: PASS butin_fenetre_test - [Diamond, Emerald, Gold Ingot, Iron Ingot, Tout récupérer, Tout lâcher, Tout jeter]
+[11:46:14] [Server thread/INFO]: PASS butin_objet_recupere - 2
+[11:46:14] [Server thread/INFO]: PASS butin_objet_lache - 3
+[11:46:14] [Server thread/INFO]: PASS butin_objet_jete - [5 minecraft:iron_ingot]
+[11:46:14] [Server thread/INFO]: PASS butin_tout_jeter_confirme - true
+[11:46:14] [Server thread/INFO]: PASS butin_tout_lacher - 6 / 70
+[11:46:14] [Server thread/INFO]: PASS butin_inventaire_plein_conserve - [9 minecraft:redstone]
+[11:46:14] [Server thread/INFO]: PASS butin_fermeture_dans_inventaire - 9
+[11:46:14] [Server thread/INFO]: PASS butin_deconnexion_remis - 4
+[11:46:14] [Server thread/INFO]: PASS alerte_victoire_en_combat - DESPAWN → DEFEATED TestA | ✦ Radar » Chromatique : TestA a vaincu le %pokemon% en combat.
+[11:46:14] [Server thread/INFO]: SELFTEST SUMMARY: 216 pass, 0 fail
+[11:46:16] [Server thread/INFO]: ✦ CobblePulse » 0/20 joueurs connectés :
+[11:46:18] [Server thread/INFO]: [CobblePulse-Utils] Economie : CobbleDollars
+[11:46:18] [Server thread/INFO]: [CobblePulse-Utils] Economie : CobbleDollars
+[11:46:18] [Server thread/INFO]: [CobblePulse] Configuration rechargée (10 formats de tournoi).
+[11:46:18] [Server thread/INFO]: ✦ CobblePulse » Configuration rechargée : 4 catégories de shop, 3 kits, 1 warps.
+[11:46:18] [Server thread/INFO]: ✦ CobblePulse » Configuration rechargée : 4 catégories de shop, 3 kits, 1 warps.
+[11:46:25] [Server thread/INFO]: Stopping the server
+[11:46:25] [Server thread/INFO]: Starting shutdown process...
+[11:46:25] [Server thread/INFO]: Closing storage...
+[11:46:25] [Server thread/INFO]: Goodbye!
+[11:46:25] [Server thread/INFO]: Stopping server
+[11:46:25] [Server thread/INFO]: Saving players
+[11:46:25] [Server thread/INFO]: Saving worlds
+[11:46:25] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[11:46:26] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[11:46:26] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[11:46:26] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[11:46:26] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[11:46:26] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[11:46:26] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[11:46:26] [Server thread/INFO]: CobblePulse-Utils-MySQL - Shutdown initiated...
+[11:46:26] [Server thread/INFO]: CobblePulse-Utils-MySQL - Shutdown completed.

@@ -1,0 +1,62 @@
+# =====================================================================
+#  CobblePulse - Recompenses de tournoi (systeme hybride)
+#  1) Items : /tournoi rewards edit <palier> puis glisser-deposer les items.
+#     Les gagnants les recuperent avec /tournoi claim.
+#  2) Commandes console ci-dessous. Variables : %player% %place% %tournament% %tier%
+#  Un joueur recoit le palier correspondant a sa meilleure place possible
+#  (ex. perdants de quart de finale = 5e => palier top5).
+# =====================================================================
+
+[tiers.first]
+label = "1ère place (Vainqueur)"
+min = 1
+max = 1
+commands = ["eco give %player% 10000"]
+
+[tiers.second]
+label = "2nde place"
+min = 2
+max = 2
+commands = ["eco give %player% 5000"]
+
+[tiers.third]
+label = "3ème place"
+min = 3
+max = 3
+commands = ["eco give %player% 2500"]
+
+[tiers.top5]
+label = "Top 5"
+min = 4
+max = 5
+commands = []
+
+[tiers.top6_10]
+label = "Top 6-10"
+min = 6
+max = 10
+commands = []
+
+[tiers.top11_20]
+label = "Top 11-20"
+min = 11
+max = 20
+commands = []
+
+[tiers.top21_50]
+label = "Top 21-50"
+min = 21
+max = 50
+commands = []
+
+[tiers.top51_100]
+label = "Top 51-100"
+min = 51
+max = 100
+commands = []
+
+[tiers.top101_500]
+label = "Top 101-500"
+min = 101
+max = 500
+commands = []

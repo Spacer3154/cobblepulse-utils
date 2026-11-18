@@ -1,0 +1,73 @@
+{
+  "id": "soins",
+  "name": "&d&lSoins",
+  "icon": "cobblemon:potion",
+  "lore": [
+    "&7Potions, rappels et baies."
+  ],
+  "enabled": true,
+  "discount": 0.0,
+  "slot": 12,
+  "entries": [
+    {
+      "id": "potion",
+      "type": "item",
+      "item": "cobblemon:potion",
+      "display": "",
+      "lore": [],
+      "buy": 200,
+      "sell": 50,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "super_potion",
+      "type": "item",
+      "item": "cobblemon:super_potion",
+      "display": "",
+      "lore": [],
+      "buy": 600,
+      "sell": 150,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "hyper_potion",
+      "type": "item",
+      "item": "cobblemon:hyper_potion",
+      "display": "",
+      "lore": [],
+      "buy": 1200,
+      "sell": 300,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "revive",
+      "type": "item",
+      "item": "cobblemon:revive",
+      "display": "",
+      "lore": [],
+      "buy": 1500,
+      "sell": 375,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "rare_candy",
+      "type": "item",
+      "item": "cobblemon:rare_candy",
+      "display": "",
+      "lore": [],
+      "buy": 5000,
+      "sell": -1,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    }
+  ]
+}

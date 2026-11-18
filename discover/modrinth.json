@@ -1,0 +1,2574 @@
+{
+ "cobblemon": [
+  {
+   "version_number": "1.8.4F",
+   "id": "PdOzYHKU",
+   "files": [
+    {
+     "id": "tuoHzOSZ",
+     "hashes": {
+      "sha1": "587973321ae6d0762b38a2e19632f5cfdce7c2df",
+      "sha512": "8ba3bc7eb0bb6d52309ca339dfc9fb11adcffebe36d183e0a8df7c8e741edbcbc436c60cc877fd2b42aa224670825cf4f55946676b58ecf0e998f9feae2173c2"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/PdOzYHKU/Cobblemon-fabric-1.8.4%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.8.4+1.21.1.jar",
+     "primary": true,
+     "size": 139966403,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.8.3F",
+   "id": "IgUZQKm8",
+   "files": [
+    {
+     "id": "tEvsVJ7U",
+     "hashes": {
+      "sha1": "9155e84912d3bb0dad9aa88586e547c88c37eb1d",
+      "sha512": "0cfcbc811c0434a6a8cbeda32fae5c39328a699e28b4292de635da99fc283f40166d25055594abf4eff56dd9a7a453313a5aa43f4a9969940d9e1a18dd222166"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/IgUZQKm8/Cobblemon-fabric-1.8.3%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.8.3+1.21.1.jar",
+     "primary": true,
+     "size": 139963795,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.8.2",
+   "id": "GJ2a1b8O",
+   "files": [
+    {
+     "id": "p7kttKSW",
+     "hashes": {
+      "sha1": "1a8ec812b2e7b392ac60801c910d3128d0bbb432",
+      "sha512": "fe0090aa00a010a2353b4da43693ef70b675d5255756541cd679d2cf1df077ffedb790e9de66b1bd69cc9f6336d58763aeb15f146d07420d466daaeb3d992386"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/GJ2a1b8O/Cobblemon-fabric-1.8.2%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.8.2+1.21.1.jar",
+     "primary": true,
+     "size": 139317851,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.8.1",
+   "id": "gBW3vLC7",
+   "files": [
+    {
+     "id": "2gW8hmuN",
+     "hashes": {
+      "sha1": "ebbf2dad130391cd39c51ffcf83a1b157951e919",
+      "sha512": "e9c475c6a8e73bfb378445944812f6e31271cdf50d3227124b44b31c295bf7e9085246ea05d005efff9b7227e7b4e3e34ff1480b1a4b3b97211b5fa127d234ed"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/gBW3vLC7/Cobblemon-fabric-1.8.1%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.8.1+1.21.1.jar",
+     "primary": true,
+     "size": 137391338,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.8.0",
+   "id": "YgmyyFcs",
+   "files": [
+    {
+     "id": "sXWkue3v",
+     "hashes": {
+      "sha1": "ed0bbc67467189161b3bb9e1b8451afd8d073fa8",
+      "sha512": "6537ff48feb8888d5c9f124eeecd721162bf05ca8e30270753d8f58f08af4e5fbb8d06d2bfb6c9e6514524152709e46c8e7ed9ff38fa2cf759d0b43898d25883"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/YgmyyFcs/Cobblemon-fabric-1.8.0%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.8.0+1.21.1.jar",
+     "primary": true,
+     "size": 162358118,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.7.3",
+   "id": "kF7CvxTo",
+   "files": [
+    {
+     "id": "VFtWZhdo",
+     "hashes": {
+      "sha1": "f192cda3fdfec0f20d1dee1887ec1b9e77b1618c",
+      "sha512": "7b5376f5f48177db53790237b6fb25378806972b5d3b756151b4d8f2d3c27238d6b587b77da422bc1780bfd358b4702e74369fd82cef2a35301b4b68a2f13c2e"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/kF7CvxTo/Cobblemon-fabric-1.7.3%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.7.3+1.21.1.jar",
+     "primary": true,
+     "size": 135801550,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.7.2",
+   "id": "FcsopG0e",
+   "files": [
+    {
+     "id": "XiaHEvYx",
+     "hashes": {
+      "sha1": "62d6ce4d8ab8e978633f954571e99fc638872ed9",
+      "sha512": "bf13dfb6f9325513c2e2db46ab34edd5e0a264775ec5f962cd53a8b06d729a858d780c0f284888c61b2cd0a5f3454f7eef07bc759189805ba7ffa957267d9104"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/FcsopG0e/Cobblemon-fabric-1.7.2%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.7.2+1.21.1.jar",
+     "primary": true,
+     "size": 135794114,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.7.1",
+   "id": "s64m1opn",
+   "files": [
+    {
+     "id": "Z360WbWJ",
+     "hashes": {
+      "sha512": "221382ccc0aa7ae65935298802ff6272b852f485bf0d03a5ba7b51f88a15aa3110282d6c9b0d6e2993fe72515f1dfffdec236b235d411ac01eb93b7dc9e5d750",
+      "sha1": "1d864c16796a98e0f40ba5bc61977a528cc1e3a1"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/s64m1opn/Cobblemon-fabric-1.7.1%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.7.1+1.21.1.jar",
+     "primary": true,
+     "size": 130797814,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.7.0",
+   "id": "Ygf8KJFC",
+   "files": [
+    {
+     "id": "H4u3yPuH",
+     "hashes": {
+      "sha1": "8e6af964b05dc56d2c9aa815fbe1d3ed04740cee",
+      "sha512": "2fa4f9e91fdc2511a2b7fa4309a3ca0848599058e86345056c7c771136cf518c6bfab94a6da6b661abd1e675354caedf5cdd6e4f0e39c5c3157116a72c58e878"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/Ygf8KJFC/Cobblemon-fabric-1.7.0%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.7.0+1.21.1.jar",
+     "primary": true,
+     "size": 130736495,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.6.1",
+   "id": "v77SHSXW",
+   "files": [
+    {
+     "id": "zDcF30Ez",
+     "hashes": {
+      "sha512": "b7082befee07efd3e0c5857807f739082df5994ec0e7fe3217ce6cdaec7d2ca47ed51bd129096fd4eca8cbcf7de415d14602868a3357980ff88e55b3148dc7f4",
+      "sha1": "44657312c2d9d43f5db24ec779b5044b7453a924"
+     },
+     "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/v77SHSXW/Cobblemon-fabric-1.6.1%2B1.21.1.jar",
+     "filename": "Cobblemon-fabric-1.6.1+1.21.1.jar",
+     "primary": true,
+     "size": 120710175,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "fabric-api": [
+  {
+   "version_number": "0.116.18+1.21.1",
+   "id": "5SwzqWUu",
+   "files": [
+    {
+     "id": "S4NUqnSY",
+     "hashes": {
+      "sha512": "9f721c253ae2e9823cb548e8ec132c9928f80a65184e9b8dcfc489a8d632df20cbfea1e65ff8a4333bdb295c41fbe2228b43e4d41c7355d42ed4637a785840a1",
+      "sha1": "584d303f646287ee6be059ecb2fc451255be9ee9"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/5SwzqWUu/fabric-api-0.116.18%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.18+1.21.1.jar",
+     "primary": true,
+     "size": 2453884,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.17+1.21.1",
+   "id": "Mys3P7lK",
+   "files": [
+    {
+     "id": "WuOG3t7I",
+     "hashes": {
+      "sha512": "98c478217da19181f0e4df3ea6c2da6bdbda271c7544a4aea048513a49b444f1ff5b71dc0df6303017c48e8ff69b7bb6af6179bdf0d0e09ab3c1ee08411857a8",
+      "sha1": "810b2b0195371a012906241d8b85a32a1d6de53c"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/Mys3P7lK/fabric-api-0.116.17%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.17+1.21.1.jar",
+     "primary": true,
+     "size": 2452735,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.16+1.21.1",
+   "id": "fpB2VatZ",
+   "files": [
+    {
+     "id": "DlvCfrJp",
+     "hashes": {
+      "sha512": "1ee763b538619b917b3bf02568dd2fb6c4ca3dc98e5554dc944e4524c316437946b00b6c1c4597ca86871f820b894c4b7b2b5701f7479e2dd057b0ea947886df",
+      "sha1": "07fcbd957f45592ac3ac63161b0bf4f0b724c665"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/fpB2VatZ/fabric-api-0.116.16%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.16+1.21.1.jar",
+     "primary": true,
+     "size": 2467467,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.15+1.21.1",
+   "id": "Nlt8gI9z",
+   "files": [
+    {
+     "id": "iLYEhm1K",
+     "hashes": {
+      "sha512": "d5dcf28a05676b1436f7ccce76e2f36495ab058f7c3b6f87a5b5cf5abaaf943ef7f37cd4ce72ff1080965a3d11899cd0bf11121e49c4a651daca20f6338043f7",
+      "sha1": "d25c793833a90cc028c9a61bc4546cd578a70ce1"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/Nlt8gI9z/fabric-api-0.116.15%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.15+1.21.1.jar",
+     "primary": true,
+     "size": 2452718,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.14+1.21.1",
+   "id": "aUrTRV7H",
+   "files": [
+    {
+     "id": "6sIPatv6",
+     "hashes": {
+      "sha1": "1bc9caf399a9eadddaec3215e31594ca40fc9485",
+      "sha512": "50664e5f7c9e08475c5902a6b3bbf71950acb03de998271ae9e488527a2cda3c2b170d2093a40f4927412a0a132a1241b17021469ca3c1c63cd5cad676b6b2ff"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/aUrTRV7H/fabric-api-0.116.14%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.14+1.21.1.jar",
+     "primary": true,
+     "size": 2451978,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.13+1.21.1",
+   "id": "FHknjVVa",
+   "files": [
+    {
+     "id": "ZnM84LBk",
+     "hashes": {
+      "sha1": "a8107fd8fd3e805d9ca87453e36b4556d92b55da",
+      "sha512": "87a8e136c43f03d09af96d6b2b35d27b58679d61a158585477fbcc9250ecaf8a5896a18a9b132bdd6b8bcd1ba291acd71f961d58987e770b9a73b653ac237c2f"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/FHknjVVa/fabric-api-0.116.13%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.13+1.21.1.jar",
+     "primary": true,
+     "size": 2427135,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.12+1.21.1",
+   "id": "Lwt6YYHL",
+   "files": [
+    {
+     "id": "7VOFAF0f",
+     "hashes": {
+      "sha1": "90cd4212da24365fae24c0090234b053094b218b",
+      "sha512": "e2da98d9885b2d1c2d15b77bfdafa5df6c294cc96844ded739c8fd61a358fc69c4c391e3296534ea67806cb8ec8d250c0343c0b237c567d9740c586e6d67333a"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/Lwt6YYHL/fabric-api-0.116.12%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.12+1.21.1.jar",
+     "primary": true,
+     "size": 2427037,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.11+1.21.1",
+   "id": "IpaMcBLh",
+   "files": [
+    {
+     "id": "uAVrVVdC",
+     "hashes": {
+      "sha512": "756b8c086f4c911d012f2eb70ca792aef0439503b31bc52026b82830870a94d472de30d61a6a0a9988c02b8462d9c47aa6baa6cd84da1eaf00edb77249b3c413",
+      "sha1": "65f4e8b9dcbad6697b2fb32fa0bb937ec5efcd84"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/IpaMcBLh/fabric-api-0.116.11%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.11+1.21.1.jar",
+     "primary": true,
+     "size": 2426356,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.10+1.21.1",
+   "id": "ID8pq1x1",
+   "files": [
+    {
+     "id": "w9PQcZxB",
+     "hashes": {
+      "sha512": "cc8f207ca861e91c0d42f7d57b4448c2b265bbfb20f38182fad2dd14d3f4fbbbfa5c85b562ddaad33797f67fce8080b2283cdd6fa194f4ace18969d670643454",
+      "sha1": "22b506a0770f148f46737329e8cae68aaefe3165"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ID8pq1x1/fabric-api-0.116.10%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.10+1.21.1.jar",
+     "primary": true,
+     "size": 2425988,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "0.116.9+1.21.1",
+   "id": "yGAe1owa",
+   "files": [
+    {
+     "id": "WI07WJ5w",
+     "hashes": {
+      "sha1": "e41cb63b923a6064021c5a30afa4e844b82ca6e9",
+      "sha512": "e643876079b950aef9aad3eee8d27046305895e8d0f595f7f95010839adeaa25c55a6dc8624ccfba1201194d6598fcbc11f23a7a553ccefbb8c0ceacf388bb79"
+     },
+     "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/yGAe1owa/fabric-api-0.116.9%2B1.21.1.jar",
+     "filename": "fabric-api-0.116.9+1.21.1.jar",
+     "primary": true,
+     "size": 2425600,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  }
+ ],
+ "fabric-language-kotlin": [
+  {
+   "version_number": "1.14.2+kotlin.2.4.21",
+   "id": "SKW1BTL3",
+   "files": [
+    {
+     "id": "MktD9PnE",
+     "hashes": {
+      "sha512": "7fb475c4a7e7bdf8d0aca4b5798a58a354c51443d5b1fbde3e8cf34dfbf7191ef4238b5f07d08ec9490ec180b371624523326c3ad45d4ed2b2be541de9407e5d",
+      "sha1": "f1d4ab6ecd54d9782521333a87eb50724ecb03e0"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/SKW1BTL3/fabric-language-kotlin-1.14.2%2Bkotlin.2.4.21.jar",
+     "filename": "fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar",
+     "primary": true,
+     "size": 8142878,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.14.1+kotlin.2.4.20",
+   "id": "eRRZzGMc",
+   "files": [
+    {
+     "id": "edkTiKJJ",
+     "hashes": {
+      "sha1": "62ae40a31b689b52fde399f2143d547a631e942c",
+      "sha512": "91404f87774466ce8604aafea791d8cc97b603bc310dce17c8188f94f7783cca6dc14fc726ce871ca317bfe9033c199d8d858d51284106a00754e952147703b8"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/eRRZzGMc/fabric-language-kotlin-1.14.1%2Bkotlin.2.4.20.jar",
+     "filename": "fabric-language-kotlin-1.14.1+kotlin.2.4.20.jar",
+     "primary": true,
+     "size": 8142858,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.14.0+kotlin.2.4.20",
+   "id": "BKnpByHl",
+   "files": [
+    {
+     "id": "lKn2pMrC",
+     "hashes": {
+      "sha512": "6f2890448dad00547b11e0b0141609fd4a1d73fa5fc2126495e73d1ebe55c8228b6e6a98a5bd19f3c0da417ce6d1765c0468398722b4b9c73140e56cfdf35b90",
+      "sha1": "41ca3595b9570c658d22c6fecf59115cf6f05792"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/BKnpByHl/fabric-language-kotlin-1.14.0%2Bkotlin.2.4.20.jar",
+     "filename": "fabric-language-kotlin-1.14.0+kotlin.2.4.20.jar",
+     "primary": true,
+     "size": 8142858,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.14+kotlin.2.4.20",
+   "id": "KcCe0rZz",
+   "files": [
+    {
+     "id": "V4YTKOCL",
+     "hashes": {
+      "sha1": "02000838e2b814b80a30de04db9a011e0772cfa9",
+      "sha512": "3e6983441805d593eb0f8fece5dcfa3f38a726bc010a680b5acb61aaf6e51b68d4b7a4e8684a12cfcd6f7204aca354626a4eee72bf28c865d10595317d6dec94"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/KcCe0rZz/fabric-language-kotlin-1.13.14%2Bkotlin.2.4.20.jar",
+     "filename": "fabric-language-kotlin-1.13.14+kotlin.2.4.20.jar",
+     "primary": true,
+     "size": 8143094,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.13+kotlin.2.4.10",
+   "id": "bdhiINYC",
+   "files": [
+    {
+     "id": "dCWkfxIS",
+     "hashes": {
+      "sha512": "9a63c35a550b0362b7b25ff045d93709c7b0dae08c89076cba422813fdfb9e5f5dd021ed3afac9f82e74e95b88c249e8f68b240717151540ca3e88cc27fb9c77",
+      "sha1": "620cb137a9dc69ce86f3114f19d9eedab16366f5"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/bdhiINYC/fabric-language-kotlin-1.13.13%2Bkotlin.2.4.10.jar",
+     "filename": "fabric-language-kotlin-1.13.13+kotlin.2.4.10.jar",
+     "primary": true,
+     "size": 8076363,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.12+kotlin.2.4.0",
+   "id": "Pd0xrHCw",
+   "files": [
+    {
+     "id": "BpqzCboD",
+     "hashes": {
+      "sha512": "ca238ee480dfb237062200fd300be493d022e0837b6998c15807e01488b2a30d5ba4731e5c6d05a5333719c8923a1cb84c06fd6fa45aa88ced492ddb5b40906f",
+      "sha1": "2bc17bb4275cc70a12e4ac35d139a71a30845720"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/Pd0xrHCw/fabric-language-kotlin-1.13.12%2Bkotlin.2.4.0.jar",
+     "filename": "fabric-language-kotlin-1.13.12+kotlin.2.4.0.jar",
+     "primary": true,
+     "size": 8076848,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.11+kotlin.2.3.21",
+   "id": "2i87JpYj",
+   "files": [
+    {
+     "id": "tt6JwCGZ",
+     "hashes": {
+      "sha1": "b6190b247c557c493dc4204121744f289a1d1837",
+      "sha512": "fa5ed2613f7216999cc0c5ddc71906f082a32b52507d7160acbdcf0eb8de12993ba302e5afde6681d025008ecc66c7533fc0c21deb672ef681b2194fb9be4245"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/2i87JpYj/fabric-language-kotlin-1.13.11%2Bkotlin.2.3.21.jar",
+     "filename": "fabric-language-kotlin-1.13.11+kotlin.2.3.21.jar",
+     "primary": true,
+     "size": 7813444,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.10+kotlin.2.3.20",
+   "id": "21TRTKmh",
+   "files": [
+    {
+     "id": "B6Y9Wxqa",
+     "hashes": {
+      "sha1": "9873294abf498f509453d37b0a5ba019f4570ffb",
+      "sha512": "e4eaf7594de08eb4f3ea8af2e939f3ee61d07597afb4d5f420c3fbadcb381c7bbad4b1afd5919b3087b73ed9636fb018b1c978858a112bd4f6acdcb42e9eedaa"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/21TRTKmh/fabric-language-kotlin-1.13.10%2Bkotlin.2.3.20.jar",
+     "filename": "fabric-language-kotlin-1.13.10+kotlin.2.3.20.jar",
+     "primary": true,
+     "size": 7796348,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.9+kotlin.2.3.10",
+   "id": "ViT4gucI",
+   "files": [
+    {
+     "id": "GQJf3w47",
+     "hashes": {
+      "sha512": "498672ee88cf703685026e74f82a85e30d980c62a1c8cc14744cb73add09a857db8d585b405e19f558ec490613642750eb00e09d8ef5a3c9578bc52b53568d51",
+      "sha1": "20b2200961e11994595ebb2d5f6624f232d13751"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/ViT4gucI/fabric-language-kotlin-1.13.9%2Bkotlin.2.3.10.jar",
+     "filename": "fabric-language-kotlin-1.13.9+kotlin.2.3.10.jar",
+     "primary": true,
+     "size": 7642216,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "1.13.8+kotlin.2.3.0",
+   "id": "N6D3uiZF",
+   "files": [
+    {
+     "id": "iFEd1KGr",
+     "hashes": {
+      "sha1": "05fe02fe61232c4ddea4059e8103281424d5a2bd",
+      "sha512": "90bf59f810ea62363bdd7b2ce85a6268b7db67d6d4ce5ae6555204bc7eff0446a6e17d60ef51ad41bf85e92ca430043a8f7c21157cbaee9279733304605cc4d0"
+     },
+     "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/N6D3uiZF/fabric-language-kotlin-1.13.8%2Bkotlin.2.3.0.jar",
+     "filename": "fabric-language-kotlin-1.13.8+kotlin.2.3.0.jar",
+     "primary": true,
+     "size": 7618852,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  }
+ ],
+ "luckperms": [
+  {
+   "version_number": "v5.4.140-fabric",
+   "id": "l47d4ZWk",
+   "files": [
+    {
+     "id": "nw4XEunZ",
+     "hashes": {
+      "sha512": "386ff4d18981c830d21ddaa599d70c1c5430c1475e2c5960275bad535cbd572c77e38b3841f0a71e3ea4a795c56d45ff8c4a8dba3799dae26bff5a382c6e0a64",
+      "sha1": "5368c9a12f181eeeae124b70395691780e5cb657"
+     },
+     "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/l47d4ZWk/LuckPerms-Fabric-5.4.140.jar",
+     "filename": "LuckPerms-Fabric-5.4.140.jar",
+     "primary": true,
+     "size": 1574861,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "v5.4.139-fabric",
+   "id": "oLykW1F8",
+   "files": [
+    {
+     "id": "CgaIAlRY",
+     "hashes": {
+      "sha1": "a57ddfc759174118c46fc57b775187cb2a0fe5ff",
+      "sha512": "fcd867dd3bdaa880cf2fcdb2337a4069b3280b2f47ddbeadb64c423f59974fd585c5f06107a63c9ddde98331e8645a99126bf7b006897ea6c8a4abc653861f16"
+     },
+     "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/oLykW1F8/LuckPerms-Fabric-5.4.139.jar",
+     "filename": "LuckPerms-Fabric-5.4.139.jar",
+     "primary": true,
+     "size": 1574861,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  }
+ ],
+ "cobbledollars": [
+  {
+   "version_number": "2.0.0+Beta-6.1",
+   "id": "NQdxKsW7",
+   "files": [
+    {
+     "id": "ikWFH5PU",
+     "hashes": {
+      "sha512": "082078d40948bcfd73b7eeaf334d21bee05a6d839c0981d5dd12f592bcd45d1d7bc6b69f74ee28b6aa4c9840f7c189c692695336f6434c03400fcabeeb67e0fc",
+      "sha1": "a3f33a9d51be927c47fe72e12de6789e8bab98f2"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/NQdxKsW7/CobbleDollars-fabric-2.0.0%2BBeta-6.1%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-6.1+1.21.1.jar",
+     "primary": true,
+     "size": 500815,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-6",
+   "id": "yWsg35wD",
+   "files": [
+    {
+     "id": "XrOs3A6f",
+     "hashes": {
+      "sha512": "65fb12f3a8a9b7fc560ab7b8c31bf3586c24c24ffaab9e8e272c382dca4a7b1a69e8092f59aec52f6f8128463bc726064f16ef582497487015e99229109cd4a6",
+      "sha1": "26abeae8b8578c5e01ad3f51c0b71587ab008ff7"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/yWsg35wD/CobbleDollars-fabric-2.0.0%2BBeta-6%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-6+1.21.1.jar",
+     "primary": true,
+     "size": 499795,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-5.1",
+   "id": "cqsHXSXe",
+   "files": [
+    {
+     "id": "uaXBceLF",
+     "hashes": {
+      "sha1": "48a2a30fb22e088ca9357fc95bdb4247ddc80b17",
+      "sha512": "97fceefa211ab095f273a39b506d8c4fc53153f41325383bb7fd6735549c2694e844e25aae17d71dd6512c7b72a9ff16de882c214185bdca77d1a50419136b63"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/cqsHXSXe/CobbleDollars-fabric-2.0.0%2BBeta-5.1%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-5.1+1.21.1.jar",
+     "primary": true,
+     "size": 369528,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-5",
+   "id": "zZLwwpl9",
+   "files": [
+    {
+     "id": "WiTuSFRF",
+     "hashes": {
+      "sha1": "202052f321f7d72ee2ef8138a7fcffeb610a94f0",
+      "sha512": "939e76233032d28068b6800abb110e9173803a99282e1afeff63547cf70531a74b380e352bb53fbe190b84996f2f7f0dfb85e0b7821447d82fab2999e6c24404"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/zZLwwpl9/CobbleDollars-fabric-2.0.0%2BBeta-5%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-5+1.21.1.jar",
+     "primary": true,
+     "size": 369680,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-4",
+   "id": "SPM5uTPU",
+   "files": [
+    {
+     "id": "GSek9my9",
+     "hashes": {
+      "sha512": "180101f5308306175392f9cbe2f05a1f1c44f0aed2833015f6133e3a02b92b6369df8d2019b52b088fbbf18a27d9fe2c9be3189b479cc7211101a1a0310a81a1",
+      "sha1": "73b4afe8c8b7e8b034891343533eaf254e53efa7"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/SPM5uTPU/CobbleDollars-fabric-2.0.0%2BBeta-4%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-4+1.21.1.jar",
+     "primary": true,
+     "size": 338908,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-3",
+   "id": "HQfHpQ9h",
+   "files": [
+    {
+     "id": "gCIAuud5",
+     "hashes": {
+      "sha512": "624daf7de9e44ed567b964d3dd9f38d62507fb91e3d6a026cce6f77be2f7cb25659a050fbe38fd7f2a71f1688c04c930145e4cd4e60ac1af9476c60fc86d52bc",
+      "sha1": "b9f1af9a36c5c557bf278b804f9dc3663ddb2cb1"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/HQfHpQ9h/CobbleDollars-fabric-2.0.0%2BBeta-3%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-3+1.21.1.jar",
+     "primary": true,
+     "size": 323548,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-2",
+   "id": "PxnfRNkg",
+   "files": [
+    {
+     "id": "jpse9pFT",
+     "hashes": {
+      "sha1": "0266aeaa42b8f9df61a1e9d6cf65bc5ccd30bafa",
+      "sha512": "5269f8f62070d58c178c584a79bbb2432194446e7501b61fc931e0c9806bee890d1f47e13a99d9d861b5ef6123bfad2fa31193add75457f7865f272868bcad85"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/PxnfRNkg/CobbleDollars-fabric-2.0.0%2BBeta-2%2B1.21.1.jar",
+     "filename": "CobbleDollars-fabric-2.0.0+Beta-2+1.21.1.jar",
+     "primary": true,
+     "size": 271889,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "2.0.0+Beta-1",
+   "id": "oLuOcHz2",
+   "files": [
+    {
+     "id": "mlCTQvFD",
+     "hashes": {
+      "sha512": "9b35d7015be4331b1e470837f0f14671a44902da05e94a381b30d56d58b97290cd7cb1297da1f0d4768cabe53934f525192254112063deacbaf9a6a31ce36732",
+      "sha1": "f48ec7a2fd735e3cba3032ef06a7f88883c9d26d"
+     },
+     "url": "https://cdn.modrinth.com/data/s7N7AsqL/versions/oLuOcHz2/cobbledollars-fabric-2.0.0-BETA1%2B1.21.1.jar",
+     "filename": "cobbledollars-fabric-2.0.0-BETA1+1.21.1.jar",
+     "primary": true,
+     "size": 269606,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "impactor": [
+  {
+   "version_number": "5.3.5+1.21.1-Fabric",
+   "id": "KwNU9SQW",
+   "files": [
+    {
+     "id": "gcfST0zX",
+     "hashes": {
+      "sha1": "ceff2e3529c651ef14cce700ab6c65002d93e9b4",
+      "sha512": "bfcec7e2a56b77fd874087a615aadaf71250a46dd29bf898ed0d1d280b807d4c5e34b700efe00a428067743dc672786e0467be01a1e30871a04bbf4dcf8b8020"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/KwNU9SQW/Impactor-Fabric-5.3.5%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.5+1.21.1.jar",
+     "primary": true,
+     "size": 19673493,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "5.3.4+1.21.1-Fabric",
+   "id": "1POJrl1m",
+   "files": [
+    {
+     "id": "N2IiXvV3",
+     "hashes": {
+      "sha512": "17aeac93a78c72364188001406e170b63965548e4e145f5ba9185354ca23df041deb7d070655234a2b1b172c26481145ba83b6f4f19d222e1c1336c3ac7208a8",
+      "sha1": "79ec13043898acfe95330ba5038aa3da2445121a"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/1POJrl1m/Impactor-Fabric-5.3.4%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.4+1.21.1.jar",
+     "primary": true,
+     "size": 19673149,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "5.3.3+1.21.1-Fabric",
+   "id": "BlAlkvYZ",
+   "files": [
+    {
+     "id": "7UQ1XGnt",
+     "hashes": {
+      "sha1": "16b4800d67f44a663ca3a03fbf7f282379fbf163",
+      "sha512": "a89ec40de40c04ef796650ab5a372e2989b43f27a997ae6a5b8f1d56ea2ad220b9da18f09738fffc6bbad202943706f9893560b4611ae3f6b7878c11cecf8e52"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/BlAlkvYZ/Impactor-Fabric-5.3.3%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.3+1.21.1.jar",
+     "primary": true,
+     "size": 19673137,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "5.3.2+1.21.1-Fabric",
+   "id": "veuhWY3h",
+   "files": [
+    {
+     "id": "9lJn2h9N",
+     "hashes": {
+      "sha512": "fe565ce54322dd33efdb44b3851f1cc813d54c824b13bd2064a90334183b33c2983e33685436d586ad2cdf88b201067cc5fdd710da0ed1903291ccb557d1c9a6",
+      "sha1": "64a4463a49cd8e8bb7db9f840666e51f088b27d2"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/veuhWY3h/Impactor-Fabric-5.3.2%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.2+1.21.1.jar",
+     "primary": true,
+     "size": 19673540,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    }
+   ]
+  },
+  {
+   "version_number": "5.3.1+1.21.1-Fabric",
+   "id": "1YGXPmHU",
+   "files": [
+    {
+     "id": "orlyXjmA",
+     "hashes": {
+      "sha1": "614ef06a238b9615ace4bda40e39d37917cb225b",
+      "sha512": "e1980696f202ab818be49744d85b9be1768124371b7fd4dd21c3c84941fc65888ca2732cebd66b7e7e04f9263d1ccd1570756e47d49f5208a50306e2b85ea1da"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/1YGXPmHU/Impactor-Fabric-5.3.1%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.1+1.21.1.jar",
+     "primary": true,
+     "size": 19614713,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "5.3.0+1.21.1-Fabric",
+   "id": "Rw1kGsvB",
+   "files": [
+    {
+     "id": "nu9es5hi",
+     "hashes": {
+      "sha1": "6a875ebf67181ab07e5b35fa482fc3f192597548",
+      "sha512": "e3100abefdff9f069178f84a02c3f516e5b49782ad6929e2723b26506ed2ef8b6aab29beef3ceb208e922a8131b0ecf3e21e558ccc33e0efbf4aca029a707b79"
+     },
+     "url": "https://cdn.modrinth.com/data/LdBYVaPS/versions/Rw1kGsvB/Impactor-Fabric-5.3.0%2B1.21.1.jar",
+     "filename": "Impactor-Fabric-5.3.0+1.21.1.jar",
+     "primary": true,
+     "size": 16953328,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "eXts2L7r",
+     "file_name": null,
+     "dependency_type": "optional"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "cobblemon-mega-showdown": [
+  {
+   "version_number": "1.3.3+1.8.4+1.21.1-release",
+   "id": "pToIDLtC",
+   "files": [
+    {
+     "id": "gXB4zCRG",
+     "hashes": {
+      "sha512": "286db78d509bc6a3501b88e4ccca8beacf22ebe0e44ff9af475a4419819fc67c4d10562572155b80a95b8f8a49ce7fc296fd8194daf1f557d85a8855cf21f7c3",
+      "sha1": "4330a4a1e6ca10aabe5ae1d1956687ead17f2673"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/pToIDLtC/mega_showdown-fabric-1.3.3%2B1.8.4%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.3+1.8.4+1.21.1-release.jar",
+     "primary": true,
+     "size": 20262744,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.2+1.8.2+1.21.1-release",
+   "id": "RFWTLHyO",
+   "files": [
+    {
+     "id": "sxEIJjS8",
+     "hashes": {
+      "sha1": "78f05e982d9b73c4635be77bcc8e3ba3c6e01d02",
+      "sha512": "15b3f9eea0a931458ffcf02ef0c5fe640727114ee983327b7c69b3032f62698383cef2c2e822b5ce5b3ff7214de4b7c52b3bb3330e2c72747e23f86f8618092e"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/RFWTLHyO/mega_showdown-fabric-1.3.2%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.2+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20263709,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.1+1.8.2+1.21.1-release",
+   "id": "aNO1eGQi",
+   "files": [
+    {
+     "id": "QbpHJwTt",
+     "hashes": {
+      "sha1": "fbb113c49ce448853b1dd28a0c3665608c330434",
+      "sha512": "cf30442507a2f434c182efa7ae4a92173c29837d7e8d1ebe42984ef7e2d32de96b1a50054d983735ecf223582a7f6ae0ef6105bc6dd0cc9d74f3f0a8cc2bff0a"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/aNO1eGQi/mega_showdown-fabric-1.3.1%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.1+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20266478,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.1+1.8.2+1.21.1-release",
+   "id": "Zmky5j93",
+   "files": [
+    {
+     "id": "FBdouuYh",
+     "hashes": {
+      "sha1": "fbb113c49ce448853b1dd28a0c3665608c330434",
+      "sha512": "cf30442507a2f434c182efa7ae4a92173c29837d7e8d1ebe42984ef7e2d32de96b1a50054d983735ecf223582a7f6ae0ef6105bc6dd0cc9d74f3f0a8cc2bff0a"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/Zmky5j93/mega_showdown-fabric-1.3.1%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.1+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20266478,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.1+1.8.2+1.21.1-release",
+   "id": "fjbL00ng",
+   "files": [
+    {
+     "id": "P7tls72l",
+     "hashes": {
+      "sha512": "cf30442507a2f434c182efa7ae4a92173c29837d7e8d1ebe42984ef7e2d32de96b1a50054d983735ecf223582a7f6ae0ef6105bc6dd0cc9d74f3f0a8cc2bff0a",
+      "sha1": "fbb113c49ce448853b1dd28a0c3665608c330434"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/fjbL00ng/mega_showdown-fabric-1.3.1%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.1+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20266478,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.1+1.8.2+1.21.1-release",
+   "id": "SymIA5nV",
+   "files": [
+    {
+     "id": "ZdfBgWdE",
+     "hashes": {
+      "sha512": "cf30442507a2f434c182efa7ae4a92173c29837d7e8d1ebe42984ef7e2d32de96b1a50054d983735ecf223582a7f6ae0ef6105bc6dd0cc9d74f3f0a8cc2bff0a",
+      "sha1": "fbb113c49ce448853b1dd28a0c3665608c330434"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/SymIA5nV/mega_showdown-fabric-1.3.1%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.1+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20266478,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.0+1.8.2+1.21.1-hotfix",
+   "id": "EAunp9Kz",
+   "files": [
+    {
+     "id": "VZqFmIy5",
+     "hashes": {
+      "sha512": "4f19ebb5d1782beb43a7b1081a6e1a7656ae43f1ae37d30a318423a40cd76b0880d8eccf455ccf09407c8bb1d4fae7e0af2d7ca5fc56d2cfce09499a90ec31d0",
+      "sha1": "4c00145aa75c6bda35d285d01cd2c5b70ad765ef"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/EAunp9Kz/mega_showdown-fabric-1.3.0%2B1.8.2%2B1.21.1-hotfix.jar",
+     "filename": "mega_showdown-fabric-1.3.0+1.8.2+1.21.1-hotfix.jar",
+     "primary": true,
+     "size": 20041092,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.3.0+1.8.2+1.21.1-release",
+   "id": "i7CwMJFd",
+   "files": [
+    {
+     "id": "hsVbGqlX",
+     "hashes": {
+      "sha512": "b7efa93e5a71fc0641ea05d42ba4820d53b5ed8b6767dd80db685df619053dd70cd41eae6bdcdc71e4b89a80087ec9a268e19857041ee6930a8c6cb9a29e6772",
+      "sha1": "ae0e550d4c7f68b96ecc0440c8d74e74c2f347c4"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/i7CwMJFd/mega_showdown-fabric-1.3.0%2B1.8.2%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.3.0+1.8.2+1.21.1-release.jar",
+     "primary": true,
+     "size": 20041816,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.2.0+1.8.1+1.21.1-release",
+   "id": "TKdAixuR",
+   "files": [
+    {
+     "id": "g73Cp4Ty",
+     "hashes": {
+      "sha1": "2de9508dacfdc19ec05c8979c5dfe205fc6d7525",
+      "sha512": "a87ee78f5004faf4b44d0b58091443b91c03d836db7a0ae2f5f7f29283394d367304097452fda8fe46d67c5833b936774355bd29327f0c7ee8e62a70bc6da933"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/TKdAixuR/mega_showdown-fabric-1.2.0%2B1.8.1%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.2.0+1.8.1+1.21.1-release.jar",
+     "primary": true,
+     "size": 20152218,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.2+1.8+1.21.1-release",
+   "id": "8IvR0RIb",
+   "files": [
+    {
+     "id": "k210cpjA",
+     "hashes": {
+      "sha512": "b1d66bea77fe3b55a6812fa296bde2e2e4c72e88da519c9478de7e0c0d4e1449ebceb0ae105e370427d48498a3364dbaf9d6d3b1ddd4ad55c8d45e87ae862baa",
+      "sha1": "5ab8c261514766dcc51771870925265818c366b6"
+     },
+     "url": "https://cdn.modrinth.com/data/SszvX85I/versions/8IvR0RIb/mega_showdown-fabric-1.1.2%2B1.8%2B1.21.1-release.jar",
+     "filename": "mega_showdown-fabric-1.1.2+1.8+1.21.1-release.jar",
+     "primary": true,
+     "size": 20130240,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "lhGA9TYQ",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "jtmvUHXj",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "MdwFAVRL",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "architectury-api": [
+  {
+   "version_number": "13.0.12+fabric",
+   "id": "WklfM1A0",
+   "files": [
+    {
+     "id": "b8xq0QXc",
+     "hashes": {
+      "sha512": "e436b24aa54f9401bd0c3bfff95fd8df1fe44ebb7ea6e41aca0b337e09413265fbf96761065b8d7ebf3fabe45bd0fad0dee43d302efbf43e7bb8853dc9c821af",
+      "sha1": "40207f77dcce4b19e64d2ad8ec53ecdf53147278"
+     },
+     "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/WklfM1A0/architectury-13.0.12-fabric.jar",
+     "filename": "architectury-13.0.12-fabric.jar",
+     "primary": true,
+     "size": 600949,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "13.0.11+fabric",
+   "id": "Pzc2FP5K",
+   "files": [
+    {
+     "id": "CCNv1IEC",
+     "hashes": {
+      "sha512": "53314eb34890b11ad3c06c6f3ba2d01ae1ca756235ce4f0574e4b0544952a2ab3c628c81b521653d6487d62c5dc3055e06fed6367a3a499bafad909512f0c716",
+      "sha1": "18200609d4c3571c4237b50884966f6fd82431ea"
+     },
+     "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/Pzc2FP5K/architectury-13.0.11-fabric.jar",
+     "filename": "architectury-13.0.11-fabric.jar",
+     "primary": true,
+     "size": 600921,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "13.0.8+fabric",
+   "id": "Wto0RchG",
+   "files": [
+    {
+     "id": "Xo3Fui9K",
+     "hashes": {
+      "sha1": "e71346a43c563e5784580dd096338acfb45f49d4",
+      "sha512": "7a24a0481732c5504b07347d64a2843c10c29e748018af8e5f5844e5ea2f4517433886231025d823f90eb0b0271d1fa9849c27e7b0c81476c73753f79f19302a"
+     },
+     "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/Wto0RchG/architectury-13.0.8-fabric.jar",
+     "filename": "architectury-13.0.8-fabric.jar",
+     "primary": true,
+     "size": 600915,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "13.0.6+fabric",
+   "id": "afBcyXjI",
+   "files": [
+    {
+     "id": "3ipO4hhL",
+     "hashes": {
+      "sha1": "82e37f8e83d8feabf53358ff3f38e74db6b2a630",
+      "sha512": "e1b2aeeb5ce17fe05314814274cc116c8f2aba325f5edc766caaf52445c69c79fd0f3235842d24df11346b3505a5befa5782a95b1992266097e558dd394d715b"
+     },
+     "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/afBcyXjI/architectury-13.0.6-fabric.jar",
+     "filename": "architectury-13.0.6-fabric.jar",
+     "primary": true,
+     "size": 600833,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "placeholder-api": [
+  {
+   "version_number": "2.4.2+1.21",
+   "id": "U5bhVym2",
+   "files": [
+    {
+     "id": "PAtPY6Wg",
+     "hashes": {
+      "sha512": "fc13d3a5c048dbaab86318edaf8b6c6b46ef9f1d367e8f063d19f5a9b0da66c5ae419d92c8c4608edc89a01eb44d91ffcf017fea73f39b222cbd85e82f70a233",
+      "sha1": "aa1b9a49f9f190dfe4825c502b150817dd2998c3"
+     },
+     "url": "https://cdn.modrinth.com/data/eXts2L7r/versions/U5bhVym2/placeholder-api-2.4.2%2B1.21.jar",
+     "filename": "placeholder-api-2.4.2+1.21.jar",
+     "primary": true,
+     "size": 232325,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  },
+  {
+   "version_number": "2.4.1+1.21",
+   "id": "cE5TczQr",
+   "files": [
+    {
+     "id": "nXHBmY8l",
+     "hashes": {
+      "sha1": "5f61f50e36f1f957dbb87eda02da95d847b4a943",
+      "sha512": "0fc2b1063277e1cadab30fdb5f1171cbdefa551f16e36daa611f67a775353e70a48538085e2bcf8fc22d657d450ce74dc8aa9ccf6e8bc6de6d5a841fb46e0828"
+     },
+     "url": "https://cdn.modrinth.com/data/eXts2L7r/versions/cE5TczQr/placeholder-api-2.4.1%2B1.21.jar",
+     "filename": "placeholder-api-2.4.1+1.21.jar",
+     "primary": true,
+     "size": 232332,
+     "file_type": null
+    }
+   ],
+   "dependencies": []
+  }
+ ],
+ "owo-lib": [
+  {
+   "version_number": "0.13.0-alpha.15+1.21",
+   "id": "m3XmDd8j",
+   "files": [
+    {
+     "id": "T8PkVK7L",
+     "hashes": {
+      "sha512": "939299e72209f8e5a4937fbb2290ed63f7bc5caf2677e6d9fbea8be8049d5ad39c1173f0b61abae7cfddcf7cceb9802f7e2d60b9e8a0fdda399fcbad8f0ac5b4",
+      "sha1": "5042f3b15df7cdbb058436bb105aedf826f39d3c"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/m3XmDd8j/owo-lib-0.13.0-alpha.15%2B1.21.jar",
+     "filename": "owo-lib-0.13.0-alpha.15+1.21.jar",
+     "primary": true,
+     "size": 1963544,
+     "file_type": null
+    },
+    {
+     "id": "Nds8iMhV",
+     "hashes": {
+      "sha1": "019288c6f9161d8b87ecfbaf18431e11982575e7",
+      "sha512": "d47bcb78e40cd096382d6e8380b673f93bf1415c13d9bcdd1ded9b42b7656741508fc2143c3ee4a2d59b04256034aea55c9ee80abbf7e2e2fda20223072f6cdb"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/m3XmDd8j/owo-lib-0.13.0-alpha.15%2B1.21-sources.jar",
+     "filename": "owo-lib-0.13.0-alpha.15+1.21-sources.jar",
+     "primary": false,
+     "size": 736797,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.15.4+1.21",
+   "id": "JB1fLQnc",
+   "files": [
+    {
+     "id": "RReRq89N",
+     "hashes": {
+      "sha1": "45725e6d33b624e565a7a6e5d3627af40814288d",
+      "sha512": "b9c79035c912ef043722f2a1f0bc0166e0ca047ea5237a86f23198dea487289e0a0f92a96e46bd683ffc39e4190b95450d13456b14f6280587635b51c9393a1b"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/JB1fLQnc/owo-lib-0.12.15.4%2B1.21.jar",
+     "filename": "owo-lib-0.12.15.4+1.21.jar",
+     "primary": true,
+     "size": 1183559,
+     "file_type": null
+    },
+    {
+     "id": "lnM2aOCf",
+     "hashes": {
+      "sha512": "14d1d9eb595e4cde1835b9c3ee3f265190cf51e64078a62c886dba89f2a1e7c1f5cdf39ec086734a43398f5047e1ae4b179d725609fde5469aedf1cbe2036a6d",
+      "sha1": "f37f4f4b31c64fd5ed9e83166b654372f45fd64f"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/JB1fLQnc/owo-lib-0.12.15.4%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.15.4+1.21-sources.jar",
+     "primary": false,
+     "size": 439644,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.15.2+1.21",
+   "id": "MufQflLZ",
+   "files": [
+    {
+     "id": "5JVYajBw",
+     "hashes": {
+      "sha1": "d9c7f424e0a6ed77a713ddb5c24d9fa18fa4ac1a",
+      "sha512": "851ac7c8596f3b56c2978c438affb141ad2caba15135c3f4cd1791261eae4b93e10b5c76c85ea13584a74e6dd217408d73f9bb694149713fdaa0e71493111290"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/MufQflLZ/owo-lib-0.12.15.2%2B1.21.jar",
+     "filename": "owo-lib-0.12.15.2+1.21.jar",
+     "primary": true,
+     "size": 1183397,
+     "file_type": null
+    },
+    {
+     "id": "J9FQTYQ8",
+     "hashes": {
+      "sha1": "540f5f767e6f97e7fd301dfe53ac8a369b5f5fa4",
+      "sha512": "fd948b5acbda38a6285d4f9d24e756aa092fb744cfe34fcaa200853ba98faf89f837b0e428f7bc9dd9906135220441bc5243e0c259b5a61946f9ae0d4ea595d2"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/MufQflLZ/owo-lib-0.12.15.2%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.15.2+1.21-sources.jar",
+     "primary": false,
+     "size": 439593,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.15.1+1.21",
+   "id": "WMGDnJhl",
+   "files": [
+    {
+     "id": "SyxCA4pt",
+     "hashes": {
+      "sha1": "14781b7426f95b96bf1d677c04af15b8704373d9",
+      "sha512": "61a7d77a76b1180890bcc3a391c0e4424e3e9e9808844831af2a42e38e190072bc3b15d6debbbdb276239b4f32d05dc1c995a3a5e6ba90c72f1f954629d52a75"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/WMGDnJhl/owo-lib-0.12.15.1%2B1.21.jar",
+     "filename": "owo-lib-0.12.15.1+1.21.jar",
+     "primary": true,
+     "size": 1179014,
+     "file_type": null
+    },
+    {
+     "id": "Cwrafy1R",
+     "hashes": {
+      "sha1": "e0df34ccdab0fb263ee1461fc0cb4001e4a84ea5",
+      "sha512": "228b062d2052c0597a2c23dd6f684cba0b89e4d3f05b8cb7e279053d6b6926de3719854ca4d652ab6e036fee858b1cd930d3b081444b44c998e97900480829d7"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/WMGDnJhl/owo-lib-0.12.15.1%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.15.1+1.21-sources.jar",
+     "primary": false,
+     "size": 438709,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.15+1.21",
+   "id": "vCCHsvEa",
+   "files": [
+    {
+     "id": "pXtZyd8Y",
+     "hashes": {
+      "sha1": "6360554402859113fdd72abdb8ff9fd5d6c731ca",
+      "sha512": "faa86df062ec4fa58b653455deb1307a778e4307392f51a29c5a87de78da7173bb6f77a5ed239306226f2bf972aa9221fbd946a2c07232ecfa09f798ae381924"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/vCCHsvEa/owo-lib-0.12.15%2B1.21.jar",
+     "filename": "owo-lib-0.12.15+1.21.jar",
+     "primary": true,
+     "size": 1177861,
+     "file_type": null
+    },
+    {
+     "id": "7REiyEt7",
+     "hashes": {
+      "sha1": "c790b04bb6c0b4eb70a7fe82d46d9205e8dc343a",
+      "sha512": "2e2c4edd08b02447d6a4162d5d8dd2428d825b2b37a1f2b5f542caddb971afe35da9227ba83b123fa4bfa585328bd13638747dd4be2dc697030e9204ca97d4d0"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/vCCHsvEa/owo-lib-0.12.15%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.15+1.21-sources.jar",
+     "primary": false,
+     "size": 438025,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.14+1.21",
+   "id": "HegQGu0K",
+   "files": [
+    {
+     "id": "UBAolOPf",
+     "hashes": {
+      "sha1": "140f5b91274f57dfdff8f9df3f2378f1a6d8514e",
+      "sha512": "c89bf107592b1dc2d29f505c42de290fef1575e68cc8d3f4e910cfcd4a89fe956f0e9668243de142d9574f2965adbf9268c4d6e1bb532cc94ea33727fab6929d"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HegQGu0K/owo-lib-0.12.14%2B1.21.jar",
+     "filename": "owo-lib-0.12.14+1.21.jar",
+     "primary": true,
+     "size": 1163722,
+     "file_type": null
+    },
+    {
+     "id": "r3bvxUgM",
+     "hashes": {
+      "sha1": "a6310c3962c8440b11c6325923296963c528d10f",
+      "sha512": "4345b342a8b155e995ac40092d1944b415171933c543d3e8e64448ce6d6e72b5f10fcf723ae62f422203a24d48e80ab4d0c841988c713af350f9d17c5b548a20"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HegQGu0K/owo-lib-0.12.14%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.14+1.21-sources.jar",
+     "primary": false,
+     "size": 434461,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.13+1.21",
+   "id": "8emxtz6T",
+   "files": [
+    {
+     "id": "qX1Lraso",
+     "hashes": {
+      "sha1": "82dcf55e4b0e0c7fc0f888b264127584ff690417",
+      "sha512": "7e1bb5637955bee980e62c4a5567c278f0f6b8e0e507c7a7a5cff2fbdffee0e13086d2485277f2dae42909d61ba9bb8a1ec23e1fa642e9b0a414a03ebcf3cb8a"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/8emxtz6T/owo-lib-0.12.13%2B1.21.jar",
+     "filename": "owo-lib-0.12.13+1.21.jar",
+     "primary": true,
+     "size": 1163235,
+     "file_type": null
+    },
+    {
+     "id": "pGgapQA4",
+     "hashes": {
+      "sha1": "71eb88c14b76582e36d5ff2e26e1831f69e3852d",
+      "sha512": "aa27f36aed6cf68814522cbd05da1ecdc43b7c48412e8a86414c5efb1064f1106aca20ea6f9c0ae13eb1500a6781b2cf1102c29731ecea11e284092dff55a0d8"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/8emxtz6T/owo-lib-0.12.13%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.13+1.21-sources.jar",
+     "primary": false,
+     "size": 434120,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.12+1.21",
+   "id": "7F2C3HCI",
+   "files": [
+    {
+     "id": "l1wQpYo6",
+     "hashes": {
+      "sha512": "6969daf7173d180e0b2b2e963480cdad804cb0876e7137da4336e20f2867b41b4efc80e370ef54058fc2d47254692dbac894b9de40b4245efe22c75bbef24ac6",
+      "sha1": "17861fdda30174d5e4d714b028bc71f5df78dca7"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/7F2C3HCI/owo-lib-0.12.12%2B1.21.jar",
+     "filename": "owo-lib-0.12.12+1.21.jar",
+     "primary": true,
+     "size": 1163228,
+     "file_type": null
+    },
+    {
+     "id": "vj16sTmH",
+     "hashes": {
+      "sha512": "f0d935b6d53a4dec7654768b8ffe42268e1a8ec3f377c815c2318c778364e3a54cd143fce76fab15adfe8a820212caeba24c4b1d13f7a12a9375b21899087387",
+      "sha1": "5bd3e17c78fe37d20c178f3b0e5e59e5345ef354"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/7F2C3HCI/owo-lib-0.12.12%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.12+1.21-sources.jar",
+     "primary": false,
+     "size": 434110,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "0.12.11+1.21",
+   "id": "AVkXApBi",
+   "files": [
+    {
+     "id": "9JT0CMjs",
+     "hashes": {
+      "sha1": "fdd29fa21091896f11de75f30591f62df7213175",
+      "sha512": "7b684e43dd6f9fc4e0b7eec1ae74afb630286ffb25c0ef87d89d2474549eb7e98ae357383a751a63fc720a7cefffe5973b98a8a935fe49225cc7f0e8964b138f"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/AVkXApBi/owo-lib-0.12.11%2B1.21.jar",
+     "filename": "owo-lib-0.12.11+1.21.jar",
+     "primary": true,
+     "size": 1154103,
+     "file_type": null
+    },
+    {
+     "id": "j0lNvyHp",
+     "hashes": {
+      "sha1": "c71310be1c70593eacfa3b554a9a3aaeb21aec62",
+      "sha512": "43526f510566980186854826d8eeb131ca4f7981e2824d451af32ef78c01ecdbef59b68c66056a5fb0e873358e43383daf78cd043ce0d2f91f99f6ea47e9255f"
+     },
+     "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/AVkXApBi/owo-lib-0.12.11%2B1.21-sources.jar",
+     "filename": "owo-lib-0.12.11+1.21-sources.jar",
+     "primary": false,
+     "size": 427973,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ],
+ "accessories": [
+  {
+   "version_number": "1.1.0-beta.54+1.21.1",
+   "id": "YZ9RWTNl",
+   "files": [
+    {
+     "id": "7TOnfx5f",
+     "hashes": {
+      "sha1": "e1165f3d5b31d4296f932ec1bc428f2a832c5def",
+      "sha512": "4b83f2f00db833ac7dc7cabe2f74c9df7067c35170b9e7aeb794a85038f7b34bc4d40ce92e16e142358c5cf4b6f3ca3866155592c4dc80beb818f6e28bfa9799"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/YZ9RWTNl/accessories-fabric-1.1.0-beta.54%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.54+1.21.1.jar",
+     "primary": true,
+     "size": 1103673,
+     "file_type": null
+    },
+    {
+     "id": "n633iCNm",
+     "hashes": {
+      "sha1": "2e08d9c1c71d5ea44a75721faf485cf72c452a8e",
+      "sha512": "9813d7b8cae4b85f62ddf60505e3c6304c905f896941d338a7e605cce4b5bae07d93cde637ab7e918d4e688a162b6cea4f222bcff77add7c4459e7caa4073287"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/YZ9RWTNl/accessories-fabric-1.1.0-beta.54%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.54+1.21.1-sources.jar",
+     "primary": false,
+     "size": 589849,
+     "file_type": "sources-jar"
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.53+1.21.1",
+   "id": "Xlt4eWBe",
+   "files": [
+    {
+     "id": "V9GFHDoL",
+     "hashes": {
+      "sha1": "fa0b11de088893bb14aff945d0e8efdee165457b",
+      "sha512": "0d8baf9e5c3828edcc22fc6e10774e9d7fb94616dae137be3eeb30bea8292ec0148dd2d41ae7753c82714f1d9f163189d07d0f78321f95943c0c048288130e71"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/Xlt4eWBe/accessories-fabric-1.1.0-beta.53%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.53+1.21.1.jar",
+     "primary": true,
+     "size": 1095802,
+     "file_type": null
+    },
+    {
+     "id": "YNcMHHH9",
+     "hashes": {
+      "sha512": "2aeef1280f3062fea110fa7b94002321ef822e3329e786f4d5b86bfac260f856194dda6d54b341222ee11e130a375f3c0b2c58f62147b5226b20ef28bac91df5",
+      "sha1": "0da5a4c4d2e99dbd2b2cab9e3269e9fc272b6c54"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/Xlt4eWBe/accessories-fabric-1.1.0-beta.53%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.53+1.21.1-sources.jar",
+     "primary": false,
+     "size": 584009,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.52+1.21.1",
+   "id": "uPPIhLTH",
+   "files": [
+    {
+     "id": "Hokz3ymx",
+     "hashes": {
+      "sha1": "e4c823950882d127f6e4c7a710d33c2c84b9c304",
+      "sha512": "b0cd93f4341fe29e9fb9ef43c197313b694ce0b11c58c97594ee81c7c662605df7f6c2b37bfba4c6767b68e97c1e6a4fcea03cfbca18fe3d316ffe165ecbf3f4"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/uPPIhLTH/accessories-fabric-1.1.0-beta.52%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.52+1.21.1.jar",
+     "primary": true,
+     "size": 1095894,
+     "file_type": null
+    },
+    {
+     "id": "hIvzO4Ys",
+     "hashes": {
+      "sha512": "ea1423bc48525e86726667fddeeb1845215c4dfefad80c90fe790f32b05ba64ad34d51a49ec001c9c1fbdb7dfffbca9278a585b12fa124bd767593669f4e330b",
+      "sha1": "39d12ff0ffb93881afca34c981b16da8bbb4bab0"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/uPPIhLTH/accessories-fabric-1.1.0-beta.52%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.52+1.21.1-sources.jar",
+     "primary": false,
+     "size": 584037,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.51+1.21.1",
+   "id": "t2XlVj4I",
+   "files": [
+    {
+     "id": "ChSYGuti",
+     "hashes": {
+      "sha1": "c92cd98df34509b4df43f2619a79c115df997e9d",
+      "sha512": "0f20aa7e159b07ca7214ba820a0c721d74109c6148af9a618f881558623a291249f41a580055010d91c8f7419070793e729051f7d8abb281755d9631de70a1e7"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/t2XlVj4I/accessories-fabric-1.1.0-beta.51%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.51+1.21.1.jar",
+     "primary": true,
+     "size": 1089426,
+     "file_type": null
+    },
+    {
+     "id": "tM6Nr54m",
+     "hashes": {
+      "sha512": "45a08e73af8489b36860e02816b3417483b929e8d7d8738fbb64d447c777cc439db7aaf450db5f7aa0c482b018161e76503395db316641076a9c7ecc6476d19c",
+      "sha1": "ca84e5e49fa2b796ddf6e178743f550797075d66"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/t2XlVj4I/accessories-fabric-1.1.0-beta.51%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.51+1.21.1-sources.jar",
+     "primary": false,
+     "size": 578979,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.50+1.21.1",
+   "id": "pskTCKIg",
+   "files": [
+    {
+     "id": "sxFl3cky",
+     "hashes": {
+      "sha512": "2c01a4e144b95542f84e66231ef27ef4f706261eaa5e909ea14000c230c55f82387debf222b79e35b696972a05b744cb7e600a68e80c805dca5b34e188874dd9",
+      "sha1": "cd387767f6b952265a28559febf961c96da401ae"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/pskTCKIg/accessories-fabric-1.1.0-beta.50%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.50+1.21.1.jar",
+     "primary": true,
+     "size": 1089356,
+     "file_type": null
+    },
+    {
+     "id": "wj3R97NS",
+     "hashes": {
+      "sha1": "2dedea3107f3542eeb557dc2f5e8321b6c89f7b7",
+      "sha512": "a7b67132be3a4012a1ce9cb02a792c1b2bdc0dab254b983b8cee165ab4653375c22a87b437893f2954f4582db64450e8653dcbf87a017f54b0d23ea615fb01c0"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/pskTCKIg/accessories-fabric-1.1.0-beta.50%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.50+1.21.1-sources.jar",
+     "primary": false,
+     "size": 578935,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.48+1.21.1",
+   "id": "sw4KrsN6",
+   "files": [
+    {
+     "id": "88EpQltP",
+     "hashes": {
+      "sha512": "9583da500dd2f5152e3c01ccfccbec8eff5aa8cc39eaa053b0f4dde32f6ca976e9beac9bedff4d4228cedf0ec2e8e31e5a59dceede99a4dd6c83370a3afa0e91",
+      "sha1": "44f37aebf7d281b535a495adc94a2b2b95e44b35"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/sw4KrsN6/accessories-fabric-1.1.0-beta.48%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.48+1.21.1.jar",
+     "primary": true,
+     "size": 1081255,
+     "file_type": null
+    },
+    {
+     "id": "6N8x6m06",
+     "hashes": {
+      "sha512": "c20396acbd5f5fe0f18f5eeddbdd988222229a71dccf3053185f0e7cbf58b836a8a151d5d4bc4d29351c793dce11f79039402dd102444331373cc47a2faffb33",
+      "sha1": "f6624c33b065154edec27216e49ba00eb8a70a59"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/sw4KrsN6/accessories-fabric-1.1.0-beta.48%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.48+1.21.1-sources.jar",
+     "primary": false,
+     "size": 576782,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.47+1.21.1",
+   "id": "v3eSsJ3x",
+   "files": [
+    {
+     "id": "guh30qkO",
+     "hashes": {
+      "sha512": "49570e1fd772fd664f72169079fdf36d2d7ca05b3742bc437512607b06a963ffbe07d5a39e3ea7f321b6d48c8b6f3b2b5a43d81055ca7abb7eb0810ec8c116a0",
+      "sha1": "6cc988ffc3f246441851598ebc9ba0b020e8224e"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/v3eSsJ3x/accessories-fabric-1.1.0-beta.47%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.47+1.21.1.jar",
+     "primary": true,
+     "size": 1081249,
+     "file_type": null
+    },
+    {
+     "id": "3CbOM3QU",
+     "hashes": {
+      "sha1": "9526547a88ddf5b364efda084158fc4769dd9156",
+      "sha512": "98c7a21abca136bc65938c0b5b333562243896a26a6ec942ffb070604b07cde31140aa25f13514d8f421f00935acb8b20acd929e8b4836d217620bc8fa0e411c"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/v3eSsJ3x/accessories-fabric-1.1.0-beta.47%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.47+1.21.1-sources.jar",
+     "primary": false,
+     "size": 576771,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.46+1.21.1",
+   "id": "d6QrS0ry",
+   "files": [
+    {
+     "id": "DkAjJVov",
+     "hashes": {
+      "sha1": "54056eb1296228e3231d3583a1e959041fb23008",
+      "sha512": "0d2ea534b0edefbb6110a758ddee08bcb0fa8749a30733255f646cef948478cdc7c138d2cc6b906376ce0ce64f0ae57424ea024a514d98f73f404257e2ef57d8"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/d6QrS0ry/accessories-fabric-1.1.0-beta.46%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.46+1.21.1.jar",
+     "primary": true,
+     "size": 1081135,
+     "file_type": null
+    },
+    {
+     "id": "3r7XoFBV",
+     "hashes": {
+      "sha512": "cf6ede2637a19fd8d5238b33c190bbfcc5065c8e82bd2760511544e3bc1c263b81bf2246fde77bfead428810730c4fb61ad8be030cd28eb70ffb5e31473fa60c",
+      "sha1": "b8c1962b1d5c52be880decdba51435d21b15d532"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/d6QrS0ry/accessories-fabric-1.1.0-beta.46%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.46+1.21.1-sources.jar",
+     "primary": false,
+     "size": 576708,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.44+1.21.1",
+   "id": "4XDFJZks",
+   "files": [
+    {
+     "id": "hjw4bt3x",
+     "hashes": {
+      "sha1": "54d2e07aec45c53fb4895c05186c9026cbf384b2",
+      "sha512": "153ffe0dce4ae14272b97c0565faad5b5fa4fb348e2e636aaed560cb5fc2ab6a31d99ac5ecce5064184e2637352ccc7148f2d51f96b4a516b65162a106a4fca1"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/4XDFJZks/accessories-fabric-1.1.0-beta.44%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.44+1.21.1.jar",
+     "primary": true,
+     "size": 1081497,
+     "file_type": null
+    },
+    {
+     "id": "XBmZvwUJ",
+     "hashes": {
+      "sha1": "f9e4c2472159c8519404b498fa327998d369d8da",
+      "sha512": "c54f622fa3613ae6c47bc12723b9f7756dbe203eab4cd1047d06f02fc87a1519e0ab9cfa684825c0a4ffcd4491cd242d968bfbac185a21910e96c08bb47ce337"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/4XDFJZks/accessories-fabric-1.1.0-beta.44%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.44+1.21.1-sources.jar",
+     "primary": false,
+     "size": 576643,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  },
+  {
+   "version_number": "1.1.0-beta.43+1.21.1",
+   "id": "tGXSkce6",
+   "files": [
+    {
+     "id": "dnjWAo2A",
+     "hashes": {
+      "sha1": "4820530b1363752c8a8159d568615f5c4bc0baae",
+      "sha512": "9bb42ee9ba1e78091897772cdec82e99a1c748a2dfc29b8132195337402f20ef75eddeaceac2d0b460be9056f2d3e82c4a920d1926ed5768bf501e28dad71e32"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/tGXSkce6/accessories-fabric-1.1.0-beta.43%2B1.21.1.jar",
+     "filename": "accessories-fabric-1.1.0-beta.43+1.21.1.jar",
+     "primary": true,
+     "size": 1078779,
+     "file_type": null
+    },
+    {
+     "id": "RZFUN3Gn",
+     "hashes": {
+      "sha1": "44002e02ef3bdf85916e0209422a5e88d9d8d4f4",
+      "sha512": "a3cfa2d8efb9e93fe40e71f216328a87e046b089ab899391b4def46093e982d0f5371881eac0fc358f98ae509989ef39e6b48bfd1583bee17818a2e965886b11"
+     },
+     "url": "https://cdn.modrinth.com/data/jtmvUHXj/versions/tGXSkce6/accessories-fabric-1.1.0-beta.43%2B1.21.1-sources.jar",
+     "filename": "accessories-fabric-1.1.0-beta.43+1.21.1-sources.jar",
+     "primary": false,
+     "size": 574823,
+     "file_type": null
+    }
+   ],
+   "dependencies": [
+    {
+     "version_id": null,
+     "project_id": "P7dR8mSH",
+     "file_name": null,
+     "dependency_type": "required"
+    },
+    {
+     "version_id": null,
+     "project_id": "ccKDOlHs",
+     "file_name": null,
+     "dependency_type": "required"
+    }
+   ]
+  }
+ ]
+}

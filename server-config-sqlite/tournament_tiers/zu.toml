@@ -1,0 +1,21 @@
+# Liste indicative inspiree des formats Smogon : ajustez-la selon votre metagame.
+# Identifiants : nom de l espece sans espaces ni ponctuation (ex. "mrmime"), forme collee ("kyuremblack").
+# Champs : inherits (herite des bans d un autre tier), banned_pokemon, allowed_pokemon, banned_items,
+# banned_abilities, banned_moves, level_cap (0 = aucun), min_team_size, max_team_size, section [rules].
+display_name = "ZU (ZeroUsed)"
+description = "Bans PU + Pokemon les plus utilises en PU."
+inherits = "pu"
+banned_pokemon = [
+  "altaria", "arboliva", "bellibolt", "brambleghast", "dachsbun", "falinks", "flareon", "glaceon", "golem", "gourgeist",
+  "hitmonchan", "hitmonlee", "houndstone", "kilowattrel", "leafeon", "lurantis", "mabosstiff", "oinkologne", "orthworm",
+  "palossand", "pawmot", "revavroom", "rotomfan", "sandslash", "scovillain", "squawkabilly", "toedscruel", "vespiquen"
+]
+banned_items = []
+banned_abilities = []
+banned_moves = []
+level_cap = 0
+min_team_size = 1
+max_team_size = 6
+
+[rules]
+species_clause = true

@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "pool_size": 72,
+  "cooldown_seconds": 600,
+  "allow_shiny": true,
+  "allow_legendary": false,
+  "allow_untradeable": false,
+  "min_level": 1,
+  "blacklist_species": [],
+  "generated_level_min": 5,
+  "generated_level_max": 35,
+  "generated_shiny_chance": 0.5,
+  "generated_allow_legendary": false,
+  "broadcast_rare_deposits": true,
+  "keep_one_party_member": true
+}

@@ -1,0 +1,26 @@
+# =====================================================================
+#  CobblePulse - Guerres d'Influence
+# =====================================================================
+
+# Duree d'une guerre (jours)
+duration_days = 7
+# Pourcentage de l'influence totale du vaincu transfere au vainqueur
+influence_steal_percent = 10.0
+# Points de guerre par victoire PvP entre membres des deux clans
+points_per_win = 1
+# Anti-farm : points maximum par paire de joueurs et par jour (0 = illimite)
+max_points_per_pair_per_day = 3
+# Membres minimum dans chaque clan pour declarer
+min_members_to_declare = 1
+# Cout en influence pour declarer une guerre (0 = gratuit)
+declare_cost_influence = 0
+# Delai avant une nouvelle guerre entre les memes clans
+declare_cooldown_hours = 24
+
+[rewards]
+# Commandes console executees en fin de guerre. Variables : %player% %clan%
+winner_member_commands = []
+winner_leader_commands = []
+loser_member_commands = []
+# true = uniquement pour les membres connectes
+online_only = false

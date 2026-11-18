@@ -1,0 +1,81 @@
+mods client : ['CobbleDollars-fabric-2.0.0+Beta-6.1+1.21.1.jar', 'Cobblemon-fabric-1.8.4+1.21.1.jar', 'accessories-fabric-1.1.0-beta.54+1.21.1.jar', 'architectury-13.0.12-fabric.jar', 'cobblepulse-battletower.jar', 'cobblepulse-crates.jar', 'cobblepulse-ecology-3.0.0+mc1.21.1.jar', 'cobblepulse-utils-1.0.0.jar', 'cobblepulse.jar', 'fabric-api-0.116.18+1.21.1.jar', 'fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar', 'mega_showdown-fabric-1.3.3+1.8.4+1.21.1-release.jar', 'owo-lib-0.13.0-alpha.15+1.21.jar']
+preparation du client : code 0
+datapack Fakemon : deja present
+serveur pret : True
+> gamerule doDaylightCycle false
+> gamerule doWeatherCycle false
+> time set 6000
+> weather clear
+$ xvfb-run -n 98 -s -screen 0 1280x720x24 /usr/bin/python3 -m portablemc --main-dir /home/runner/work/cobblepulse-utils/cobblepulse-utils/run-prod-client --work-dir /home/runner/work/cobblepulse-utils/cobblepulse-utils/run-prod-client start -u UtilsTest --resolution 1280x720 --jvm /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.13-9/x64/bin/java --jvm-args=-Xmx3G -Dcobblepulse_utils.livetest=true -s 127.0.0.1 -p 25565 fabric:1.21.1:0.19.5
+client termine (290 s)
+[11:48:34] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS hub_ouvert - HubScreen « CobblePulse • Menu »
+[11:48:34] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS hub_tuiles - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans, staff]
+[11:48:34] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS hub_passerelles - [wiki, warps, shop, gts, sts, wondertrade, kits, enderchest, dex, playtime, spawns, gw:battletower, gw:crates, gw:voeux_adn, gw:clans, staff]
+[11:48:37] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_ouvert - WikiScreen « Wiki Cobblemon »
+[11:48:37] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_especes_synchronisees - 1003 especes
+[11:48:40] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_donnees_serveur - cobblemon:charmander
+[11:48:45] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_recherche - 1
+[11:48:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_shop - MenuScreen « Boutique »
+[11:48:51] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_warp - MenuScreen « Téléportation »
+[11:48:54] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_kit - MenuScreen « Kits »
+[11:48:57] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_gts - MenuScreen « GTS (1) »
+[11:49:00] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_sts - MenuScreen « STS (10/10 restants) »
+[11:49:03] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_wondertrade - MenuScreen « Échange Miracle »
+[11:49:06] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_dex - MenuScreen « Pokédex 0/1003 (0 %) »
+[11:49:09] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_spawns - MenuScreen « Radar des spawns rares »
+[11:49:12] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_ec - class_476 « Enderchest (1/1) »
+[11:49:15] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_homes - MenuScreen « Mes Homes (0/3) »
+[11:49:18] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_cp_admin - MenuScreen « Panneau Staff »
+[11:49:21] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_shop_pokeballs - MenuScreen « Poké Balls »
+[11:49:24] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS clic_categorie - MenuScreen « Boutique »
+[11:49:26] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS ecran_categorie - MenuScreen « Poké Balls »
+[11:49:27] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS ecran_achat - MenuScreen « Achat / vente »
+[11:49:29] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS quantite_mise_a_jour - [Poké Ball, -64, -10, -1, Quantité : 11, +1, +10, +64, Acheter ×11 pour 1 100 ₽, Vendre ×11 pour 0 ₽, Tout vendre (×0) pour 0 ₽]
+[11:49:30] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS message_dans_ecran - ✦ CobblePulse » Fonds insuffisants (1 100 ₽ requis).
+[11:49:33] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS clic_nouveau_home - MenuScreen « Mes Homes (0/3) »
+[11:49:35] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS fenetre_saisie - PromptScreen « Saisie »
+[11:49:38] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS saisie_enregistree - [ecranlive]
+[11:49:39] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS echap_ferme - aucun
+[11:49:44] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS clic_editeur_warps - MenuScreen « Panneau Staff »
+[11:49:45] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS liste_avec_recherche - 15 entrees
+[11:49:47] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS recherche_filtre - 6
+[11:49:53] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_filtre_mega - 81 especes
+[11:49:54] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_formes_mega - [Mega-X, Mega-Y]
+[11:50:00] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wiki_mega_gemme_autre_mod - {Mega=cobblepulse_ecology:glavenusite}
+[11:50:05] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS ecran_temps_de_jeu - MenuScreen « Temps de jeu (1min 46s) »
+[11:50:08] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS wt_etat_delai - [Retour, Échange disponible !]
+[11:50:12] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS gts_vendre_objet - MenuScreen « GTS (1) »
+[11:50:15] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS gts_choix_duree - [Diamant, 24 h (5 %), 2 j (5 %), 3 j (7 %), 7 j (10 %), 14 j (15 %)]
+[11:50:18] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS gts_annonce_7_jours - [Diamant]
+[11:50:24] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_categorie - MenuScreen « Catégorie ressources »
+[11:50:26] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS selecteur_objets - ItemPickerScreen « Choisir un objet »
+[11:50:27] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS selecteur_recherche - 14
+[11:50:33] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS article_objet_cree - MenuScreen « Article minecraft_diamond »
+[11:50:36] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS createur_pokemon - PokemonBuilderScreen « Créer un Pokémon »
+[11:50:36] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS createur_formes - 5
+[11:50:42] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS article_pokemon_cree - MenuScreen « Article pokemon_charizard »
+[11:50:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_reel_demarre - [☠ Boss » Un Boss Ultime apparaît : Magicarpe Nv.119 (-16, 172) !, ☠ Boss » Boss Ultime apparu : Magicarpe Nv.119, ☠ Boss » Combat contre le Boss Ultime : Magicarpe. Bonne chance !, Sauvegarde de la partie
+[11:50:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_engage - [☠ Boss » Un Boss Ultime apparaît : Magicarpe Nv.119 (-16, 172) !, ☠ Boss » Boss Ultime apparu : Magicarpe Nv.119, ☠ Boss » Combat contre le Boss Ultime : Magicarpe. Bonne chance !, Sauvegarde de la partie... (C
+[11:50:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_nom_fenetre - Magicarpe
+[11:50:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_niveau_sup_100 - Nv.119
+[11:50:48] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS sauvegarde_avec_boss_niveau_sup_100 - [☠ Boss » Un Boss Ultime apparaît : Magicarpe Nv.119 (-16, 172) !, ☠ Boss » Boss Ultime apparu : Magicarpe Nv.119, ☠ Boss » Combat contre le Boss Ultime : Magicarpe. Bonne chance !, Sauvegarde d
+[11:51:50] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_reel_termine - 1 tour(s)
+[11:51:50] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS combat_boss_reel_butin - ☠ Boss » Boss Ultime (Magicarpe) vaincu ! Butin : 25 000 ₽, 10 × Rare Candy, 1 × Ability Patch
+[11:51:50] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS boss_nom_traduit - ☠ Boss » Boss Ultime (Magicarpe) vaincu ! Butin : 25 000 ₽, 10 × Rare Candy, 1 × Ability Patch
+[11:51:50] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS butin_fenetre_ouverte - MenuScreen « Boss vaincu : Magicarpe (Ultime) » [Super Bonbon, Patch Talent] [Tout récupérer, Tout lâcher, Tout jeter]
+[11:51:54] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS butin_tout_recupere - aucun | Super Bonbons : 10
+[11:51:59] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS fakemon_synchronise_client - traduction client : false
+[11:51:59] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS fakemon_nom_client - Vérifax
+[11:52:00] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS fakemon_alerte_lisible - ✦ Radar » Chromatique : un Vérifax est apparu dans Forêt près de UtilsTest !
+[11:52:03] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS fakemon_wiki - cobblemon:verifax
+[11:52:08] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS boss_mega_nomme - ☠ Boss » Boss Méga Ultime apparu : Dracaufeu (Méga-Y) Nv.136
+[11:52:09] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS boss_plaque_nom - [Méga Ultime] Dracaufeu
+[11:52:14] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_boss_tests - [Retour, Spawn naturel : actif, Chance de promotion : 1 %, Boss actifs max : 12, Durée de vie : 30 min, Méga-Boss : 35 % • Objet : 100 % puis 10 %, Légendaires promus : non, Test : un Boss de chaque palier, Reti
+[11:52:14] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_boss_paliers_mega - [2 Boss actif(s), Commun, Non-commun, Rare, Épique, Légendaire, Ultime, Méga Épique, Méga Légendaire, Méga Ultime]
+[11:52:15] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_palier_tests - [25 000 ₽, 50 BP (Tour de Combat), 10 × Rare Candy, 1 × Master Ball, 1 × Ability Patch, Test : faire apparaître, Test : combat immédiat, Test : Boss Méga]
+[11:52:21] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_mondes - [Monde principal, Nether, End]
+[11:52:23] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS editeur_monde - MenuScreen « Monde Nether »
+[11:52:26] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS menu_mondes - [Monde principal, Nether]
+[11:52:34] [Render thread/INFO]: [CobblePulse-Utils][livetest] PASS teleportation_nether - minecraft:the_nether
+[11:52:35] [Render thread/INFO]: [CobblePulse-Utils][livetest] LIVETEST SUMMARY: 69 pass, 0 fail
+captures : ['client-latest.log', 'client.log', 'live_01_hub.png', 'live_02_wiki_infos.png', 'live_03_wiki_evolutions.png', 'live_04_wiki_capacites.png', 'live_05_wiki_spawns.png', 'live_06_wiki_boss.png', 'live_07_wiki_recherche_shiny.png', 'live_10_shop.png', 'live_11_warp.png', 'live_12_kit.png', 'live_13_gts.png', 'live_14_sts.png', 'live_15_wondertrade.png', 'live_16_dex.png', 'live_17_spawns.png', 'live_18_ec.png', 'live_19_homes.png', 'live_20_cp_admin.png', 'live_21_shop_pokeballs.png', 'live_30_shop_categorie.png', 'live_31_shop_achat.png', 'live_32_saisie.png', 'live_33_homes.png', 'live_34_liste.png', 'live_35_recherche.png', 'live_36_gts.png', 'live_40_wiki_mega.png', 'live_41_wiki_mega_evolutions.png', 'live_42_temps_de_jeu.png', 'live_43_wondertrade.png', 'live_44_gts_duree.png', 'live_45_gts_annonce.png', 'live_46_selecteur_objets.png', 'live_47_article_objet.png', 'live_48_createur_pokemon.png', 'live_49_article_pokemon.png', 'live_50_editeur_mondes.png', 'live_51_editeur_nether.png', 'live_52_mondes.png', 'live_53_nether.png', 'live_54_alerte_test.png', 'live_55_boss_mega_test.png', 'live_56_boss_palier_tests.png', 'live_57_combat_boss.png', 'live_58_butin_boss.png', 'live_59_editeur_boss_paliers.png', 'live_60_fakemon_alerte.png', 'live_61_fakemon_wiki.png', 'live_62_wiki_glavenusite.png', 'server.log', 'steps.txt']

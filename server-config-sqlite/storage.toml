@@ -1,0 +1,24 @@
+# =====================================================================
+#  CobblePulse - Stockage des donnees
+#  Changer de mode necessite un redemarrage du serveur.
+# =====================================================================
+
+# "json"  : fichiers locaux dans config/cobblepulse/data/ (par defaut)
+#           - data/clans/[clan_id].json
+#           - data/league/holders.json
+#           - data/badge_cases/[player_uuid].json
+#           Ecritures atomiques (.tmp puis renommage) contre la corruption.
+# "mysql" : base MySQL/MariaDB via un pool HikariCP
+#           Tables : cp_clans, cp_clan_members, cp_league_holders, cp_player_badges (+ cp_players, cp_kv)
+mode = "json"
+
+[mysql]
+host = "localhost"
+port = 3306
+database = "cobblepulse"
+username = "root"
+password = ""
+use_ssl = false
+pool_size = 6
+# Prefixe des tables (cp_ par defaut)
+table_prefix = "cp_"

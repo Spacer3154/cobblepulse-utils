@@ -1,0 +1,61 @@
+== modrinth cobblemon
+1.8.4F | 2026-10-27T10:10:48.752181Z | deps=['P7dR8mSH']
+1.8.3F | 2026-10-25T00:36:25.825963Z | deps=['P7dR8mSH']
+1.8.2 | 2026-10-11T01:37:22.732220Z | deps=['P7dR8mSH']
+1.8.1 | 2026-09-12T23:52:35.907436Z | deps=['P7dR8mSH']
+1.8.0 | 2026-09-06T01:30:57.678267Z | deps=['P7dR8mSH']
+== modrinth fabric-api
+0.116.18+1.21.1 | 2026-11-09T15:02:24.365327Z | deps=[]
+0.116.17+1.21.1 | 2026-09-01T16:40:04.373428Z | deps=[]
+0.116.16+1.21.1 | 2026-09-01T10:29:57.072338Z | deps=[]
+0.116.15+1.21.1 | 2026-07-28T08:41:22.864336Z | deps=[]
+0.116.14+1.21.1 | 2026-07-16T10:23:29.937096Z | deps=[]
+== modrinth fabric-language-kotlin
+1.14.2+kotlin.2.4.21 | 2026-10-09T08:17:15.786208Z | deps=[]
+1.14.1+kotlin.2.4.20 | 2026-09-07T12:48:38.555893Z | deps=[]
+1.14.0+kotlin.2.4.20 | 2026-09-07T12:42:46.001553Z | deps=[]
+1.13.14+kotlin.2.4.20 | 2026-09-07T12:22:21.223836Z | deps=[]
+1.13.13+kotlin.2.4.10 | 2026-07-15T20:14:45.530782Z | deps=[]
+== modrinth luckperms
+v5.4.140-fabric | 2024-08-22T21:33:40.834033Z | deps=[]
+v5.4.139-fabric | 2024-08-12T18:55:25.312627Z | deps=[]
+== modrinth cobbledollars
+2.0.0+Beta-6.1 | 2026-07-22T07:49:02.341110Z | deps=['P7dR8mSH', 'MdwFAVRL']
+2.0.0+Beta-6 | 2026-07-21T09:49:48.000117Z | deps=['P7dR8mSH', 'MdwFAVRL']
+2.0.0+Beta-5.1 | 2025-06-01T09:28:10.472368Z | deps=['P7dR8mSH', 'MdwFAVRL']
+2.0.0+Beta-5 | 2025-05-30T17:51:22.897731Z | deps=['P7dR8mSH', 'MdwFAVRL']
+2.0.0+Beta-4 | 2025-05-12T13:59:59.384124Z | deps=['MdwFAVRL', 'P7dR8mSH']
+== modrinth impactor
+5.3.5+1.21.1-Fabric | 2025-12-17T02:46:23.680502Z | deps=['P7dR8mSH']
+5.3.4+1.21.1-Fabric | 2025-06-06T03:24:49.008202Z | deps=['P7dR8mSH']
+5.3.3+1.21.1-Fabric | 2025-05-20T02:25:14.180325Z | deps=['P7dR8mSH']
+5.3.2+1.21.1-Fabric | 2025-05-18T00:28:30.768468Z | deps=['P7dR8mSH']
+5.3.1+1.21.1-Fabric | 2025-04-15T03:28:28.880969Z | deps=['P7dR8mSH']
+== modrinth cobblemon-mega-showdown
+1.3.3+1.8.4+1.21.1-release | 2026-10-27T14:15:33.668710Z | deps=['ccKDOlHs', 'MdwFAVRL', 'lhGA9TYQ', 'jtmvUHXj', 'P7dR8mSH']
+1.3.2+1.8.2+1.21.1-release | 2026-10-23T13:47:59.795349Z | deps=['MdwFAVRL', 'lhGA9TYQ', 'jtmvUHXj', 'P7dR8mSH', 'ccKDOlHs']
+1.3.1+1.8.2+1.21.1-release | 2026-10-14T13:34:05.751789Z | deps=['MdwFAVRL', 'ccKDOlHs', 'lhGA9TYQ', 'P7dR8mSH', 'jtmvUHXj']
+1.3.1+1.8.2+1.21.1-release | 2026-10-14T09:05:09.989625Z | deps=['lhGA9TYQ', 'MdwFAVRL', 'P7dR8mSH', 'jtmvUHXj', 'ccKDOlHs']
+1.3.1+1.8.2+1.21.1-release | 2026-10-14T08:54:28.426337Z | deps=['jtmvUHXj', 'P7dR8mSH', 'ccKDOlHs', 'lhGA9TYQ', 'MdwFAVRL']
+== modrinth architectury-api
+13.0.12+fabric | 2026-11-14T11:30:41.018726Z | deps=['P7dR8mSH']
+13.0.11+fabric | 2026-07-23T09:57:30.288849Z | deps=['P7dR8mSH']
+13.0.8+fabric | 2024-10-05T19:24:06.840627Z | deps=['P7dR8mSH']
+13.0.6+fabric | 2024-07-22T09:13:03.407522Z | deps=['P7dR8mSH']
+== modrinth placeholder-api
+2.4.2+1.21 | 2025-01-27T19:08:23.196696Z | deps=[]
+2.4.1+1.21 | 2024-07-15T13:08:02.625577Z | deps=[]
+== dep of cobblemon-mega-showdown: owo-lib -> ['0.13.0-alpha.15+1.21', '0.12.15.4+1.21', '0.12.15.2+1.21']
+== dep of cobblemon-mega-showdown: accessories -> ['1.1.0-beta.54+1.21.1', '1.1.0-beta.53+1.21.1', '1.1.0-beta.52+1.21.1']
+jar cobbledollars 2.0.0+Beta-6.1 -> cobbledollars.jar
+jar impactor 5.3.5+1.21.1-Fabric -> impactor.jar
+jar cobblemon-mega-showdown 1.3.3+1.8.4+1.21.1-release -> megashowdown.jar
+jar cobblepulse-battletower 17284239 octets
+jar cobblepulse-crates 572391 octets
+jar cobblepulse-battlepass 17222543 octets
+jar cobblepulse 3068327 octets
+inner jar META-INF/jars/adventure-api-4.17.0.jar
+inner jar META-INF/jars/event-api-5.0.0-SNAPSHOT.jar
+inner jar META-INF/jars/examination-api-1.3.0.jar
+inner jar META-INF/jars/fabric-api-repack-3.1.0-1.21.1-SNAPSHOT.jar
+inner jar META-INF/jars/placeholder-api-2.4.1+1.21.jar

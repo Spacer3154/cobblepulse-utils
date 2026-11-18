@@ -1,0 +1,73 @@
+{
+  "id": "pokeballs",
+  "name": "&c&lPoké Balls",
+  "icon": "cobblemon:poke_ball",
+  "lore": [
+    "&7Tout pour capturer."
+  ],
+  "enabled": true,
+  "discount": 0.0,
+  "slot": 10,
+  "entries": [
+    {
+      "id": "poke_ball",
+      "type": "item",
+      "item": "cobblemon:poke_ball",
+      "display": "",
+      "lore": [],
+      "buy": 100,
+      "sell": 25,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "great_ball",
+      "type": "item",
+      "item": "cobblemon:great_ball",
+      "display": "",
+      "lore": [],
+      "buy": 300,
+      "sell": 75,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "ultra_ball",
+      "type": "item",
+      "item": "cobblemon:ultra_ball",
+      "display": "",
+      "lore": [],
+      "buy": 800,
+      "sell": 200,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "quick_ball",
+      "type": "item",
+      "item": "cobblemon:quick_ball",
+      "display": "",
+      "lore": [],
+      "buy": 1000,
+      "sell": -1,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    },
+    {
+      "id": "luxury_ball",
+      "type": "item",
+      "item": "cobblemon:luxury_ball",
+      "display": "",
+      "lore": [],
+      "buy": 1000,
+      "sell": -1,
+      "commands": [],
+      "discount": 0.0,
+      "slot": -1
+    }
+  ]
+}

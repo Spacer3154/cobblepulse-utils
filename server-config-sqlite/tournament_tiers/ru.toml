@@ -1,0 +1,21 @@
+# Liste indicative inspiree des formats Smogon : ajustez-la selon votre metagame.
+# Identifiants : nom de l espece sans espaces ni ponctuation (ex. "mrmime"), forme collee ("kyuremblack").
+# Champs : inherits (herite des bans d un autre tier), banned_pokemon, allowed_pokemon, banned_items,
+# banned_abilities, banned_moves, level_cap (0 = aucun), min_team_size, max_team_size, section [rules].
+display_name = "RU (RarelyUsed)"
+description = "Bans UU + Pokemon les plus utilises en UU."
+inherits = "uu"
+banned_pokemon = [
+  "mamoswine", "excadrill", "scizor", "tyranitar", "garchomp", "gyarados", "hippowdon", "lokix", "mimikyu", "rillaboom",
+  "salamence", "slowbro", "slowking", "swampert", "tentacruel", "torkoal", "venusaur", "blissey", "chansey", "conkeldurr",
+  "cresselia", "dondozo", "empoleon", "goodrahisui", "infernape", "keldeo", "krookodile", "lucario", "mandibuzz", "metagross"
+]
+banned_items = []
+banned_abilities = []
+banned_moves = []
+level_cap = 0
+min_team_size = 1
+max_team_size = 6
+
+[rules]
+species_clause = true

@@ -1,0 +1,65 @@
+{
+  "main_world": "minecraft:overworld",
+  "spawn_in_current_world": false,
+  "worlds": {
+    "minecraft:overworld": {
+      "display": "&a&lMonde principal",
+      "icon": "minecraft:grass_block",
+      "lore": [
+        "&7Le monde de l'aventure."
+      ],
+      "listed": true,
+      "restricted": false,
+      "homes": "ALL",
+      "rtp": true,
+      "rtp_min_radius": 300,
+      "rtp_max_radius": 3000,
+      "tpa": true,
+      "bosses": true,
+      "alerts": true,
+      "order": 0
+    },
+    "minecraft:the_nether": {
+      "display": "&c&lNether",
+      "icon": "minecraft:netherrack",
+      "lore": [
+        "&7Chaleur et lave à perte de vue."
+      ],
+      "listed": false,
+      "restricted": false,
+      "homes": "PERMISSION",
+      "rtp": false,
+      "rtp_min_radius": 100,
+      "rtp_max_radius": 1000,
+      "tpa": true,
+      "bosses": true,
+      "alerts": true,
+      "spawn": {
+        "world": "minecraft:the_nether",
+        "x": -15.5,
+        "y": 85.0,
+        "z": 160.5,
+        "yaw": 0.0,
+        "pitch": 0.0
+      },
+      "order": 10
+    },
+    "minecraft:the_end": {
+      "display": "&5&lEnd",
+      "icon": "minecraft:end_stone",
+      "lore": [
+        "&7Les îles flottantes de l'Ender."
+      ],
+      "listed": false,
+      "restricted": false,
+      "homes": "PERMISSION",
+      "rtp": false,
+      "rtp_min_radius": 1000,
+      "rtp_max_radius": 3000,
+      "tpa": true,
+      "bosses": true,
+      "alerts": true,
+      "order": 20
+    }
+  }
+}

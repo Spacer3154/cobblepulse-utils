@@ -1,0 +1,61 @@
+{
+  "kits": [
+    {
+      "name": "depart",
+      "display": "&a&lKit de départ",
+      "icon": "cobblemon:poke_ball",
+      "lore": [
+        "&7Pour bien commencer l'aventure !"
+      ],
+      "items": [
+        "cobblemon:poke_ball 16",
+        "cobblemon:potion 5",
+        "minecraft:bread 16",
+        "minecraft:stone_sword"
+      ],
+      "commands": [],
+      "cooldown_seconds": 0,
+      "one_time": true,
+      "default_access": true,
+      "slot": -1
+    },
+    {
+      "name": "quotidien",
+      "display": "&e&lKit quotidien",
+      "icon": "cobblemon:great_ball",
+      "lore": [
+        "&7Une fois par jour."
+      ],
+      "items": [
+        "cobblemon:great_ball 8",
+        "cobblemon:super_potion 3",
+        "cobblemon:rare_candy 1"
+      ],
+      "commands": [],
+      "cooldown_seconds": 86400,
+      "one_time": false,
+      "default_access": true,
+      "slot": -1
+    },
+    {
+      "name": "vip",
+      "display": "&6&lKit VIP",
+      "icon": "cobblemon:ultra_ball",
+      "lore": [
+        "&7Réservé aux grades VIP.",
+        "&8Permission : cobblepulse.kit.vip"
+      ],
+      "items": [
+        "cobblemon:ultra_ball 16",
+        "cobblemon:hyper_potion 5",
+        "cobblemon:rare_candy 3",
+        "minecraft:golden_apple 4"
+      ],
+      "commands": [],
+      "cooldown_seconds": 604800,
+      "one_time": false,
+      "default_access": false,
+      "slot": -1
+    }
+  ]
+}

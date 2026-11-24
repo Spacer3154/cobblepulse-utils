@@ -10,7 +10,7 @@ Stockage hybride SQLite (par défaut) / MySQL avec transactions atomiques.
 
 | Où | Fichier |
 |---|---|
-| Serveur | `cobblepulse-utils-1.0.0.jar` dans `mods/` |
+| Serveur | `cobblepulse-utils-1.5.0.jar` dans `mods/` |
 | Modpack (clients) | le même jar : la touche du Hub et l'écran du Wiki sont côté client |
 
 Dépendances : Fabric Loader ≥ 0.16, Fabric API, Fabric Language Kotlin, Cobblemon ≥ 1.8.0 (testé 1.8.4).

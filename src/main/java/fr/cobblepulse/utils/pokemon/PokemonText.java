@@ -139,6 +139,8 @@ public final class PokemonText {
         if (labels.contains("ultra_beast")) tags.add("&3Ultra-Chimère");
         if (labels.contains("paradox")) tags.add("&5Paradoxe");
         if (!tags.isEmpty()) l.add(String.join(" &8| ", tags));
+        // autres mods CobblePulse (ex. Ranch : castration, fertilite)
+        l.addAll(fr.cobblepulse.utils.core.Extensions.pokemonLines(pk));
         return l;
     }
 

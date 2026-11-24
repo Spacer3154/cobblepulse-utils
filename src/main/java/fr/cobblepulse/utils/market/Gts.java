@@ -141,8 +141,11 @@ public final class Gts {
         if (o instanceof Pokemon pk) return PokemonText.icon(pk, extra);
         ItemStack st = o instanceof ItemStack s ? s.copy() : ItemStack.EMPTY;
         if (st.isEmpty()) return fr.cobblepulse.utils.core.ItemBuilder.of(net.minecraft.world.item.Items.BARRIER).name("&c?").build();
-        return fr.cobblepulse.utils.core.ItemBuilder.of(st.copyWithCount(Math.max(1, Math.min(st.getMaxStackSize(), st.getCount()))))
-                .lore("&7Quantité : &f" + st.getCount()).lore("").lore(extra).build();
+        // fiche fournie par un autre mod CobblePulse (ex. Ranch : oeuf de Pokemon, donnees figees a la ponte)
+        java.util.List<String> sheet = fr.cobblepulse.utils.core.Extensions.itemLines(st);
+        fr.cobblepulse.utils.core.ItemBuilder b = fr.cobblepulse.utils.core.ItemBuilder.of(st.copyWithCount(Math.max(1, Math.min(st.getMaxStackSize(), st.getCount()))));
+        if (!sheet.isEmpty()) b.lore(sheet).lore("");
+        return b.lore("&7Quantité : &f" + st.getCount()).lore("").lore(extra).build();
     }
 
     public static String name(Listing l) {

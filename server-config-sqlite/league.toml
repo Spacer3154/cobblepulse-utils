@@ -1,0 +1,73 @@
+# =====================================================================
+#  CobblePulse - Ligue PvP (8 Champions, 4 Conseil 4, 1 Maitre)
+# =====================================================================
+
+[challenges]
+# Cooldown apres une defaite en Combat de Badge (meme titulaire)
+badge_cooldown_hours = 24
+# Cooldown personnel apres une defaite en Combat de Place
+place_cooldown_days = 7
+# Cooldown global d'un poste apres un changement de titulaire (tous les joueurs)
+post_change_cooldown_days = 7
+# Taille maximale de la file d'attente par arene
+queue_max_size = 5
+# Delai laisse au titulaire pour accepter un defi (au-dela : compte comme un refus)
+accept_timeout_seconds = 60
+# Apres un match, le challenger suivant de la file est teleporte automatiquement
+queue_auto_start = true
+queue_next_delay_seconds = 5
+# Compte a rebours avant le debut du combat
+countdown_seconds = 3
+# Soigne les equipes avant chaque combat officiel
+heal_before_battle = true
+# "singles" ou "doubles"
+battle_format = "singles"
+# Renvoie le challenger a sa position d'origine apres le match
+return_challenger_after_match = true
+return_delay_seconds = 5
+# Annonces globales
+announce_badge_wins = true
+announce_place_defended = true
+
+[inactivity]
+enabled = true
+# Un titulaire absent depuis ce nombre de jours perd son poste (annonce globale)
+days = 7
+# Refus consecutifs (ou absences de reponse) arene ouverte avant liberation du poste (0 = desactive)
+max_consecutive_refusals = 5
+check_interval_minutes = 10
+
+[disconnect]
+# Delai de grace en cas de deconnexion pendant un match officiel (Ligue ou Tournoi)
+# Au retour du joueur le match est relance ; passe ce delai il est declare forfait.
+grace_seconds = 60
+
+[ranks]
+# Gestion des grades dans LuckPerms :
+#  "group"  (defaut) : un groupe LuckPerms par poste, cree et tenu a jour automatiquement
+#             (cp_champion_1..8, cp_conseil4_1..4, cp_maitre) avec prefixe, poids et permissions.
+#             Le titulaire herite du groupe ; il le perd en perdant son poste.
+#  "prefix" : prefixe + permissions poses directement sur le joueur.
+#  "none"   : permissions seules ; le grade s'affiche via %cobblepulse:chat_prefix%.
+luckperms_mode = "group"
+group_name_prefix = "cp_"
+# Prefixes (codes acceptes : &a, &#RRGGBB et <#RRGGBB>texte</#>). %type% / %types% = types du poste.
+champion_prefix = "&6[Champion - %type%] "
+elite_prefix = "&5[Conseil 4 - %types%] "
+master_prefix = "&c&l[Maître] "
+# Priorite des prefixes : Champion = valeur, Conseil 4 = +10, Maitre = +20
+prefix_priority = 100
+# Groupe parent optionnel herite par les groupes de poste (ex. "vip"), vide = aucun
+champion_group = ""
+elite_group = ""
+master_group = ""
+
+[audit]
+# Nombre de combats officiels conserves dans le journal d'audit de chaque joueur
+max_entries = 100
+
+[cosmetics]
+# Effet d'entree en arene (permission cobblepulse.cosmetic.arena_effect)
+arena_particle = "minecraft:totem_of_undying"
+arena_particle_count = 60
+arena_sound = "minecraft:entity.player.levelup"

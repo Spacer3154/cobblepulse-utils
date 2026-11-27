@@ -1,0 +1,52 @@
+# =====================================================================
+#  CobblePulse - Clans (aucun claim de territoire)
+# =====================================================================
+
+name_min_length = 3
+name_max_length = 16
+tag_min_length = 2
+tag_max_length = 5
+max_members = 30
+# Mode a la creation : OPEN, INVITE_ONLY ou CLOSED
+default_mode = "INVITE_ONLY"
+invite_expiry_minutes = 10
+announce_creation = true
+
+# Inventaire partage : 27 emplacements, 54 avec cobblepulse.clan.inventory.expand (VIP)
+inventory_base_slots = 27
+inventory_vip_slots = 54
+
+# Tag de chat expose via le placeholder %cobblepulse:clan_tag% (ShadowChat).
+# %color% = couleur du clan (VIP avec cobblepulse.clan.chat.color) sinon default_tag_color
+tag_format = "&8[%color%%tag%&8] "
+default_tag_color = "&7"
+
+# Nombre minimal de tours pour comptabiliser un combat PvP inter-clans
+pvp_stats_min_turns = 1
+
+# Infobulle au survol du tag de clan dans le chat (et action au clic)
+[chat_hover]
+enabled = true
+# Variables : %clan% %tag% %leader% %members% %max% %influence% %rank% %mode%
+#             %pvp_wins% %pvp_losses% %war_wins% %war_losses% %war_draws% %war%
+lines = [
+  "&f&l%clan% &8[&7%tag%&8]",
+  "&7Chef : &f%leader%",
+  "&7Membres : &f%members%&7/%max%",
+  "&7Recrutement : %mode%",
+  "&7Influence : &d%influence% &8(#%rank%)",
+  "&7PvP inter-clans : &a%pvp_wins%V &7/ &c%pvp_losses%D",
+  "&7Guerres : &a%war_wins%V &7/ &c%war_losses%D &7/ &e%war_draws%N",
+  "&7Guerre en cours : %war%",
+  "",
+  "&eCliquez pour plus d'infos"
+]
+no_war = "&7Aucune"
+# Commande executee au clic (vide = aucune)
+click_command = "/clan info %clan%"
+
+[influence]
+# Influence quotidienne generee pour son clan par un membre titulaire de la Ligue
+champion_per_day = 10
+elite_per_day = 25
+master_per_day = 50

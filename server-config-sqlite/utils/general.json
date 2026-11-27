@@ -1,0 +1,93 @@
+{
+  "op_level": 2,
+  "economy": "COBBLEDOLLARS",
+  "money_format": "%amount% ₽",
+  "client_screens": true,
+  "language": "fr_fr",
+  "teleport": {
+    "delay_seconds": 3,
+    "cancel_on_move": true,
+    "tpa_timeout_seconds": 60,
+    "tpa_cooldown_seconds": 10,
+    "back_cooldown_seconds": 0,
+    "rtp_cooldown_seconds": 300,
+    "rtp_attempts": 16,
+    "home_default_limit": 3,
+    "jump_max_distance": 120,
+    "back_on_death_default": true
+  },
+  "chat": {
+    "nick_max_length": 16,
+    "nick_prefix": "~",
+    "ignore_blocks_public_chat": true
+  },
+  "enderchest": {
+    "default_rows": 3,
+    "default_pages": 1,
+    "replace_vanilla": true,
+    "import_vanilla": true
+  },
+  "misc": {
+    "pokeheal_cooldown_seconds": 300,
+    "trash_rows": 4,
+    "repair_all_cooldown_seconds": 0,
+    "afk_playtime": 0
+  },
+  "gateways": {
+    "battletower": {
+      "enabled": true,
+      "mod": "cobblepulse_battletower",
+      "command": "battletower",
+      "name": "&6&lTour de Combat",
+      "icon": "minecraft:netherite_sword",
+      "lore": [
+        "&7Grimpez les étages de la Tour",
+        "&7et gagnez des BP."
+      ]
+    },
+    "crates": {
+      "enabled": true,
+      "mod": "cobblepulse_crates",
+      "command": "@crates",
+      "name": "&d&lCaisses & Clés",
+      "icon": "minecraft:chest",
+      "lore": [
+        "&7Aperçu des caisses mystères",
+        "&7et de leurs récompenses."
+      ]
+    },
+    "battlepass": {
+      "enabled": true,
+      "mod": "cobblepulse_battlepass",
+      "command": "passe",
+      "name": "&e&lPasse de Combat",
+      "icon": "minecraft:nether_star",
+      "lore": [
+        "&7Paliers, quêtes et récompenses",
+        "&7de la saison."
+      ]
+    },
+    "voeux_adn": {
+      "enabled": true,
+      "mod": "cobblepulse_crates",
+      "command": "cpbuilder",
+      "name": "&b&lVœux ADN",
+      "icon": "minecraft:amethyst_shard",
+      "lore": [
+        "&7Remodelez vos Pokémon",
+        "&7avec vos Vœux ADN."
+      ]
+    },
+    "clans": {
+      "enabled": true,
+      "mod": "cobblepulse",
+      "command": "@clans",
+      "name": "&a&lClans, Ligue & Tournois",
+      "icon": "minecraft:white_banner",
+      "lore": [
+        "&7Votre clan, la Ligue,",
+        "&7les tournois et votre carte de dresseur."
+      ]
+    }
+  }
+}

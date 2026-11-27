@@ -1,0 +1,46 @@
+{
+  "enabled": true,
+  "history_size": 10,
+  "nearest_player_radius": 256.0,
+  "natural_only": false,
+  "announce_capture": true,
+  "announce_defeat": true,
+  "announce_kill": true,
+  "categories": {
+    "shiny": {
+      "enabled": true,
+      "label": "Chromatique",
+      "color": "&e",
+      "icon": "minecraft:glowstone_dust",
+      "sound": true
+    },
+    "paradox": {
+      "enabled": true,
+      "label": "Paradoxe",
+      "color": "&5",
+      "icon": "minecraft:echo_shard",
+      "sound": true
+    },
+    "ultra_beast": {
+      "enabled": true,
+      "label": "Ultra-Chimère",
+      "color": "&3",
+      "icon": "minecraft:ender_eye",
+      "sound": true
+    },
+    "legendary": {
+      "enabled": true,
+      "label": "Légendaire",
+      "color": "&6",
+      "icon": "minecraft:nether_star",
+      "sound": true
+    },
+    "mythical": {
+      "enabled": true,
+      "label": "Fabuleux",
+      "color": "&d",
+      "icon": "minecraft:amethyst_shard",
+      "sound": true
+    }
+  }
+}

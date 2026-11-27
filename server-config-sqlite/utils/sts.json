@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "default_daily_limit": 10,
+  "base_price": 50,
+  "per_level": 4,
+  "per_perfect_iv": 25,
+  "per_bst_point": 0.5,
+  "shiny_multiplier": 5.0,
+  "legendary_multiplier": 8.0,
+  "mythical_multiplier": 8.0,
+  "ultra_beast_multiplier": 4.0,
+  "paradox_multiplier": 4.0,
+  "species_prices": {},
+  "blacklist_species": [],
+  "keep_one_party_member": true
+}

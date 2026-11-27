@@ -1,0 +1,322 @@
+Starting net.fabricmc.loader.impl.game.minecraft.BundlerClassPathCapture
+[10:22:51] [main/INFO]: Loading Minecraft 1.21.1 with Fabric Loader 0.19.5
+[10:22:52] [main/WARN]: Warnings were found!
+ - Mod 'CobblePulse' (cobblepulse) 1.0.0 recommends any version of placeholder-api, which is missing!
+	 - You should install any version of placeholder-api for the optimal experience.
+ - Mod 'CobblePulse-Battles' (cobblepulse_battles) 2.0.0 recommends any version of placeholder-api, which is missing!
+	 - You should install any version of placeholder-api for the optimal experience.
+[10:22:52] [main/INFO]: Loading 89 mods:
+	- accessories 1.1.0-beta.54+1.21.1
+	- architectury 13.0.12
+	- cobbledollars 2.0.0+Beta-6.1+1.21.1
+	- cobblemon 1.8.4+1.21.1
+	   |-- com_ibm_icu_icu4j 71.1
+	   |-- org_graalvm_js_js 22.3.0
+	   |-- org_graalvm_regex_regex 22.3.0
+	   |-- org_graalvm_sdk_graal-sdk 22.3.0
+	   |-- org_graalvm_truffle_truffle-api 22.3.0
+	   |-- org_mongodb_mongodb-driver-core 4.10.2
+	   \-- org_mongodb_mongodb-driver-sync 4.10.2
+	- cobblepulse 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   \-- com_zaxxer_hikaricp 5.1.0
+	- cobblepulse_battles 2.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   |-- com_zaxxer_hikaricp 5.1.0
+	   |-- org_apache_commons_commons-pool2 2.12.0
+	   |-- org_json_json 20240303
+	   |-- org_xerial_sqlite-jdbc 3.46.1.3
+	   \-- redis_clients_jedis 5.1.5
+	- cobblepulse_crates 1.0.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   \-- com_electronwill_night-config_toml 3.6.7
+	- cobblepulse_ecology 3.0.0
+	- cobblepulse_utils 1.6.0
+	   |-- com_electronwill_night-config_core 3.6.7
+	   |-- com_electronwill_night-config_toml 3.6.7
+	   |-- com_mysql_mysql-connector-j 8.4.0
+	   |-- com_zaxxer_hikaricp 5.1.0
+	   \-- org_xerial_sqlite-jdbc 3.46.1.3
+	- fabric-api 0.116.18+1.21.1
+	   |-- fabric-api-base 0.4.42+6573ed8c19
+	   |-- fabric-api-lookup-api-v1 1.6.72+7b3d111d19
+	   |-- fabric-biome-api-v1 13.0.31+d527f9fd19
+	   |-- fabric-block-api-v1 1.1.0+0bc3503219
+	   |-- fabric-block-view-api-v2 1.0.11+ebb2264e19
+	   |-- fabric-command-api-v1 1.2.49+f71b366f19
+	   |-- fabric-command-api-v2 2.2.28+6ced4dd919
+	   |-- fabric-commands-v0 0.2.66+df3654b319
+	   |-- fabric-content-registries-v0 8.0.19+b559734419
+	   |-- fabric-convention-tags-v1 2.1.7+7f945d5b19
+	   |-- fabric-convention-tags-v2 2.12.0+c3656daa19
+	   |-- fabric-crash-report-info-v1 0.2.29+0af3f5a719
+	   |-- fabric-data-attachment-api-v1 1.4.7+5b36e0f719
+	   |-- fabric-data-generation-api-v1 20.3.1+7439032a19
+	   |-- fabric-dimensions-v1 4.0.1+65213ef819
+	   |-- fabric-entity-events-v1 1.8.0+2b27e0a419
+	   |-- fabric-events-interaction-v0 0.7.14+ba9dae0619
+	   |-- fabric-game-rule-api-v1 1.0.53+6ced4dd919
+	   |-- fabric-item-api-v1 11.3.0+467044f319
+	   |-- fabric-item-group-api-v1 4.1.7+def88e3a19
+	   |-- fabric-lifecycle-events-v1 2.6.0+0865547519
+	   |-- fabric-loot-api-v2 3.0.15+3f89f5a519
+	   |-- fabric-loot-api-v3 1.0.3+3f89f5a519
+	   |-- fabric-message-api-v1 6.0.14+8aaf3aca19
+	   |-- fabric-networking-api-v1 4.3.1+d30f6a7919
+	   |-- fabric-object-builder-api-v1 15.2.1+40875a9319
+	   |-- fabric-particles-v1 4.0.2+6573ed8c19
+	   |-- fabric-recipe-api-v1 5.0.16+2475392c19
+	   |-- fabric-registry-sync-v0 5.3.2+e3eddc2119
+	   |-- fabric-rendering-data-attachment-v1 0.3.49+73761d2e19
+	   |-- fabric-rendering-fluids-v1 3.1.6+1daea21519
+	   |-- fabric-resource-conditions-api-v1 4.4.0+7439032a19
+	   |-- fabric-resource-loader-v0 1.3.1+5b5275af19
+	   |-- fabric-screen-handler-api-v1 1.3.91+b559734419
+	   |-- fabric-tag-api-v1 1.3.0+1eb36c0719
+	   |-- fabric-transfer-api-v1 5.4.5+9eaf054019
+	   \-- fabric-transitive-access-wideners-v1 6.2.0+45b9699719
+	- fabric-language-kotlin 1.14.2+kotlin.2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-reflect 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk7 2.4.21
+	   |-- org_jetbrains_kotlin_kotlin-stdlib-jdk8 2.4.21
+	   |-- org_jetbrains_kotlinx_atomicfu-jvm 0.33.0
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-coroutines-jdk8 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-datetime-jvm 0.8.0
+	   |-- org_jetbrains_kotlinx_kotlinx-io-bytestring-jvm 0.9.1
+	   |-- org_jetbrains_kotlinx_kotlinx-io-core-jvm 0.9.1
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm 1.11.0
+	   |-- org_jetbrains_kotlinx_kotlinx-serialization-core-jvm 1.11.0
+	   \-- org_jetbrains_kotlinx_kotlinx-serialization-json-jvm 1.11.0
+	- fabricloader 0.19.5
+	   \-- mixinextras 0.5.5
+	- java 21
+	- luckperms 5.4.140
+	   \-- fabric-permissions-api-v0 0.3.1
+	- mega_showdown 1.4+1.8.4+1.21.1-release
+	- minecraft 1.21.1
+	- owo 0.13.0-alpha.15.1+1.21
+	   |-- blue_endless_jankson 1.2.2
+	   |-- io_wispforest_endec 0.1.5.1
+	   |-- io_wispforest_endec_gson 0.1.3.1
+	   |-- io_wispforest_endec_jankson 0.1.3.1
+	   \-- io_wispforest_endec_netty 0.1.2
+[10:22:52] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/work/cobblepulse-utils/cobblepulse-utils/run-server/libraries/net/fabricmc/sponge-mixin/0.17.4+mixin.0.8.7/sponge-mixin-0.17.4+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[10:22:52] [main/WARN]: Error loading class: quick/battle/network/QuickBattleInitiatePacket (java.lang.ClassNotFoundException: quick/battle/network/QuickBattleInitiatePacket)
+[10:22:52] [main/WARN]: @Mixin target quick.battle.network.QuickBattleInitiatePacket was not found mixins.cobbledollars-fabric.json:quickbattle.QuickBattleInitiatePacketMixin from mod cobbledollars
+[10:22:52] [main/WARN]: Error loading class: juuxel/adorn/block/variant/BlockVariantSets (java.lang.ClassNotFoundException: juuxel/adorn/block/variant/BlockVariantSets)
+[10:22:52] [main/WARN]: @Mixin target juuxel.adorn.block.variant.BlockVariantSets was not found mixins.cobblemon-common.json:invoker.AdornRegisterInvoker from mod cobblemon
+[10:22:53] [main/WARN]: Error loading class: net/minecraft/class_1140 (java.lang.ClassNotFoundException: net/minecraft/class_1140)
+[10:22:53] [main/WARN]: @Mixin target net.minecraft.class_1140 was not found mixins.cobblemon-fabric.json:FabricSoundEngineMixin from mod cobblemon
+[10:22:53] [main/WARN]: Error loading class: xyz/nucleoid/server/translations/impl/language/LanguageReader (java.lang.ClassNotFoundException: xyz/nucleoid/server/translations/impl/language/LanguageReader)
+[10:22:53] [main/WARN]: @Mixin target xyz.nucleoid.server.translations.impl.language.LanguageReader was not found owo.mixins.json:extension.json5.LanguageReaderMixin from mod owo
+[10:22:53] [main/WARN]: Error loading class: xyz/nucleoid/server/translations/impl/language/SystemDelegatedLanguage (java.lang.ClassNotFoundException: xyz/nucleoid/server/translations/impl/language/SystemDelegatedLanguage)
+[10:22:53] [main/WARN]: Error loading class: net/minecraft/class_1044 (java.lang.ClassNotFoundException: net/minecraft/class_1044)
+[10:22:53] [main/WARN]: @Mixin target net.minecraft.class_1044 was not found owo.mixins.json:ui.access.AbstractTextureAccessor from mod owo
+[10:22:53] [main/INFO]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[10:22:57] [main/INFO]: Registering Listeners!
+[10:22:57] [main/ERROR]: No data fixer registered for cobbledollars:cobble_merchant
+[10:22:58] [main/WARN]: Error loading class: net/minecraft/class_1132 (java.lang.ClassNotFoundException: net/minecraft/class_1132)
+[10:22:58] [main/INFO]: Booting LaxPermissionValidator, permissions will be checked using Minecrafts permission level system, see https://minecraft.wiki/w/Permission_level
+[10:22:58] [main/INFO]: Launching Cobblemon 1.8.4 
+[10:22:58] [main/INFO]: Booting FabricPermissionValidator, permissions will be checked using fabric-permissions-api, see https://github.com/lucko/fabric-permissions-api
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:pokemon
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:empty_pokeball
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:boat
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:chest_boat
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:poke_bobber
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:generic_bedrock
+[10:22:58] [main/ERROR]: No data fixer registered for cobblemon:npc
+[10:22:59] [main/INFO]: Starting the Best Spawner...
+[10:22:59] [main/INFO]: Loaded 7 spawning condition types.
+[10:22:59] [main/INFO]: Loaded 6 spawnable position types.
+[10:22:59] [main/INFO]: Loaded 4 spawn detail types.
+[10:22:59] [Cobblemon Showdown/INFO]: Starting showdown service...
+[10:22:59] [Cobblemon Showdown/INFO]: Showdown files are up to date (v1.3.5).
+[10:23:00] [Cobblemon Showdown/INFO]: Showdown has been started!
+[10:23:00] [main/INFO]: Note: Cobblemon data registries are only loaded once per server instance as Pokémon species are not safe to reload.
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/custom_status registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/moves registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/ability registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/conditions registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/held_items registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/typecharts registry
+[10:23:00] [main/INFO]: Registered the mega_showdown:mega_showdown/showdown/scripts registry
+[10:23:00] [main/INFO]: Registered the cobblemon:molang registry
+[10:23:00] [main/INFO]: Registered the cobblemon:species_features registry
+[10:23:00] [main/INFO]: Registered the cobblemon:global_species_features registry
+[10:23:00] [main/INFO]: Registered the cobblemon:species_feature_assignments registry
+[10:23:00] [main/INFO]: Registered the cobblemon:action_effects registry
+[10:23:00] [main/INFO]: Registered the cobblemon:moves registry
+[10:23:00] [main/INFO]: Registered the cobblemon:moveset_builders registry
+[10:23:00] [main/INFO]: Registered the cobblemon:abilities registry
+[10:23:00] [main/INFO]: Registered the cobblemon:behaviours registry
+[10:23:00] [main/INFO]: Registered the cobblemon:marks registry
+[10:23:00] [main/INFO]: Registered the cobblemon:species registry
+[10:23:00] [main/INFO]: Registered the cobblemon:species_additions registry
+[10:23:00] [main/INFO]: Registered the cobblemon:pokeballs registry
+[10:23:00] [main/INFO]: Registered the cobblemon:properties_tab_completion registry
+[10:23:00] [main/INFO]: Registered the cobblemon:party_pools registry
+[10:23:00] [main/INFO]: Registered the cobblemon:party_compositions registry
+[10:23:00] [main/INFO]: Registered the cobblemon:spawn_detail_presets registry
+[10:23:00] [main/INFO]: Registered the cobblemon:spawn_rules registry
+[10:23:00] [main/INFO]: Registered the cobblemon:mechanics registry
+[10:23:00] [main/INFO]: Registered the cobblemon:bag_items registry
+[10:23:00] [main/INFO]: Registered the cobblemon:held_items registry
+[10:23:00] [main/INFO]: Registered the cobblemon:dialogues registry
+[10:23:00] [main/INFO]: Registered the cobblemon:natural_materials registry
+[10:23:00] [main/INFO]: Registered the cobblemon:fossils registry
+[10:23:00] [main/INFO]: Registered the cobblemon:npc_preset registry
+[10:23:00] [main/INFO]: Registered the cobblemon:npc registry
+[10:23:00] [main/INFO]: Registered the cobblemon:dex_entries registry
+[10:23:00] [main/INFO]: Registered the cobblemon:dex_entry_additions registry
+[10:23:00] [main/INFO]: Registered the cobblemon:dexes registry
+[10:23:00] [main/INFO]: Registered the cobblemon:dex_additions registry
+[10:23:00] [main/INFO]: Registered the cobblemon:cosmetic_items registry
+[10:23:00] [main/INFO]: Registered the cobblemon:callbacks registry
+[10:23:00] [main/INFO]: Registered the cobblemon:unlockable_pc_box_wallpapers registry
+[10:23:00] [main/INFO]: Registered the cobblemon:starters registry
+[10:23:00] [main/INFO]: Registered the cobblemon:spawn_pool_world registry
+[10:23:00] [main/INFO]: Registered the cobblemon:pokerods registry
+[10:23:00] [main/INFO]: Registered the cobblemon:berries registry
+[10:23:00] [main/INFO]: Registered the cobblemon:habitat_pools registry
+[10:23:00] [main/INFO]: Registered the cobblemon:seasonings registry
+[10:23:00] [main/INFO]: Registered the cobblemon:pokemon_interactions registry
+[10:23:00] [main/INFO]: Registered the cobblemon:spawn_bait_effects registry
+[10:23:00] [main/INFO]: Registered the cobblemon:ride_settings registry
+[10:23:00] [main/INFO]: Registered the cobblemon:technical_machines registry
+[10:23:01] [main/INFO]: [CobblePulse] Placeholder API absent : tag de clan non expose a ShadowChat
+[10:23:01] [main/INFO]: [CobblePulse] Initialise
+[10:23:01] [main/INFO]: [Battletower] 10 tiers charges depuis config/cobblepulse/tournament_tiers
+[10:23:01] [main/INFO]: [Battletower] Text Placeholder API absent : placeholders non exposes
+[10:23:01] [main/INFO]: [Battles] CobblePulse-Battles initialise
+[10:23:01] [main/INFO]: [Crates] Mod initialise
+[10:23:01] [main/INFO]: CobblePulse-Ecology : 2 mega-gemme(s) enregistree(s)
+[10:23:01] [main/INFO]: Registering C2S receiver with id mega_showdown:mega_evo
+[10:23:01] [main/INFO]: Registering C2S receiver with id mega_showdown:primal_evo
+[10:23:01] [main/INFO]: Registering C2S receiver with id mega_showdown:crown
+[10:23:01] [main/INFO]: Registering C2S receiver with id mega_showdown:ultra_burst
+[10:23:01] [main/INFO]: Registering C2S receiver with id mega_showdown:secret_sword_move_swap
+[10:23:01] [main/INFO]: Its called Unobtainium until you obtain it, thats the thing
+[10:23:01] [main/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /cobblepulse fusionne avec la commande existante (sous-commandes conservees)
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /cp fusionne avec la commande existante (sous-commandes conservees)
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokedex existait deja : fusion (ses sous-commandes restent disponibles)
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /return existait deja : fusion (ses sous-commandes restent disponibles)
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokeheal existait deja : fusion (ses sous-commandes restent disponibles)
+[10:23:02] [Worker-Main-1/INFO]: [CobblePulse-Utils] /pokebox existait deja : fusion (ses sous-commandes restent disponibles)
+[10:23:03] [main/INFO]: Loaded 2362 recipes
+[10:23:03] [main/INFO]: Loaded 2455 advancements
+[10:23:03] [main/INFO]: Loaded custom elemental statuses
+[10:23:04] [main/INFO]: Loaded 11 server scripts and 1 client scripts
+[10:23:05] [main/INFO]: Loaded 944 moves
+[10:23:05] [main/INFO]: Loaded 327 abilities
+[10:23:05] [main/INFO]: Loaded 49 entity behaviours
+[10:23:05] [main/INFO]: Loaded 168 marks
+[10:23:06] [main/INFO]: Finished additions
+[10:23:06] [cobblemon Datafixer Bootstrap/INFO]: 6 Datafixer optimizations took 31 milliseconds
+[10:23:07] [main/INFO]: Loaded 1050 Pokémon species
+[10:23:07] [main/INFO]: Loaded 0 party compositions.
+[10:23:07] [main/INFO]: Loaded 22 spawn detail presets.
+[10:23:07] [main/INFO]: Starting dummy Showdown battle to force it to pre-load data.
+[10:23:07] [main/INFO]: Imported 266 held item IDs from showdown
+[10:23:07] [main/INFO]: Loaded 15 fossils
+[10:23:08] [main/INFO]: Loaded 8 callbacks and 0 client callbacks
+[10:23:09] [main/INFO]: Loaded 70 berries
+[10:23:09] [main/INFO]: Loaded 167 Pokémon interaction sets
+[10:23:10] [main/INFO]: Applied 986 biome modifications to 64 of 64 new biomes in 24.55 ms
+[10:23:10] [Server thread/INFO]: Loading default shop config...
+[10:23:10] [Server thread/INFO]: Default shop config loaded!
+[10:23:10] [Server thread/INFO]: Loading bank config...
+[10:23:10] [Server thread/INFO]: Default Bank config loaded!
+[10:23:10] [Server thread/INFO]: [Crates] 10 caisses, 4 pools, 0 conteneurs lies. LuckPerms : oui
+[10:23:10] [Server thread/INFO]: CobblePulse-Utils-MySQL - Starting...
+[10:23:10] [Server thread/INFO]: CobblePulse-Utils-MySQL - Added connection com.mysql.cj.jdbc.ConnectionImpl@32c00723
+[10:23:10] [Server thread/INFO]: CobblePulse-Utils-MySQL - Start completed.
+[10:23:10] [Server thread/INFO]: [CobblePulse-Utils] Stockage actif : MySQL (127.0.0.1/cobblepulse_utils) (+ SQLite (./config/cobblepulse/utils/data/cobblepulse_utils.db) pour les modules locaux)
+[10:23:10] [Server thread/INFO]: [CobblePulse-Utils] Economie : CobbleDollars
+[10:23:10] [Server thread/INFO]:         __    
+[10:23:10] [Server thread/INFO]:   |    |__)   LuckPerms v5.4.140
+[10:23:10] [Server thread/INFO]:   |___ |      Running on Fabric - fabric@0.116.18+1.21.1
+[10:23:10] [Server thread/INFO]: 
+[10:23:10] [Server thread/INFO]: Loading configuration...
+[10:23:11] [Server thread/INFO]: Loading storage provider... [H2]
+[10:23:11] [Server thread/INFO]: Loading internal permission managers...
+[10:23:11] [Server thread/INFO]: Performing initial data load...
+[10:23:11] [Server thread/INFO]: Successfully enabled. (took 489ms)
+[10:23:11] [Server thread/INFO]: Starting minecraft server version 1.21.1
+[10:23:11] [Server thread/INFO]: Loading properties
+[10:23:11] [Server thread/INFO]: Default game type: SURVIVAL
+[10:23:11] [Server thread/INFO]: Generating keypair
+[10:23:11] [Server thread/INFO]: Starting Minecraft server on *:25565
+[10:23:11] [Server thread/INFO]: Using epoll channel type
+[10:23:11] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[10:23:11] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[10:23:11] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[10:23:11] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[10:23:11] [Server thread/INFO]: Preparing level "world"
+[10:23:13] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[10:23:14] [Worker-Main-2/INFO]: Preparing spawn area: 0%
+[10:23:14] [Server thread/INFO]: Time elapsed: 552 ms
+[10:23:14] [Server thread/INFO]: Done (2.765s)! For help, type "help"
+[10:23:14] [Server thread/INFO]: Optimizing spawn pools...
+[10:23:14] [Server thread/INFO]: [CobblePulse] Stockage actif : JSON (./config/cobblepulse/data)
+[10:23:14] [Server thread/INFO]: [CobblePulse] 0 clans charges
+[10:23:14] [Server thread/INFO]: [CobblePulse] Pret en 20 ms
+[10:23:14] [Server thread/INFO]: [Battletower] Stockage actif : JSON (./config/cobblepulse_battles/data)
+[10:23:14] [Server thread/INFO]: [Battletower] 0 dossiers joueurs charges
+[10:23:14] [Server thread/INFO]: [Battles] Ranked : 0 profils charges
+[10:23:14] [Server thread/INFO]: [Battles] Ranked : Saison 1 (preset default)
+[10:23:14] [Server thread/INFO]: [Battles] Ranked prete (6 rangs, 0 arenes, multi-serveur inactif)
+[10:23:14] [Server thread/INFO]: [Battletower] Pret en 45 ms (50 etages, 10 tiers depuis config/cobblepulse/tournament_tiers)
+[10:23:14] [Server thread/INFO]: CobblePulse-Ecology OK : 24/24 especes, 2 mega-gemme(s), 2 recette(s) chargee(s)
+[10:23:14] [Server thread/INFO]: [CobblePulse-Utils] Noms d'especes : 1050 (2100 venant de 3 datapack(s), 1 sans traduction des mods) en 62 ms
+[10:23:14] [Server thread/INFO]: [CobblePulse-Utils] Boss au-dela du niveau 100 : enregistrement verifie.
+[10:23:14] [Server thread/INFO]: [CobblePulse-Utils] Commandes d'autres mods remplacees : [pokedex, return, pokeheal, pokebox]
+[10:23:14] [Server thread/INFO]: [CobblePulse-Utils] Pret (4 categories de shop, 3 kits, 1 warps)
+[10:23:14] [Server thread/INFO]: Gamerule doDaylightCycle is now set to: false
+[10:23:15] [Server thread/INFO]: Gamerule doWeatherCycle is now set to: false
+[10:23:16] [Server thread/INFO]: Set the time to 6000
+[10:23:17] [Server thread/INFO]: Set the weather to clear
+[10:23:53] [Server thread/INFO]: UtilsTest[/127.0.0.1:53012] logged in with entity id 4 at (-25.5, 76.0, 152.5)
+[10:23:53] [Server thread/INFO]: Sending server config values to client
+[10:23:53] [Server thread/ERROR]: .old File tm_moves for 793a4ad9-cec3-340b-9fd2-c48bda096fe1 is corrupt or missing. Data is lost
+[10:23:54] [Server thread/ERROR]: .old File pokedex for 793a4ad9-cec3-340b-9fd2-c48bda096fe1 is corrupt or missing. Data is lost
+[10:23:54] [Server thread/ERROR]: .old File cobblemonplayerdata for 793a4ad9-cec3-340b-9fd2-c48bda096fe1 is corrupt or missing. Data is lost
+[10:23:54] [Server thread/INFO]: UtilsTest joined the game
+[10:23:54] [Server thread/INFO]: Receiving client config
+[10:25:30] [Server thread/INFO]: [CobblePulse-Utils] Mega-Gemmes lues dans Mega Showdown : 89 objet(s), 88 forme(s)
+[10:25:47] [Server thread/INFO]: UtilsTest has made the advancement [Diamonds!]
+[10:25:47] [Server thread/INFO]: [UtilsTest: Gave 5 [Diamond] to UtilsTest]
+[10:25:53] [Server thread/INFO]: ✦ GTS » UtilsTest met en vente 5 × Diamond pour 1 500 ₽ ! (/gts)
+[10:26:21] [Server thread/INFO]: [UtilsTest: Gave Mewtwo to UtilsTest.]
+[10:26:23] [Server thread/INFO]: ☠ Boss » Un Boss Ultime apparaît : Magikarp Nv.130 (-25, 155) !
+[10:26:23] [Server thread/INFO]: [CobblePulse-Utils] Combat contre le Boss Magikarp (ultime) : [UtilsTest]
+[10:26:25] [Server thread/INFO]: [UtilsTest: Saved the game]
+[10:26:32] [Server thread/INFO]: [CobblePulse-Utils] Boss Magicarpe (ultime) vaincu par [UtilsTest]
+[10:26:32] [Server thread/INFO]: ☠ Boss » UtilsTest a vaincu un Boss Ultime (Magikarp) !
+[10:27:42] [Server thread/INFO]: ☠ Boss » Un Boss Méga Ultime apparaît : Charizard Nv.128 (-25, 155) !
+[10:28:17] [Server thread/INFO]: UtilsTest has made the advancement [We Need to Go Deeper]
+[10:28:23] [Server thread/INFO]: UtilsTest lost connection: Disconnected
+[10:28:23] [Server thread/INFO]: UtilsTest left the game
+[10:28:31] [Server thread/INFO]: Stopping the server
+[10:28:31] [Server thread/INFO]: Starting shutdown process...
+[10:28:31] [Server thread/INFO]: Closing storage...
+[10:28:31] [Server thread/INFO]: Goodbye!
+[10:28:31] [Server thread/INFO]: Stopping server
+[10:28:31] [Server thread/INFO]: Saving players
+[10:28:31] [Server thread/INFO]: Saving worlds
+[10:28:32] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[10:28:32] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[10:28:32] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[10:28:32] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[10:28:32] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[10:28:32] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[10:28:32] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[10:28:32] [Server thread/INFO]: CobblePulse-Utils-MySQL - Shutdown initiated...
+[10:28:32] [Server thread/INFO]: CobblePulse-Utils-MySQL - Shutdown completed.

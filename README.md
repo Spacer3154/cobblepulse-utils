@@ -10,7 +10,7 @@ Stockage hybride SQLite (par défaut) / MySQL avec transactions atomiques.
 
 | Où | Fichier |
 |---|---|
-| Serveur | `cobblepulse-utils-1.5.0.jar` dans `mods/` |
+| Serveur | `cobblepulse-utils-1.6.0.jar` dans `mods/` |
 | Modpack (clients) | le même jar : la touche du Hub et l'écran du Wiki sont côté client |
 
 Dépendances : Fabric Loader ≥ 0.16, Fabric API, Fabric Language Kotlin, Cobblemon ≥ 1.8.0 (testé 1.8.4).
@@ -166,6 +166,9 @@ Méga Ultime (120-150). Un Méga-Boss est toujours en Méga-Évolution ou en Pri
 telle forme, il a 35 % de chances (`special_form_chance`) de devenir un Méga-Boss ; son palier est alors tiré parmi les
 trois (poids 60 / 30 / 10). Les paliers ordinaires n'apparaissent plus en Méga ni en Primo ; ils gardent la forme
 Originelle. La Méga-Gemme, l'Orbe ou le Globe tombe à 100 % à la première victoire du joueur, puis à 10 %.
+Un Méga-Boss donne aussi une **Gemme Sésame** (`mega_showdown:keystone`) : 100 % à la première victoire du joueur contre
+ce Méga-Boss (espèce et forme), puis 5 % (`boss.json` → `keystone_item`, `keystone_first_chance`,
+`keystone_repeat_chance` ; objet vide pour la retirer).
 Un palier devient un palier de Méga-Boss avec `"mega": true` dans `boss.json` (ou `mega=oui` dans ses réglages en jeu).
 
 **Fenêtre de butin** : après la victoire, l'argent, les BP et les commandes sont remis tout de suite, et les objets

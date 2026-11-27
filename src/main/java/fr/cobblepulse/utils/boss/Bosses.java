@@ -82,6 +82,8 @@ public final class Bosses {
     private static final java.util.Set<UUID> BATTLE_NAMED = java.util.concurrent.ConcurrentHashMap.newKeySet();
     /** Auto-test : victoires contre un Boss traitees. */
     public static volatile int victoriesHandled;
+    /** Auto-test : une Gemme Sesame a ete donnee depuis la derniere remise a false. */
+    public static volatile boolean lastKeystone;
 
     private Bosses() {}
 
@@ -626,6 +628,22 @@ public final class Bosses {
                         items.add(0, st);
                         got.add(label);
                     } else if (Rewards.give(p, r)) got.add(label);
+                }
+            }
+            // Gemme Sesame : Mega-Boss seulement
+            if (t.mega && err == null && Cfg.boss.keystoneItem != null && !Cfg.boss.keystoneItem.isBlank()) {
+                double chance = isFirst ? Cfg.boss.keystoneFirstChance : Cfg.boss.keystoneRepeatChance;
+                if (RND.nextDouble() * 100 < chance) {
+                    Reward r = Reward.item(Cfg.boss.keystoneItem, 100);
+                    net.minecraft.world.item.ItemStack st = fr.cobblepulse.utils.core.ItemSerial.fromSnbt(r.item);
+                    if (!st.isEmpty()) {
+                        String label = "&b" + Rewards.describe(r) + (isFirst ? " " + Msg.format("boss.first_win") : "");
+                        lastKeystone = true;
+                        if (window) {
+                            items.add(0, st);
+                            got.add(label);
+                        } else if (Rewards.give(p, r)) got.add(label);
+                    }
                 }
             }
             Msg.send(p, Msg.withComponent("boss.victory", "pokemon", species, "tier", t.color + t.name, "rewards", got.isEmpty() ? "-" : String.join("&7, ", got)));

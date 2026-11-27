@@ -43,10 +43,19 @@ public final class Paged {
             gui.button(53, ItemBuilder.of(Items.ARROW).name("&ePage suivante").build(),
                     p -> open(p, title, entries, pg + 1, back, decorate));
         }
-        if (back != null) {
-            gui.button(49, ItemBuilder.of(Items.OAK_DOOR).name("&cRetour").build(), back);
-        }
         if (decorate != null) decorate.accept(gui);
+        // bouton Retour toujours present : a sa place (49) si le menu ne l'a pas prise (solde, progression...),
+        // sinon sur la premiere case libre de la barre
+        if (back != null) {
+            int slot = -1;
+            for (int s : new int[]{49, 48, 50, 47, 51, 46, 52}) {
+                if (gui.handler(s) == null && (gui.get(s).isEmpty() || gui.get(s).is(Items.GRAY_STAINED_GLASS_PANE))) {
+                    slot = s;
+                    break;
+                }
+            }
+            if (slot >= 0) gui.button(slot, ItemBuilder.of(Items.OAK_DOOR).name(fr.cobblepulse.utils.core.Msg.format("general.back")).build(), back);
+        }
         gui.open(player);
     }
 }

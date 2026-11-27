@@ -31,6 +31,13 @@ public final class BossConfig {
     /** Butin garanti de l'objet de forme : 100 % a la 1re victoire du joueur, puis ce pourcentage. */
     public double formItemFirstChance = 100;
     public double formItemRepeatChance = 10;
+    /**
+     * Gemme Sesame (Key Stone de Mega Showdown) donnee par les Mega-Boss : chance a la premiere victoire du joueur
+     * contre ce Mega-Boss (espece et forme), puis aux suivantes. Objet vide : desactive.
+     */
+    public String keystoneItem = "mega_showdown:keystone";
+    public double keystoneFirstChance = 100;
+    public double keystoneRepeatChance = 5;
     /** Objet associe a une forme : "espece:forme" -> objet. Les Mega-Gemmes sont deduites automatiquement. */
     public Map<String, String> formItems = new LinkedHashMap<>();
     /** Commande pour donner des BP de la Tour de Combat (%player%, %amount%). */

@@ -1292,9 +1292,40 @@ public final class SelfTest {
         if (fe != null) fe.discard();
     }
 
+    /** Gemme Sesame (demande du 27/11) : 1re victoire contre un Mega-Boss = 100 %, ensuite 5 % ; jamais pour un Boss ordinaire. */
+    private static void keystoneChecks() {
+        Item key = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.parse(Cfg.boss.keystoneItem));
+        check("gemme_sesame_objet", key != Items.AIR && "mega_showdown:keystone".equals(Cfg.boss.keystoneItem) && Cfg.boss.keystoneFirstChance == 100
+                && Cfg.boss.keystoneRepeatChance == 5, Cfg.boss.keystoneItem);
+        fr.cobblepulse.utils.boss.BossLoot.flush(b);
+        b.getInventory().clearContent();
+        BossConfig.Tier mega = Cfg.boss.tiers.get("mega_epique");
+        BossConfig.Tier plain = Cfg.boss.tiers.get("epique");
+        Bosses.reward(b, mega, "mega_epique", "venusaur:mega", "Florizarre");
+        Scheduler.later(40, () -> safe("gemme_sesame_1re", () -> {
+            long first = fr.cobblepulse.utils.boss.BossLoot.pending(b.getUUID()).stream().filter(st -> st.is(key)).count() + count(b, key);
+            check("gemme_sesame_premiere_victoire", first == 1, first);
+            fr.cobblepulse.utils.boss.BossLoot.flush(b);
+            b.getInventory().clearContent();
+            // victoires suivantes : 5 % (forcee a 0 puis a 100 pour un resultat certain)
+            double old = Cfg.boss.keystoneRepeatChance;
+            Cfg.boss.keystoneRepeatChance = 0;
+            Bosses.reward(b, mega, "mega_epique", "venusaur:mega", "Florizarre");
+            Bosses.reward(b, plain, "epique", "venusaur:base", "Florizarre");
+            Scheduler.later(40, () -> safe("gemme_sesame_suivantes", () -> {
+                long again = fr.cobblepulse.utils.boss.BossLoot.pending(b.getUUID()).stream().filter(st -> st.is(key)).count() + count(b, key);
+                check("gemme_sesame_suivantes_et_boss_ordinaire", again == 0, again);
+                Cfg.boss.keystoneRepeatChance = old;
+                fr.cobblepulse.utils.boss.BossLoot.flush(b);
+                b.getInventory().clearContent();
+            }));
+        }));
+    }
+
     /** Mega-Gemmes lues dans le registre de Mega Showdown, y compris celles d'autres mods (demande du 18/11). */
     private static void megaStonesChecks() {
         if (!Bosses.megaShowdown()) return;
+        keystoneChecks();
         var all = fr.cobblepulse.utils.boss.MegaStones.all();
         check("mega_gemmes_registre_mega_showdown", all.size() >= 40 && "mega_showdown:charizardite_x".equals(all.get("charizard:mega_x"))
                 && "mega_showdown:charizardite_y".equals(all.get("charizard:mega_y")), all.size() + " " + all.get("charizard:mega_x") + " " + all.get("charizard:mega_y"));

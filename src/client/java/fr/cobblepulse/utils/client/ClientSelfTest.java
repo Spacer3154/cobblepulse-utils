@@ -139,6 +139,17 @@ final class ClientSelfTest {
         STEPS.add(mc -> {
             check("ecran_categorie", menu(mc) != null && titled(mc, "Poké Balls"), screenName(mc));
             shot(mc, "live_30_shop_categorie");
+            // bouton Retour de la categorie (demande du 27/11) : revient au choix des categories
+            MenuScreen m = menu(mc);
+            check("categorie_bouton_retour", m != null && m.barNames().stream().anyMatch(n -> n.contains("Retour")), m == null ? "-" : String.valueOf(m.barNames()));
+            if (m != null) m.clickNamed("Retour", "left");
+        });
+        STEPS.add(mc -> {
+            MenuScreen m = menu(mc);
+            check("categorie_retour_boutique", m != null && !titled(mc, "Poké Balls") && m.entryNames().stream().anyMatch(n -> n.contains("Poké Balls")), screenName(mc));
+            if (m != null) m.clickNamed("Poké Balls", "left");
+        });
+        STEPS.add(mc -> {
             if (menu(mc) != null) menu(mc).clickFirst("left");
         });
         STEPS.add(mc -> {
